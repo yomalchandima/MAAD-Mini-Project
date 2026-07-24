@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1063487593316",
+    "project_id": "maad-mini-project-4b71e",
+    "storage_bucket": "maad-mini-project-4b71e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063487593316:android:daea92788cfda89fccb871",
+        "android_client_info": {
+          "package_name": "com.example.maadminiproject"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmml9SxysjxAcZnZVFA3qEoGJ7wcOuv4w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

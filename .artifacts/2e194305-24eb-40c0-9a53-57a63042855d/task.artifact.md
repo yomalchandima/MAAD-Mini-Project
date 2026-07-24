@@ -1,0 +1,20 @@
+- [x] Create core package and files
+    - [x] core/constants/AppConstants.kt
+    - [x] core/firebase/FirebaseManager.kt
+    - [x] core/firebase/RealtimeDatabaseHelper.kt
+    - [x] core/utils/DateUtils.kt
+    - [x] core/utils/ValidationUtils.kt
+- [x] Create data package and files
+    - [x] data/model/Device.kt
+    - [x] data/model/Zone.kt
+    - [x] data/model/Automation.kt
+    - [x] data/model/Notification.kt
+    - [x] data/model/ActivityLog.kt
+    - [x] data/repository/DeviceRepository.kt
+    - [x] data/repository/ReportRepository.kt
+    - [x] data/repository/NotificationRepository.kt
+    - [x] data/datasource/FirebaseDataSource.kt
+- [x] Create ui package structure
+- [x] Create viewmodel package
+- [x] Create notification package and files
+    - [x] notification/NotificationHelper.kt

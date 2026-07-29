@@ -25,15 +25,6 @@ data class Home(
 )
 
 /**
- * Data model for home metadata.
- * Implementation to be expanded later.
- */
-data class Metadata(
-    val ownerId: String = "",
-    val createdAt: Long = 0L,
-)
-
-/**
  * Data model for home reports.
  * Implementation to be expanded later.
  */

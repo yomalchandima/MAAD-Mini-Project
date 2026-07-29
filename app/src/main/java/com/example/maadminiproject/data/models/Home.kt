@@ -23,12 +23,3 @@ data class Home(
     val notifications: MutableMap<String, Any> = mutableMapOf(),
     val activityLogs: MutableMap<String, Any> = mutableMapOf(),
 )
-
-/**
- * Data model for home reports.
- * Implementation to be expanded later.
- */
-data class Report(
-    val reportId: String = "",
-    val type: String = "",
-)

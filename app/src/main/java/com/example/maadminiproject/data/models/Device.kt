@@ -13,7 +13,7 @@ package com.example.maadminiproject.data.models
  * @property powerUsage Current power consumption of the device.
  * @property unit Unit of measurement for power usage (e.g., Watts).
  * @property icon Resource name or identifier for the device's icon.
- * @property isOnline Indicates if the device is currently connected to the network.
+ * @property online Indicates if the device is currently connected to the network.
  * @property lastUpdated Timestamp of the last status update.
  * @property brightness Optional brightness level for lights (0-100).
  * @property fanSpeed Optional speed setting for fans.
@@ -32,7 +32,7 @@ data class Device(
     val powerUsage: Double = 0.0,
     val unit: String = "",
     val icon: String = "",
-    val isOnline: Boolean = false,
+    val online: Boolean = false,
     val lastUpdated: Long = 0L,
     val brightness: Int? = null,
     val fanSpeed: Int? = null,

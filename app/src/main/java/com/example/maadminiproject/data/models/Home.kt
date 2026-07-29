@@ -32,12 +32,3 @@ data class Report(
     val reportId: String = "",
     val type: String = "",
 )
-
-/**
- * Data model for home settings.
- * Implementation to be expanded later.
- */
-data class Settings(
-    val isSystemArmed: Boolean = false,
-    val notificationEnabled: Boolean = true,
-)

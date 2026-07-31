@@ -25,10 +25,9 @@ object FirebaseManager {
     val database: FirebaseDatabase = FirebaseDatabase.getInstance()
 
     /**
-     * The root [DatabaseReference] for the smart home data hierarchy.
-     * Points to the "smart_home" node in the Realtime Database.
+     * The root [DatabaseReference] of the Realtime Database.
      */
-    val rootReference: DatabaseReference = database.getReference("smart_home")
+    val rootReference: DatabaseReference = database.reference
 
     /**
      * Returns a [DatabaseReference] for the "metadata" node.
@@ -73,10 +72,10 @@ object FirebaseManager {
     fun notificationsRef(): DatabaseReference = rootReference.child("notifications")
 
     /**
-     * Returns a [DatabaseReference] for the "activity_logs" node.
+     * Returns a [DatabaseReference] for the "activityLogs" node.
      * Use this for historical event logging.
      */
-    fun activityLogsRef(): DatabaseReference = rootReference.child("activity_logs")
+    fun activityLogsRef(): DatabaseReference = rootReference.child("activityLogs")
 
     /**
      * Returns a [DatabaseReference] for the "users" node.

@@ -181,6 +181,30 @@ class FirebaseDataSource {
     }
 
     /**
+     * Performs a partial update on a specific notification.
+     *
+     * Path: homes/{homeId}/notifications/{notificationId}
+     *
+     * @param homeId The unique identifier of the home.
+     * @param notificationId The unique identifier of the notification.
+     * @param updates A map of fields to update.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateNotification(
+        homeId: String,
+        notificationId: String,
+        updates: Map<String, Any>,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null
+    ) {
+        val notificationRef = getHomeReference(homeId)
+            .child("notifications").child(notificationId)
+
+        helper.updateData(notificationRef, updates, onSuccess, onFailure)
+    }
+
+    /**
      * Observes activity logs for a specific home.
      *
      * @param homeId The unique identifier of the home.

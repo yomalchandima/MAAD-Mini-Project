@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smart Home — Hardware Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="panel-head">
+    <div class="panel-head__id">
+      <span class="panel-head__tag">PANEL</span>
+      <h1>Smart Home — Hardware Simulator</h1>
+    </div>
+
+    <div class="panel-head__status">
+      <div class="conn" id="connIndicator" data-mode="mock">
+        <span class="conn__dot"></span>
+        <span class="conn__label" id="connLabel">MOCK MODE — no cloud link</span>
+      </div>
+      <div class="clock" id="clock">00:00:00</div>
+    </div>
+  </header>
+
+  <!--FLOOR TABS-->
+  <nav class="floor-tabs" id="floorTabs"></nav>
+
+  <main class="board">
+    <!--ROOM SECTIONS-->
+    <section class="rooms" id="roomsContainer"></section>
+
+    <!--SIDE RAIL-->
+    <aside class="rail">
+
+      <div class="rail__card">
+        <h2 class="rail__title">Legend</h2>
+        <ul class="legend">
+          <li><span class="led led--on"></span> ON</li>
+          <li><span class="led led--off"></span> OFF</li>
+          <li><span class="led led--error"></span> ERROR</li>
+          <li><span class="led led--disc"></span> DISCONNECTED</li>
+        </ul>
+      </div>
+
+      <div class="rail__card">
+        <h2 class="rail__title">Cloud Uplink Simulator</h2>
+        <p class="rail__hint">
+          Use this before Firebase is wired up. It mimics an external
+          state push (e.g. from the backend safety worker) so the UI's
+          reactive behaviour can be tested end-to-end.
+        </p>
+        <div class="uplink">
+          <select id="uplinkDevice"></select>
+          <select id="uplinkStatus">
+            <option value="ON">ON</option>
+            <option value="OFF">OFF</option>
+            <option value="ERROR">ERROR</option>
+            <option value="DISCONNECTED">DISCONNECTED</option>
+          </select>
+          <button id="uplinkPush">Push update</button>
+        </div>
+        <button id="uplinkChaos" class="chaos-btn">Simulate random fault</button>
+      </div>
+
+      <div class="rail__card rail__card--grow">
+        <h2 class="rail__title">Activity Log</h2>
+        <div class="log" id="activityLog"></div>
+      </div>
+
+    </aside>
+  </main>
+
+  <!--CAMERA PREVIEW MODAL-->
+  <div class="modal" id="cameraModal">
+    <div class="modal__box">
+      <div class="modal__head">
+        <span id="cameraModalTitle">Camera</span>
+        <button id="cameraModalClose">✕</button>
+      </div>
+      <canvas id="cameraCanvas" width="480" height="270"></canvas>
+      <div class="modal__meta">
+        <span id="cameraModalStatus">ONLINE</span>
+        <span id="cameraModalTime">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mock data layer first. Swap the import in app.js to firebase-sync.js
+       once Member 2's Realtime Database is ready — see README.md -->
+  <script src="mock-data-layer.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

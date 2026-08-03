@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">MAAD Mini Project</string>
+    <string name="upload_identity">Add a profile photo</string>
+    <string name="initiate_protocol">Create account</string>
+    <string name="configure_presence">Manage your home securely from anywhere.</string>
+    <string name="full_name_label">Full Name</string>
+    <string name="hint_full_name">Enter your full name</string>
+    <string name="email_label">Email</string>
+    <string name="hint_email_new">Enter your email</string>
+    <string name="mobile_label">Mobile Number</string>
+    <string name="hint_mobile">+91 711234567</string>
+    <string name="password_label">Password</string>
+    <string name="hint_password_new">••••••••••</string>
+    <string name="confirm_password_label">Confirm Password</string>
+    <string name="terms_privacy">I agree to the Terms &amp; Privacy Policy</string>
+    <string name="create_account">Sign up</string>
+    <string name="or_text">OR</string>
+    <string name="continue_google">Continue with Google</string>
+    <string name="continue_apple">Continue with Apple</string>
+    <string name="login_link">Login</string>
+    <string name="already_inhabitant">Already an inhabitant?</string>
+    <string name="finalize_encryption">Sign up</string>
+    <string name="lumina">Lumina</string>
+    <string name="cd_lumina_logo">Lumina Logo</string>
+    <string name="cd_mini_profile">Mini Profile</string>
+    <string name="cd_profile_placeholder">Profile Picture Placeholder</string>
+    <string name="cd_upload_icon">Upload Identity Icon</string>
+    <string name="cd_name_icon">Name Icon</string>
+    <string name="cd_email_icon">Email Icon</string>
+    <string name="cd_phone_icon">Phone Icon</string>
+    <string name="cd_password_icon">Password Icon</string>
+    <string name="cd_show_hide_password">Show/Hide Password</string>
+    <string name="cd_arrow_icon">Arrow Icon</string>
+    <string name="cd_google_icon">Google Icon</string>
+    <string name="cd_apple_icon">Apple Icon</string>
 </resources>

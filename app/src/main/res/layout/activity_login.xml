@@ -56,7 +56,7 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_launcher_foreground"
+                    android:src="@drawable/my_logo"
                     android:contentDescription="@string/cd_logo"
                     app:tint="@color/white" />
             </FrameLayout>

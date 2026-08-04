@@ -27,7 +27,7 @@
             android:name=".ui.authentication.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.dashboard.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
     </application>

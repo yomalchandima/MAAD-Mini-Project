@@ -5,11 +5,16 @@
         <item name="colorOnPrimary">@color/deep_midnight</item>
         <item name="colorSecondary">@color/vibrant_cyan</item>
         <item name="colorOnSecondary">@color/deep_midnight</item>
+        <item name="colorSecondaryContainer">@android:color/transparent</item>
+        <item name="colorOnSecondaryContainer">@color/vibrant_cyan</item>
         <item name="android:windowBackground">@color/deep_midnight</item>
         <item name="android:statusBarColor">@color/deep_midnight</item>
     </style>
 
-    <style name="Theme.MAADMiniProject" parent="Base.Theme.MAADMiniProject" />
+    <style name="Theme.MAADMiniProject" parent="Base.Theme.MAADMiniProject">
+        <item name="colorSecondaryContainer">@android:color/transparent</item>
+        <item name="colorOnSecondaryContainer">@color/vibrant_cyan</item>
+    </style>
 
     <style name="Theme.App.Splash" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:windowBackground">@color/deep_midnight</item>

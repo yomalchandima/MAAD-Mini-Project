@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import androidx.appcompat.app.AppCompatActivity
-import com.example.maadminiproject.MainActivity
+import com.example.maadminiproject.ui.dashboard.MainActivity
 import com.example.maadminiproject.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {

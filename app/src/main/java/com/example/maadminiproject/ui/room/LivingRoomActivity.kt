@@ -31,6 +31,10 @@ class LivingRoomActivity : AppCompatActivity() {
             insets
         }
 
+        binding.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         setupBottomNav()
         setupLightingControls()
         setupFanControls()

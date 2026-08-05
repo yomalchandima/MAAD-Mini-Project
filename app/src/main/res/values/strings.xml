@@ -114,4 +114,22 @@
     <string name="hallway">Hallway</string>
     <string name="devices_2">2 Devices</string>
     <string name="auto">Auto</string>
+
+    <!-- Ground Floor Detail -->
+    <string name="system_online">SYSTEM ONLINE</string>
+    <string name="ground_floor_title">Ground Floor</string>
+    <string name="active_11">11 Active</string>
+    <string name="tap_to_manage">Tap a room below to manage\nindividual smart devices</string>
+    <string name="on_4">4 On</string>
+    <string name="temp_hum_living">72°F • 45%\nHum</string>
+    <string name="on_2">2 On</string>
+    <string name="kitchen_status">3 Active\nAppliances</string>
+    <string name="unlocked">UNLOCKED</string>
+    <string name="garage_status">Gate: Closed</string>
+    <string name="bathroom_status">Water: Normal</string>
+    <string name="staircase">Staircase</string>
+    <string name="dining_room">Dining Room</string>
+    <string name="on_1">1 On</string>
+    <string name="dining_area">Dining Area</string>
+    <string name="pathway">Pathway</string>
 </resources>

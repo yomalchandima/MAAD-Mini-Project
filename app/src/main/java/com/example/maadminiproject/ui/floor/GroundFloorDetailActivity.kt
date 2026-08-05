@@ -7,17 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.maadminiproject.R
-import com.example.maadminiproject.databinding.ActivityFloorBinding
+import com.example.maadminiproject.databinding.ActivityGroundFloorDetailBinding
 import com.example.maadminiproject.ui.dashboard.MainActivity
 import com.example.maadminiproject.ui.settings.SettingsActivity
 
-class FloorActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityFloorBinding
+class GroundFloorDetailActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityGroundFloorDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityFloorBinding.inflate(layoutInflater)
+        binding = ActivityGroundFloorDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -26,15 +26,11 @@ class FloorActivity : AppCompatActivity() {
             insets
         }
 
+        binding.btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
+
         setupBottomNav()
-
-        binding.btnEnterFirstFloor.setOnClickListener {
-            startActivity(Intent(this, FloorDetailActivity::class.java))
-        }
-
-        binding.btnEnterGroundFloor.setOnClickListener {
-            startActivity(Intent(this, GroundFloorDetailActivity::class.java))
-        }
     }
 
     private fun setupBottomNav() {
@@ -47,7 +43,12 @@ class FloorActivity : AppCompatActivity() {
                     finish()
                     true
                 }
-                R.id.nav_floors -> true
+                R.id.nav_floors -> {
+                    startActivity(Intent(this, FloorActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    finish()
+                    true
+                }
                 R.id.nav_settings -> {
                     startActivity(Intent(this, SettingsActivity::class.java))
                     overridePendingTransition(0, 0)
@@ -55,7 +56,6 @@ class FloorActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_reports -> {
-                    // Placeholder
                     true
                 }
                 else -> false

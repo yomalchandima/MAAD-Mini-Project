@@ -94,4 +94,24 @@
     <string name="office">Office</string>
     <string name="bath">Bath</string>
     <string name="enter_first_floor">Enter First Floor</string>
+
+    <!-- Floor Detail -->
+    <string name="floor_map_detail">Floor Map Detail</string>
+    <string name="system_status">SYSTEM STATUS</string>
+    <string name="active_devices_12">12 Active Devices</string>
+    <string name="master_bedroom">Master Bedroom</string>
+    <string name="devices_4_temp">4 Devices • 22°C</string>
+    <string name="smart_lights">Smart Lights</string>
+    <string name="air_purifier">Air Purifier</string>
+    <string name="bedroom_2">Bedroom 2</string>
+    <string name="devices_3">3 Devices</string>
+    <string name="active">Active</string>
+    <string name="work_room">Work Room</string>
+    <string name="devices_5">5 Devices</string>
+    <string name="bathroom">Bathroom</string>
+    <string name="device_1">1 Device</string>
+    <string name="idle">Idle</string>
+    <string name="hallway">Hallway</string>
+    <string name="devices_2">2 Devices</string>
+    <string name="auto">Auto</string>
 </resources>

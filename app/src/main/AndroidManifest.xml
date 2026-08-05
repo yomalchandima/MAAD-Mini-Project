@@ -36,6 +36,9 @@
         <activity
             android:name=".ui.floor.FloorActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.floor.FloorDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -29,7 +29,7 @@ class FloorActivity : AppCompatActivity() {
         setupBottomNav()
 
         binding.btnEnterFirstFloor.setOnClickListener {
-            startActivity(Intent(this, FloorDetailActivity::class.java))
+            startActivity(Intent(this, FirstFloorDetailActivity::class.java))
         }
 
         binding.btnEnterGroundFloor.setOnClickListener {

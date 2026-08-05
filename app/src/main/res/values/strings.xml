@@ -54,9 +54,7 @@
     <string name="home_systems">Home Systems</string>
     <string name="devices_connected">22 devices connected</string>
     <string name="cameras">Cameras</string>
-    <string name="cameras_status">8 Online</string>
-    <string name="climate">Climate</string>
-    <string name="climate_status">72°F Avg</string>
+    <string name="cameras_status">3 Online</string>
     <string name="floors">Floors</string>
     <string name="manage">MANAGE</string>
     <string name="ground_floor">Ground Floor</string>
@@ -87,7 +85,6 @@
     <string name="enter_ground_floor">Enter Ground Floor</string>
     <string name="first_floor_label">First Floor</string>
     <string name="rooms_count_4">5 Rooms</string>
-    <string name="devices_count_9">11 Devices</string>
     <string name="master">Master</string>
     <string name="office">Office</string>
     <string name="bath">Bath</string>
@@ -97,15 +94,17 @@
     <string name="floor_map_detail">Floor Map Detail</string>
     <string name="system_status">SYSTEM STATUS</string>
     <string name="active_devices_8">8 Active Devices</string>
+    <string name="devices_count_9">9 Devices</string>
     <string name="master_bedroom">Master Bedroom</string>
-    <string name="devices_4_temp">4 Devices • 22°C</string>
+    <string name="devices_4_temp">3 Devices • 22°C</string>
     <string name="smart_lights">Smart Lights</string>
     <string name="air_purifier">Air Purifier</string>
     <string name="bedroom_2">Bedroom 2</string>
-    <string name="devices_3">3 Devices</string>
+    <string name="devices_3_rooms">3 Devices</string>
+    <string name="devices_2_rooms">2 Devices</string>
     <string name="active">Active</string>
     <string name="work_room">Work Room</string>
-    <string name="devices_5">5 Devices</string>
+    <string name="devices_5">3 Devices</string>
     <string name="bathroom">Bathroom</string>
     <string name="device_1">1 Device</string>
     <string name="idle">Idle</string>
@@ -114,19 +113,14 @@
     <string name="auto">Auto</string>
 
     <!-- Ground Floor Detail -->
-    <string name="system_online">SYSTEM ONLINE</string>
     <string name="ground_floor_title">Ground Floor</string>
     <string name="active_7">7 Active</string>
+    <string name="active_11">11 Active</string>
     <string name="on_4">4 On</string>
     <string name="on_2">2 On</string>
-    <string name="kitchen_status">3 Active\nAppliances</string>
-    <string name="unlocked">UNLOCKED</string>
-    <string name="garage_status">Gate: Closed</string>
     <string name="staircase">Staircase</string>
     <string name="dining_room">Dining Room</string>
     <string name="on_1">1 On</string>
-    <string name="dining_area">Dining Area</string>
-    <string name="pathway">Pathway</string>
 
     <!-- Living Room Details -->
     <string name="hello_alex">Hello, Alex</string>

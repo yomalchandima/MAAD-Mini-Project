@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/deep_midnight"
-    tools:context=".ui.floor.FloorDetailActivity">
+    tools:context=".ui.floor.FirstFloorDetailActivity">
 
     <!-- Top Header Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -65,6 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:fillViewport="true"
+        android:clipToPadding="false"
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintTop_toBottomOf="@id/headerBar">
 
@@ -72,20 +73,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:padding="20dp"
+            android:paddingBottom="40dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:id="@+id/tvSystemHeader"
+                    android:id="@+id/tvFirstFloorTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:letterSpacing="0.1"
-                    android:text="@string/system_status"
-                    android:textColor="@color/vibrant_cyan"
-                    android:textSize="14sp"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/first_floor_label"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -93,26 +95,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_social_button"
                     android:drawablePadding="8dp"
-                    android:text="12 Active Devices"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="@string/active_11"
+                    android:textColor="@color/vibrant_cyan"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     app:drawableStartCompat="@drawable/bg_social_circle"
                     app:drawableTint="@color/vibrant_cyan"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvSystemHeader" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/bg_social_button"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_tune"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/tvFirstFloorTitle"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/vibrant_cyan" />
+                    app:layout_constraintTop_toTopOf="@id/tvFirstFloorTitle" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Central Glow Card -->
@@ -122,7 +118,7 @@
                 android:layout_height="240dp"
                 android:layout_marginTop="32dp"
                 android:background="@drawable/bg_card_dark"
-                app:layout_constraintTop_toBottomOf="@id/tvSystemHeader">
+                app:layout_constraintTop_toBottomOf="@id/tvFirstFloorTitle">
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:layout_width="match_parent"
@@ -146,14 +142,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Tap a room below to manage individual smart devices"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        android:textStyle="bold" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -200,6 +188,7 @@
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_social_button"
                         android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="6dp"
                         android:text="@string/smart_lights"
@@ -214,6 +203,7 @@
                         android:layout_marginStart="12dp"
                         android:background="@drawable/bg_social_button"
                         android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="6dp"
                         android:text="@string/air_purifier"
@@ -286,7 +276,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/devices_3"
+                        android:text="@string/devices_2_rooms"
                         android:textColor="@color/soft_gray"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"

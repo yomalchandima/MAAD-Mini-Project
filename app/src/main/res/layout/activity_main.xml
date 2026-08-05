@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/deep_midnight"
-    tools:context=".MainActivity">
+    tools:context=".ui.dashboard.MainActivity">
 
     <!-- Top Header Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -80,16 +80,6 @@
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:src="@drawable/ic_weather_sun"
-                    android:contentDescription="Weather Icon"
-                    app:layout_constraintBottom_toBottomOf="@id/tvGreeting"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tvGreeting"
-                    app:tint="@color/soft_gray" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -307,43 +297,8 @@
                                 android:textSize="11sp" />
                         </LinearLayout>
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/bg_social_button"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="12dp">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_thermometer"
-                            android:contentDescription="Thermometer Icon"
-                            app:tint="@color/vibrant_cyan" />
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="12dp"
-                            android:orientation="vertical">
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/climate"
-                                android:textColor="@color/white"
-                                android:textSize="12sp"
-                                android:textStyle="bold" />
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/climate_status"
-                                android:textColor="@color/soft_gray"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-                    </LinearLayout>
                 </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Floors Section -->

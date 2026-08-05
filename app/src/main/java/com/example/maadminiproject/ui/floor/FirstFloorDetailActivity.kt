@@ -7,17 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.maadminiproject.R
-import com.example.maadminiproject.databinding.ActivityFloorDetailBinding
+import com.example.maadminiproject.databinding.ActivityFirstFloorDetailBinding
 import com.example.maadminiproject.ui.dashboard.MainActivity
 import com.example.maadminiproject.ui.settings.SettingsActivity
 
-class FloorDetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityFloorDetailBinding
+class FirstFloorDetailActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityFirstFloorDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityFloorDetailBinding.inflate(layoutInflater)
+        binding = ActivityFirstFloorDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->

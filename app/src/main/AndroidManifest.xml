@@ -42,6 +42,9 @@
         <activity
             android:name=".ui.floor.GroundFloorDetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.room.LivingRoomActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

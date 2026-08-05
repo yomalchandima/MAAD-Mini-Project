@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:drawablePadding="8dp"
-                    android:text="@string/active_devices_12"
+                    android:text="12 Active Devices"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     app:drawableStartCompat="@drawable/bg_social_circle"
@@ -150,7 +150,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/tap_to_manage"
+                        android:text="Tap a room below to manage individual smart devices"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:textStyle="bold" />

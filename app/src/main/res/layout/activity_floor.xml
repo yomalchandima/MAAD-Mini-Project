@@ -138,7 +138,7 @@
                         android:drawablePadding="8dp"
                         android:paddingHorizontal="12dp"
                         android:paddingVertical="4dp"
-                        android:text="@string/devices_count_14"
+                        android:text="@string/devices_count_11"
                         android:textColor="@color/soft_gray"
                         android:textSize="12sp"
                         app:drawableStartCompat="@drawable/ic_bolt"

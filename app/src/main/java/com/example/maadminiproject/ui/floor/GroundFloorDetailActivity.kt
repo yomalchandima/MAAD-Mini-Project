@@ -30,6 +30,14 @@ class GroundFloorDetailActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        binding.cardGlow.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.room.LivingRoomActivity::class.java))
+        }
+
+        binding.btnLivingRoom.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.room.LivingRoomActivity::class.java))
+        }
+
         setupBottomNav()
     }
 

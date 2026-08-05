@@ -52,7 +52,7 @@
     <string name="alerts_value">1 Unresolved</string>
     <string name="alerts_sub">Front door motion detected</string>
     <string name="home_systems">Home Systems</string>
-    <string name="devices_connected">42 devices connected</string>
+    <string name="devices_connected">22 devices connected</string>
     <string name="cameras">Cameras</string>
     <string name="cameras_status">8 Online</string>
     <string name="climate">Climate</string>
@@ -60,9 +60,9 @@
     <string name="floors">Floors</string>
     <string name="manage">MANAGE</string>
     <string name="ground_floor">Ground Floor</string>
-    <string name="ground_floor_status">12 Active  •  4 Rooms</string>
+    <string name="ground_floor_status">11 Active  •  6 Rooms</string>
     <string name="first_floor">First Floor</string>
-    <string name="first_floor_status">5 Active  •  3 Rooms</string>
+    <string name="first_floor_status">11 Active  •  5 Rooms</string>
     <string name="favorites">Favorites</string>
     <string name="living_room">Living Room</string>
     <string name="living_room_status">On • 80%</string>
@@ -76,20 +76,18 @@
     <string name="nav_settings">Settings</string>
     <string name="cd_mini_profile">Mini Profile</string>
 
-    <string name="navigation">NAVIGATION</string>
-    <string name="select_floor">Select Floor</string>
     <string name="floor_description">Explore your smart home layout and manage devices per level.</string>
     <string name="ground_floor_label">Ground Floor</string>
     <string name="rooms_count_6">6 Rooms</string>
-    <string name="devices_count_14">14 Devices</string>
+    <string name="devices_count_11">11 Devices</string>
     <string name="kitchen">Kitchen</string>
     <string name="living">Living</string>
     <string name="garage">Garage</string>
-    <string name="patio">Patio</string>
+    <string name="patio">Dining</string>
     <string name="enter_ground_floor">Enter Ground Floor</string>
     <string name="first_floor_label">First Floor</string>
-    <string name="rooms_count_4">4 Rooms</string>
-    <string name="devices_count_9">9 Devices</string>
+    <string name="rooms_count_4">5 Rooms</string>
+    <string name="devices_count_9">11 Devices</string>
     <string name="master">Master</string>
     <string name="office">Office</string>
     <string name="bath">Bath</string>
@@ -98,7 +96,7 @@
     <!-- Floor Detail -->
     <string name="floor_map_detail">Floor Map Detail</string>
     <string name="system_status">SYSTEM STATUS</string>
-    <string name="active_devices_12">12 Active Devices</string>
+    <string name="active_devices_8">8 Active Devices</string>
     <string name="master_bedroom">Master Bedroom</string>
     <string name="devices_4_temp">4 Devices • 22°C</string>
     <string name="smart_lights">Smart Lights</string>
@@ -118,18 +116,31 @@
     <!-- Ground Floor Detail -->
     <string name="system_online">SYSTEM ONLINE</string>
     <string name="ground_floor_title">Ground Floor</string>
-    <string name="active_11">11 Active</string>
-    <string name="tap_to_manage">Tap a room below to manage\nindividual smart devices</string>
+    <string name="active_7">7 Active</string>
     <string name="on_4">4 On</string>
-    <string name="temp_hum_living">72°F • 45%\nHum</string>
     <string name="on_2">2 On</string>
     <string name="kitchen_status">3 Active\nAppliances</string>
     <string name="unlocked">UNLOCKED</string>
     <string name="garage_status">Gate: Closed</string>
-    <string name="bathroom_status">Water: Normal</string>
     <string name="staircase">Staircase</string>
     <string name="dining_room">Dining Room</string>
     <string name="on_1">1 On</string>
     <string name="dining_area">Dining Area</string>
     <string name="pathway">Pathway</string>
+
+    <!-- Living Room Details -->
+    <string name="hello_alex">Hello, Alex</string>
+    <string name="devices_active_3">3 Devices Active</string>
+    <string name="main_lighting">Main Lighting</string>
+    <string name="online">Online</string>
+    <string name="power_usage_label">Power Usage</string>
+    <string name="power_usage_value">15W</string>
+    <string name="ceiling_fan">Ceiling Fan</string>
+    <string name="speed_2">Speed 2</string>
+    <string name="low">Low</string>
+    <string name="mid">Mid</string>
+    <string name="high">High</string>
+    <string name="entrance_cam">Entrance Cam</string>
+    <string name="live">Live</string>
+    <string name="rec">REC</string>
 </resources>

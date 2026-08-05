@@ -104,7 +104,7 @@
                 android:drawablePadding="8dp"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="@string/active_11"
+                android:text="11 Active"
                 android:textColor="@color/vibrant_cyan"
                 android:textSize="14sp"
                 android:textStyle="bold"
@@ -149,7 +149,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/tap_to_manage"
+                        android:text="Tap a room below to manage individual smart devices"
                         android:textColor="@color/white"
                         android:textSize="14sp"
                         android:textStyle="bold" />
@@ -167,11 +167,14 @@
 
                 <!-- Living Room -->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btnLivingRoom"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_marginEnd="8dp"
                     android:background="@drawable/bg_card_dark"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:padding="16dp">
 
                     <ImageView
@@ -212,7 +215,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
-                        android:text="@string/temp_hum_living"
+                        android:text="72°F • 45%\nHum"
                         android:textColor="@color/soft_gray"
                         android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
@@ -376,15 +379,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/ivBath" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/bathroom_status"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvBathTitle" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- Dining Room -->

@@ -38,6 +38,10 @@ class GroundFloorDetailActivity : AppCompatActivity() {
             startActivity(Intent(this, com.example.maadminiproject.ui.room.LivingRoomActivity::class.java))
         }
 
+        binding.btnKitchen.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.room.KitchenActivity::class.java))
+        }
+
         setupBottomNav()
     }
 

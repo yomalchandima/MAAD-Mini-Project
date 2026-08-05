@@ -137,4 +137,18 @@
     <string name="entrance_cam">Entrance Cam</string>
     <string name="live">Live</string>
     <string name="rec">REC</string>
+
+    <!-- Kitchen Room Details -->
+    <string name="devices_online_2">2 Devices Online</string>
+    <string name="espresso_machine">Espresso Machine</string>
+    <string name="standby">STANDBY</string>
+    <string name="current_draw">Current Draw</string>
+    <string name="current_draw_val">0.2 W</string>
+    <string name="usage_logs">Usage Logs</string>
+    <string name="brightness">Brightness</string>
+    <string name="devices">Devices</string>
+    <string name="brightness_val_85">85%</string>
+    <string name="status_off">OFF</string>
+    <string name="status_on">ON</string>
+    <string name="online_caps">ONLINE</string>
 </resources>

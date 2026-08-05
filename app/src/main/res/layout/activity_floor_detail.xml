@@ -115,6 +115,48 @@
                     app:tint="@color/vibrant_cyan" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
+            <!-- Central Glow Card -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardGlow"
+                android:layout_width="match_parent"
+                android:layout_height="240dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_card_dark"
+                app:layout_constraintTop_toBottomOf="@id/tvSystemHeader">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/first_floor"
+                    app:shapeAppearanceOverlay="@style/RoundedImageView" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#66000000" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/tap_to_manage"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
             <!-- Master Bedroom Card -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

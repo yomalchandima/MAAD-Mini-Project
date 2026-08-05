@@ -75,4 +75,23 @@
     <string name="nav_reports">Reports</string>
     <string name="nav_settings">Settings</string>
     <string name="cd_mini_profile">Mini Profile</string>
+
+    <string name="navigation">NAVIGATION</string>
+    <string name="select_floor">Select Floor</string>
+    <string name="floor_description">Explore your smart home layout and manage devices per level.</string>
+    <string name="ground_floor_label">Ground Floor</string>
+    <string name="rooms_count_6">6 Rooms</string>
+    <string name="devices_count_14">14 Devices</string>
+    <string name="kitchen">Kitchen</string>
+    <string name="living">Living</string>
+    <string name="garage">Garage</string>
+    <string name="patio">Patio</string>
+    <string name="enter_ground_floor">Enter Ground Floor</string>
+    <string name="first_floor_label">First Floor</string>
+    <string name="rooms_count_4">4 Rooms</string>
+    <string name="devices_count_9">9 Devices</string>
+    <string name="master">Master</string>
+    <string name="office">Office</string>
+    <string name="bath">Bath</string>
+    <string name="enter_first_floor">Enter First Floor</string>
 </resources>

@@ -45,7 +45,13 @@ class SettingsActivity : AppCompatActivity() {
                     finish()
                     true
                 }
-                R.id.nav_floors, R.id.nav_reports -> {
+                R.id.nav_floors -> {
+                    startActivity(Intent(this, com.example.maadminiproject.ui.floor.FloorActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    finish()
+                    true
+                }
+                R.id.nav_reports -> {
                     // Placeholder for other screens
                     true
                 }

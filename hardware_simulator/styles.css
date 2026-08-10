@@ -29,6 +29,10 @@
 html,body{ height:100%; }
 body{
   margin:0;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
   background:
     radial-gradient(1200px 600px at 15% -10%, #1a1f28 0%, transparent 60%),
     var(--bg-0);
@@ -118,7 +122,10 @@ body{
   grid-template-columns: 1fr 320px;
   gap: 20px;
   padding: 0 28px 28px 28px;
-  align-items:start;
+  align-items:stretch;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
 }
 @media (max-width: 900px){
   .board{ grid-template-columns: 1fr; }
@@ -133,6 +140,8 @@ body{
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 16px;
   align-content:start;
+  min-height:0;
+  overflow:hidden;
 }
 
 /*ROOM CARD ("sub-panel")*/
@@ -222,7 +231,14 @@ body{
 .device--camera .device__action:hover{ border-color: var(--copper); }
 
 /*SIDE RAIL*/
-.rail{ display:flex; flex-direction:column; gap: 16px; }
+.rail{
+  display:flex;
+  flex-direction:column;
+  gap: 16px;
+  min-height:0;
+  overflow-y:auto;
+  padding-right: 4px;
+}
 .rail__card{
   background: var(--bg-2);
   border: 1px solid var(--line);
@@ -296,7 +312,7 @@ body{
 .log__entry.off{ border-color: var(--off); }
 .log__entry.disc{ border-color: var(--disc); }
 
-/* CAMERA MODAL*/
+/*CAMERA MODAL*/
 .modal{
   position:fixed; inset:0;
   background: rgba(8,10,13,.75);

@@ -1,9 +1,4 @@
-/* =====================================================================
-   FIREBASE SYNC LAYER  (Phase 2 — do not use until Member 2's Realtime
-   Database is live and you have real config values)
-   -----------------------------------------------------------------------
-   HOW TO SWITCH OVER, step by step:
-
+/* 
    1. In index.html, replace:
         <script src="mock-data-layer.js"></script>
       with:
@@ -65,9 +60,6 @@ const DataLayer = (() => {
       firebase.initializeApp(FIREBASE_CONFIG);
       db = firebase.database();
 
-      // onValue-equivalent: fires once immediately with current data,
-      // then again on every future change — same contract the mock
-      // layer's init()+notify() combo gave app.js.
       db.ref(DB_PATH).on("value", (snap) => {
         const data = snap.val() || {};
         Object.entries(data).forEach(([deviceId, statusObj]) => {
@@ -98,9 +90,6 @@ const DataLayer = (() => {
         updatedAt: Date.now(),
         updatedBy: actor
       });
-      // no local mutation here — wait for the .on("value") echo back,
-      // exactly like a real client should, so the UI only ever shows
-      // confirmed cloud state, not an optimistic guess.
     }
   };
 })();

@@ -1,3 +1,5 @@
+/*MOCK DATA LAYER*/
+
 const HOUSE = {
   ground_floor: {
     label: "Ground Floor",
@@ -55,7 +57,7 @@ const HOUSE = {
   }
 };
 
-
+/* type drives icon + which control renders (rocker vs. camera button) */
 const DEVICE_META = {
   living_light:            { name: "Living Light",        type: "light" },
   ceiling_fan:              { name: "Ceiling Fan",          type: "fan" },
@@ -90,7 +92,7 @@ const TYPE_ICON = {
 };
 
 const DataLayer = (() => {
-  // in-memory state 
+  // in-memory state — this is what devices/{id}/status would be in Firebase
   const state = {};
   Object.keys(DEVICE_META).forEach(id => {
     state[id] = {
@@ -110,6 +112,9 @@ const DataLayer = (() => {
   return {
     mode: "mock",
 
+    /**
+     * Same signature the real layer will use:
+     */
     init(onReady) {
       Object.keys(state).forEach(id => notify(id, null));
       if (onReady) onReady();

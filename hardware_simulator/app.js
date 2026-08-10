@@ -1,5 +1,55 @@
 let activeFloor = "ground_floor";
 
+function isRoomLit(room) {
+  return room.devices.some((deviceId) => {
+    const meta = DEVICE_META[deviceId];
+    return meta && meta.type === "light" && DataLayer.getState(deviceId).status === "ON";
+  });
+}
+
+function areAllLightsOn() {
+  return Object.keys(DEVICE_META).every((deviceId) => {
+    const meta = DEVICE_META[deviceId];
+    return !meta || meta.type !== "light" || DataLayer.getState(deviceId).status === "ON";
+  });
+}
+
+function areAllFloorLightsOn(floorId) {
+  const floor = HOUSE[floorId];
+  return Object.values(floor.rooms).every((room) =>
+    room.devices.every((deviceId) => {
+      const meta = DEVICE_META[deviceId];
+      return !meta || meta.type !== "light" || DataLayer.getState(deviceId).status === "ON";
+    })
+  );
+}
+
+function updateLightingStates() {
+  const board = document.querySelector(".board");
+  const floorTabs = document.getElementById("floorTabs");
+  const roomsContainer = document.getElementById("roomsContainer");
+  const floor = HOUSE[activeFloor];
+
+  if (!board) return;
+  const houseLit = areAllLightsOn();
+
+  board.dataset.houseLit = String(houseLit);
+  if (floorTabs) {
+    Object.entries(HOUSE).forEach(([floorId]) => {
+      const tab = floorTabs.querySelector(`[data-floor-id="${floorId}"]`);
+      if (!tab) return;
+      tab.dataset.lit = String(areAllFloorLightsOn(floorId));
+    });
+  }
+
+  if (roomsContainer) {
+    roomsContainer.dataset.floor = activeFloor;
+    roomsContainer.dataset.houseLit = String(houseLit);
+    roomsContainer.dataset.floorLit = String(areAllFloorLightsOn(activeFloor));
+    roomsContainer.dataset.floorLabel = floor.label.toUpperCase();
+  }
+}
+
 /*CLOCK*/
 function tickClock() {
   const el = document.getElementById("clock");
@@ -15,6 +65,8 @@ function renderFloorTabs() {
   Object.entries(HOUSE).forEach(([floorId, floor]) => {
     const btn = document.createElement("button");
     btn.className = "floor-tab" + (floorId === activeFloor ? " active" : "");
+    btn.dataset.floorId = floorId;
+    btn.dataset.lit = String(areAllFloorLightsOn(floorId));
     btn.textContent = floor.label;
     btn.onclick = () => { activeFloor = floorId; renderFloorTabs(); renderRooms(); };
     nav.appendChild(btn);
@@ -25,11 +77,15 @@ function renderFloorTabs() {
 function renderRooms() {
   const container = document.getElementById("roomsContainer");
   container.innerHTML = "";
+  updateLightingStates();
 
   const floor = HOUSE[activeFloor];
   Object.entries(floor.rooms).forEach(([roomId, room]) => {
     const roomEl = document.createElement("div");
     roomEl.className = "room";
+    roomEl.id = `room-${roomId}`;
+    roomEl.dataset.roomId = roomId;
+    if (isRoomLit(room)) roomEl.classList.add("room--lit");
 
     const head = document.createElement("div");
     head.className = "room__label";
@@ -89,8 +145,21 @@ function renderDeviceRow(deviceId) {
 /*REACTIVE UPDATES*/
 DataLayer.onDeviceChange((snapshot) => {
   updateDeviceRowUI(snapshot.deviceId, snapshot.status);
+  updateRoomLightState(snapshot.deviceId);
+  updateLightingStates();
   logActivity(snapshot);
 });
+
+function updateRoomLightState(deviceId) {
+  const floor = HOUSE[activeFloor];
+  for (const [roomId, room] of Object.entries(floor.rooms)) {
+    if (!room.devices.includes(deviceId)) continue;
+    const roomEl = document.getElementById(`room-${roomId}`);
+    if (!roomEl) return;
+    roomEl.classList.toggle("room--lit", isRoomLit(room));
+    return;
+  }
+}
 
 function updateDeviceRowUI(deviceId, status) {
   const row = document.getElementById(`device-${deviceId}`);
@@ -155,7 +224,7 @@ function drawFakeFrame(canvas, label) {
   // static noise
   const imgData = ctx.createImageData(w, h);
   for (let i = 0; i < imgData.data.length; i += 4) {
-    const v = Math.random() * 14; // faint noise so it's not pure black
+    const v = Math.random() * 14; 
     imgData.data[i] = v; imgData.data[i + 1] = v + 4; imgData.data[i + 2] = v + 8;
     imgData.data[i + 3] = 255;
   }
@@ -204,6 +273,7 @@ DataLayer.init(() => {
   renderFloorTabs();
   renderRooms();
   populateUplinkDeviceList();
+  updateLightingStates();
 
   const connIndicator = document.getElementById("connIndicator");
   const connLabel = document.getElementById("connLabel");

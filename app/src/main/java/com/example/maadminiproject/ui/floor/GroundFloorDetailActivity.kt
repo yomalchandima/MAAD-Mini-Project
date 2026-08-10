@@ -46,6 +46,10 @@ class GroundFloorDetailActivity : AppCompatActivity() {
             startActivity(Intent(this, com.example.maadminiproject.ui.room.StaircaseActivity::class.java))
         }
 
+        binding.btnDining.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.room.DiningActivity::class.java))
+        }
+
         setupBottomNav()
     }
 

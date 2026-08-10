@@ -54,6 +54,9 @@
         <activity
             android:name=".ui.room.StaircaseActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.room.DiningActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -164,4 +164,22 @@
     <string name="tw_current">12W Current</string>
     <string name="intensity">INTENSITY</string>
     <string name="intensity_75">75%</string>
+
+    <!-- Dining Room Details -->
+    <string name="room_label_caps">ROOM</string>
+    <string name="devices_active_2">2 Devices Active</string>
+    <string name="usage_label_caps">USAGE</string>
+    <string name="usage_val_45w">45 W</string>
+    <string name="pendant_light">Pendant Light</string>
+    <string name="brightness_80">Brightness: 80%</string>
+    <string name="coffee_maker">Coffee Maker</string>
+    <string name="w_currently_0">0 W currently</string>
+
+    <!-- Garage Room Details -->
+    <string name="connected_caps">CONNECTED</string>
+    <string name="overhead_lights">Overhead Lights</string>
+    <string name="brightness_60">60% Brightness</string>
+    <string name="driveway_cam">Driveway Cam</string>
+    <string name="live_recording">LIVE RECORDING</string>
+    <string name="rec_timer">REC 00:04:25</string>
 </resources>

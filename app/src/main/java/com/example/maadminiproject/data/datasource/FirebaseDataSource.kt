@@ -237,6 +237,27 @@ class FirebaseDataSource {
     }
 
     /**
+     * Removes a device listener from a specific zone.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param floorId The unique identifier of the floor.
+     * @param zoneId The unique identifier of the zone.
+     * @param listener The listener to remove.
+     */
+    fun removeDeviceListener(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        listener: ValueEventListener
+    ) {
+        val devicesRef = getHomeReference(homeId)
+            .child("floors").child(floorId)
+            .child("zones").child(zoneId)
+            .child("devices")
+        helper.removeListener(devicesRef, listener)
+    }
+
+    /**
      * Removes a [ValueEventListener] from a [DatabaseReference].
      *
      * @param reference The [DatabaseReference] where the listener is attached.

@@ -147,10 +147,13 @@
 
             <!-- Master Bedroom Card -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/btnMasterBedroom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:background="@drawable/bg_card_dark"
+                android:clickable="true"
+                android:focusable="true"
                 android:padding="20dp">
 
                 <TextView

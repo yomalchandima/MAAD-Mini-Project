@@ -192,4 +192,12 @@
     <string name="main_light">Main Light</string>
     <string name="air_conditioner">Air Conditioner</string>
     <string name="todays_usage">Today\'s Usage</string>
+
+    <!-- Master Bedroom Details -->
+    <string name="on_80">On • 80%</string>
+    <string name="smart_plug">Smart Plug</string>
+    <string name="off_standby">Off • Standby</string>
+    <string name="temp_16">16°C</string>
+    <string name="temp_21">21°C</string>
+    <string name="temp_30">30°C</string>
 </resources>

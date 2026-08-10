@@ -38,6 +38,10 @@ class FirstFloorDetailActivity : AppCompatActivity() {
             startActivity(Intent(this, com.example.maadminiproject.ui.room.WorkRoomActivity::class.java))
         }
 
+        binding.btnMasterBedroom.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.room.MasterBedroomActivity::class.java))
+        }
+
         setupBottomNav()
     }
 

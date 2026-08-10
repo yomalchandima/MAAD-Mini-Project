@@ -63,6 +63,9 @@
         <activity
             android:name=".ui.room.WorkRoomActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.room.MasterBedroomActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

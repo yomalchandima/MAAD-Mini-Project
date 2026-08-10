@@ -157,4 +157,11 @@
     <string name="energy_today">Energy Today</string>
     <string name="energy_val_0_4">0.4 kWh</string>
     <string name="brightness_0">0%</string>
+
+    <!-- Staircase Room Details -->
+    <string name="active_zone">ACTIVE ZONE</string>
+    <string name="light_label">Light</string>
+    <string name="tw_current">12W Current</string>
+    <string name="intensity">INTENSITY</string>
+    <string name="intensity_75">75%</string>
 </resources>

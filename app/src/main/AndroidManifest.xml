@@ -51,6 +51,9 @@
         <activity
             android:name=".ui.room.BathroomActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.room.StaircaseActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

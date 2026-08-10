@@ -1,23 +1,25 @@
-package com.example.maadminiproject.ui.floor
+package com.example.maadminiproject.ui.room
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.maadminiproject.R
-import com.example.maadminiproject.databinding.ActivityGroundFloorDetailBinding
+import com.example.maadminiproject.databinding.ActivityStaircaseBinding
 import com.example.maadminiproject.ui.dashboard.MainActivity
+import com.example.maadminiproject.ui.floor.FloorActivity
 import com.example.maadminiproject.ui.settings.SettingsActivity
 
-class GroundFloorDetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityGroundFloorDetailBinding
+class StaircaseActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityStaircaseBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityGroundFloorDetailBinding.inflate(layoutInflater)
+        binding = ActivityStaircaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -30,27 +32,35 @@ class GroundFloorDetailActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        binding.cardGlow.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.room.LivingRoomActivity::class.java))
-        }
-
-        binding.btnLivingRoom.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.room.LivingRoomActivity::class.java))
-        }
-
-        binding.btnKitchen.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.room.KitchenActivity::class.java))
-        }
-
-        binding.btnStaircase.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.room.StaircaseActivity::class.java))
-        }
-
+        setupControls()
         setupBottomNav()
     }
 
+    private fun setupControls() {
+        binding.swLight.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.tvLightStatus.text = getString(R.string.online_caps)
+                binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.deep_midnight))
+            } else {
+                binding.tvLightStatus.text = getString(R.string.status_off)
+                binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
+                binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
+                binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+            }
+        }
+
+        binding.sliderIntensity.addOnChangeListener { _, value, _ ->
+            binding.tvIntensityValue.text = "${value.toInt()}%"
+            if (value > 0 && !binding.swLight.isChecked) {
+                binding.swLight.isChecked = true
+            }
+        }
+    }
+
     private fun setupBottomNav() {
-        binding.bottomNav.selectedItemId = R.id.nav_floors
+        binding.bottomNav.selectedItemId = 0
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {

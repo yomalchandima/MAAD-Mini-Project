@@ -34,6 +34,10 @@ class FirstFloorDetailActivity : AppCompatActivity() {
             startActivity(Intent(this, com.example.maadminiproject.ui.room.BathroomActivity::class.java))
         }
 
+        binding.btnWorkRoom.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.room.WorkRoomActivity::class.java))
+        }
+
         setupBottomNav()
     }
 

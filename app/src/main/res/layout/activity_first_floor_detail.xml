@@ -285,28 +285,22 @@
 
                 <!-- Work Room -->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btnWorkRoom"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_marginStart="8dp"
                     android:background="@drawable/bg_card_dark"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:padding="16dp">
 
                     <ImageView
                         android:id="@+id/ivWork"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_laptop"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:src="@drawable/work_room"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/vibrant_cyan" />
-
-                    <View
-                        android:layout_width="8dp"
-                        android:layout_height="8dp"
-                        android:background="@drawable/bg_social_circle"
-                        android:backgroundTint="@color/vibrant_cyan"
-                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView

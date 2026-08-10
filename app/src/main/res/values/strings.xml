@@ -182,4 +182,14 @@
     <string name="driveway_cam">Driveway Cam</string>
     <string name="live_recording">LIVE RECORDING</string>
     <string name="rec_timer">REC 00:04:25</string>
+
+    <!-- Work Room Details -->
+    <string name="active_85">Active • 85%</string>
+    <string name="desk_setup">Desk Setup</string>
+    <string name="standby_12w">Standby • 12W</string>
+    <string name="usage_1_2">1.2 kWh</string>
+    <string name="cooling_22">Cooling • 22°C</string>
+    <string name="main_light">Main Light</string>
+    <string name="air_conditioner">Air Conditioner</string>
+    <string name="todays_usage">Today\'s Usage</string>
 </resources>

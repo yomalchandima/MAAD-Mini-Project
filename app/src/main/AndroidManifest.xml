@@ -48,6 +48,9 @@
         <activity
             android:name=".ui.room.KitchenActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.room.BathroomActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

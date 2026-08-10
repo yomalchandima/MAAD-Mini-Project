@@ -30,6 +30,10 @@ class FirstFloorDetailActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        binding.btnBathroom.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.room.BathroomActivity::class.java))
+        }
+
         setupBottomNav()
     }
 

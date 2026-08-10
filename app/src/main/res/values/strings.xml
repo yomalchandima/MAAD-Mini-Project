@@ -151,4 +151,10 @@
     <string name="status_off">OFF</string>
     <string name="status_on">ON</string>
     <string name="online_caps">ONLINE</string>
+
+    <!-- Bathroom Room Details -->
+    <string name="master_bathroom">Master Bathroom</string>
+    <string name="energy_today">Energy Today</string>
+    <string name="energy_val_0_4">0.4 kWh</string>
+    <string name="brightness_0">0%</string>
 </resources>

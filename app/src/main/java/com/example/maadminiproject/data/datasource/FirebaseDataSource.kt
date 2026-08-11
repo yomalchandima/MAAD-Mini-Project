@@ -237,6 +237,20 @@ class FirebaseDataSource {
     }
 
     /**
+     * Removes a settings listener from a specific home.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param listener The listener to remove.
+     */
+    fun removeSettingsListener(
+        homeId: String,
+        listener: ValueEventListener,
+    ) {
+        val settingsRef = getHomeReference(homeId).child("settings")
+        helper.removeListener(settingsRef, listener)
+    }
+
+    /**
      * Removes a report listener from a specific home.
      *
      * @param homeId The unique identifier of the home.

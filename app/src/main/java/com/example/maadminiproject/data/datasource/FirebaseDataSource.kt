@@ -237,6 +237,34 @@ class FirebaseDataSource {
     }
 
     /**
+     * Removes a report listener from a specific home.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param listener The listener to remove.
+     */
+    fun removeReportListener(
+        homeId: String,
+        listener: ValueEventListener,
+    ) {
+        val reportsRef = getHomeReference(homeId).child("reports")
+        helper.removeListener(reportsRef, listener)
+    }
+
+    /**
+     * Removes a notification listener from a specific home.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param listener The listener to remove.
+     */
+    fun removeNotificationListener(
+        homeId: String,
+        listener: ValueEventListener,
+    ) {
+        val notificationsRef = getHomeReference(homeId).child("notifications")
+        helper.removeListener(notificationsRef, listener)
+    }
+
+    /**
      * Removes a schedule listener from a specific home.
      *
      * @param homeId The unique identifier of the home.

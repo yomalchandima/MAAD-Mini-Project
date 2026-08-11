@@ -92,6 +92,19 @@ class NotificationRepository {
     }
 
     /**
+     * Removes an active notifications listener.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param listener The listener to be removed.
+     */
+    fun removeNotificationsListener(
+        homeId: String,
+        listener: ValueEventListener,
+    ) {
+        dataSource.removeNotificationListener(homeId, listener)
+    }
+
+    /**
      * Removes a listener from a database reference.
      *
      * @param reference The database reference to detach the listener from.

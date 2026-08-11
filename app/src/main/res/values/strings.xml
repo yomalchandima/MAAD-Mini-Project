@@ -145,7 +145,7 @@
     <string name="online_caps">ONLINE</string>
 
     <!-- Bathroom Room Details -->
-    <string name="master_bathroom">Master Bathroom</string>
+    <string name="master_bathroom">Upstairs Bathroom</string>
     <string name="ground_floor_bath">Ground Floor Bath</string>
     <string name="lighting_environment">Lighting &amp; Environment</string>
     <string name="online_active">ONLINE &amp; ACTIVE</string>
@@ -199,4 +199,9 @@
     <!-- Bedroom 2 Details -->
     <string name="all_systems_optimal">All systems optimal</string>
     <string name="brightness_75">75%</string>
+
+    <!-- Hallway Details -->
+    <string name="active_devices_2">2 Active Devices</string>
+    <string name="entryway_cam">Entryway Cam</string>
+    <string name="detecting_motion">Detecting motion</string>
 </resources>

@@ -314,12 +314,15 @@
 
                 <!-- Bathroom -->
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/btnBathroom"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="16dp"
                     android:background="@drawable/bg_card_dark"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:padding="16dp">
 
                     <ImageView

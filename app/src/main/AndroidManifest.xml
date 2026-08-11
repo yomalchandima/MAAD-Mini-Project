@@ -69,6 +69,9 @@
         <activity
             android:name=".ui.room.Bedroom2Activity"
             android:exported="false" />
+        <activity
+            android:name=".ui.room.GroundFloorBathActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

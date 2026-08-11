@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/deep_midnight"
-    tools:context=".ui.room.BathroomActivity">
+    tools:context=".ui.room.GroundFloorBathActivity">
 
     <!-- Top Header Bar -->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,10 +18,11 @@
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:background="@drawable/bg_social_button"
-            android:padding="8dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_social_circle"
+            android:backgroundTint="#20FFFFFF"
+            android:padding="10dp"
             android:src="@drawable/ic_arrow_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,9 +32,9 @@
 
         <ImageView
             android:id="@+id/ivLogo"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginStart="12dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="16dp"
             android:src="@drawable/ic_launcher_foreground"
             android:background="@drawable/bg_social_circle"
             android:padding="4dp"
@@ -102,9 +103,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="0dp">
+            android:padding="20dp">
 
-            <!-- Hero Image Section -->
+            <!-- Hero Image Card -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="300dp">
@@ -131,7 +132,6 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
-                        android:id="@+id/tvHeroStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="@drawable/bg_social_button"
@@ -151,7 +151,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="@string/master_bathroom"
+                        android:text="@string/ground_floor_bath"
                         android:textColor="@color/white"
                         android:textSize="32sp"
                         android:textStyle="bold" />
@@ -166,122 +166,120 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <LinearLayout
+            <!-- Main Lighting Card -->
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
+                android:layout_marginTop="32dp"
+                android:background="@drawable/bg_card_dark"
+                android:padding="24dp">
 
-                <!-- Main Lighting Card -->
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <ImageView
+                    android:id="@+id/ivLightIcon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/bg_social_circle"
+                    android:backgroundTint="@color/vibrant_cyan"
+                    android:padding="16dp"
+                    android:src="@drawable/ic_lightbulb"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/deep_midnight"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tvLightTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/main_light"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/ivLightIcon"
+                    app:layout_constraintTop_toTopOf="@id/ivLightIcon" />
+
+                <TextView
+                    android:id="@+id/tvLightStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/status_on"
+                    android:textColor="@color/vibrant_cyan"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/tvLightTitle"
+                    app:layout_constraintTop_toBottomOf="@id/tvLightTitle" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swMainLight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/switch_thumb_selector"
+                    app:trackTint="@color/switch_track_selector" />
+
+                <TextView
+                    android:id="@+id/tvBrightnessLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/brightness"
+                    android:textColor="@color/soft_gray"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivLightIcon" />
+
+                <TextView
+                    android:id="@+id/tvBrightnessValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="85%"
+                    android:textColor="@color/soft_gray"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvBrightnessLabel"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <com.google.android.material.slider.Slider
+                    android:id="@+id/sliderBrightness"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_card_dark"
-                    android:padding="24dp">
+                    android:layout_marginTop="8dp"
+                    android:value="85"
+                    android:valueFrom="0"
+                    android:valueTo="100"
+                    app:haloRadius="0dp"
+                    app:thumbColor="@color/white"
+                    app:thumbRadius="10dp"
+                    app:trackColorActive="@color/vibrant_cyan"
+                    app:trackColorInactive="#1AFFFFFF"
+                    app:trackHeight="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvBrightnessLabel" />
 
-                    <ImageView
-                        android:id="@+id/ivLightIcon"
-                        android:layout_width="56dp"
-                        android:layout_height="56dp"
-                        android:background="@drawable/bg_social_circle"
-                        android:padding="16dp"
-                        android:src="@drawable/ic_lightbulb"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/soft_gray"
-                        tools:ignore="ContentDescription" />
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_brightness_low"
+                    app:layout_constraintBottom_toBottomOf="@id/sliderBrightness"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sliderBrightness"
+                    app:tint="@color/soft_gray"
+                    tools:ignore="ContentDescription" />
 
-                    <TextView
-                        android:id="@+id/tvLightTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/main_lighting"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintStart_toEndOf="@id/ivLightIcon"
-                        app:layout_constraintTop_toTopOf="@id/ivLightIcon" />
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_brightness_high"
+                    app:layout_constraintBottom_toBottomOf="@id/sliderBrightness"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sliderBrightness"
+                    app:tint="@color/soft_gray"
+                    tools:ignore="ContentDescription" />
 
-                    <TextView
-                        android:id="@+id/tvLightStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/status_off"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="@id/tvLightTitle"
-                        app:layout_constraintTop_toBottomOf="@id/tvLightTitle" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/swMainLighting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="false"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:thumbTint="@color/switch_thumb_selector"
-                        app:trackTint="@color/switch_track_selector" />
-
-                    <TextView
-                        android:id="@+id/tvBrightnessLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:text="@string/brightness"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ivLightIcon" />
-
-                    <TextView
-                        android:id="@+id/tvBrightnessValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/brightness_0"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="@id/tvBrightnessLabel"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/sliderBrightness"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:value="0"
-                        android:valueFrom="0"
-                        android:valueTo="100"
-                        app:thumbColor="@color/white"
-                        app:trackColorActive="@color/vibrant_cyan"
-                        app:trackColorInactive="@color/surface_container"
-                        app:layout_constraintTop_toBottomOf="@id/tvBrightnessLabel" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:drawablePadding="12dp"
-                        android:text="@string/energy_today"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:drawableStartCompat="@drawable/ic_bolt"
-                        app:drawableTint="@color/soft_gray"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/sliderBrightness" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/energy_val_0_4"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-            </LinearLayout>
+            <View android:layout_width="match_parent" android:layout_height="40dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

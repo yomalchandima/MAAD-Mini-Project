@@ -55,7 +55,9 @@ class FloorActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_reports -> {
-                    // Placeholder
+                    startActivity(Intent(this, com.example.maadminiproject.ui.report.ReportsActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    finish()
                     true
                 }
                 else -> false

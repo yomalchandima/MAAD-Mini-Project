@@ -1,4 +1,4 @@
-package com.example.maadminiproject.ui.settings
+package com.example.maadminiproject.ui.report
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,16 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.maadminiproject.R
-import com.example.maadminiproject.databinding.ActivitySettingsBinding
+import com.example.maadminiproject.databinding.ActivityReportsBinding
 import com.example.maadminiproject.ui.dashboard.MainActivity
+import com.example.maadminiproject.ui.floor.FloorActivity
+import com.example.maadminiproject.ui.settings.SettingsActivity
 
-class SettingsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySettingsBinding
+class ReportsActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityReportsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        binding = ActivityReportsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -26,17 +28,10 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         setupBottomNav()
-        
-        binding.btnSignOut.setOnClickListener {
-            val intent = Intent(this, com.example.maadminiproject.ui.authentication.LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
-        }
     }
 
     private fun setupBottomNav() {
-        binding.bottomNav.selectedItemId = R.id.nav_settings
+        binding.bottomNav.selectedItemId = R.id.nav_reports
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
@@ -46,18 +41,18 @@ class SettingsActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_floors -> {
-                    startActivity(Intent(this, com.example.maadminiproject.ui.floor.FloorActivity::class.java))
+                    startActivity(Intent(this, FloorActivity::class.java))
                     overridePendingTransition(0, 0)
                     finish()
                     true
                 }
-                R.id.nav_reports -> {
-                    startActivity(Intent(this, com.example.maadminiproject.ui.report.ReportsActivity::class.java))
+                R.id.nav_settings -> {
+                    startActivity(Intent(this, SettingsActivity::class.java))
                     overridePendingTransition(0, 0)
                     finish()
                     true
                 }
-                R.id.nav_settings -> true
+                R.id.nav_reports -> true
                 else -> false
             }
         }

@@ -46,6 +46,10 @@ class FirstFloorDetailActivity : AppCompatActivity() {
             startActivity(Intent(this, com.example.maadminiproject.ui.room.Bedroom2Activity::class.java))
         }
 
+        binding.btnHallway.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.room.HallwayActivity::class.java))
+        }
+
         setupBottomNav()
     }
 
@@ -72,6 +76,9 @@ class FirstFloorDetailActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_reports -> {
+                    startActivity(Intent(this, com.example.maadminiproject.ui.report.ReportsActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    finish()
                     true
                 }
                 else -> false

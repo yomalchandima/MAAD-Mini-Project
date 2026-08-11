@@ -204,4 +204,33 @@
     <string name="active_devices_2">2 Active Devices</string>
     <string name="entryway_cam">Entryway Cam</string>
     <string name="detecting_motion">Detecting motion</string>
+
+    <!-- Reports Screen -->
+    <string name="energy_analytics">Energy Analytics</string>
+    <string name="weekly">Weekly</string>
+    <string name="efficiency_report">EFFICIENCY REPORT</string>
+    <string name="efficiency_msg">Your home is performing 12% better</string>
+    <string name="efficiency_sub">Compared to the previous billing cycle. Keep it up!</string>
+    <string name="kwh_today_label">KWH TODAY</string>
+    <string name="kwh_today_val">14.2</string>
+    <string name="est_cost_label">EST COST</string>
+    <string name="est_cost_val">$42.50</string>
+    <string name="per_mo">/mo</string>
+    <string name="weekly_usage">Weekly Usage</string>
+    <string name="decrease_8">8%</string>
+    <string name="device_load">Device Load</string>
+    <string name="climate">Climate</string>
+    <string name="percent_45">45%</string>
+    <string name="percent_35">35%</string>
+    <string name="percent_20">20%</string>
+    <string name="top_consumers">Top Consumers</string>
+    <string name="hvac_system">HVAC System</string>
+    <string name="hvac_usage">6.4 kWh • $1.92</string>
+    <string name="increase_4">4%</string>
+    <string name="water_heater">Water Heater</string>
+    <string name="water_heater_usage">3.2 kWh • $0.96</string>
+    <string name="decrease_2">2%</string>
+    <string name="ev_charger">EV Charger</string>
+    <string name="ev_charger_usage">2.8 kWh • $0.84</string>
+    <string name="percent_0">0%</string>
 </resources>

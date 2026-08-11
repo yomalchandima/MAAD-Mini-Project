@@ -162,8 +162,8 @@ class DashboardViewModel : ViewModel() {
     private fun updateDeviceSummary() {
         val allDevices = devicesByZone.values.flatten()
         _totalDevices.value = allDevices.size
-        // Using 'isOn' property from Device model to determine active status
-        _activeDevices.value = allDevices.count { it.isOn }
+        // Using 'state' property from Device model to determine active status
+        _activeDevices.value = allDevices.count { it.state }
     }
 
     /**

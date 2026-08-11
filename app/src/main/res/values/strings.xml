@@ -146,6 +146,9 @@
 
     <!-- Bathroom Room Details -->
     <string name="master_bathroom">Master Bathroom</string>
+    <string name="ground_floor_bath">Ground Floor Bath</string>
+    <string name="lighting_environment">Lighting &amp; Environment</string>
+    <string name="online_active">ONLINE &amp; ACTIVE</string>
     <string name="energy_today">Energy Today</string>
     <string name="energy_val_0_4">0.4 kWh</string>
     <string name="brightness_0">0%</string>
@@ -192,4 +195,8 @@
     <string name="temp_16">16°C</string>
     <string name="temp_21">21°C</string>
     <string name="temp_30">30°C</string>
+
+    <!-- Bedroom 2 Details -->
+    <string name="all_systems_optimal">All systems optimal</string>
+    <string name="brightness_75">75%</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.maadminiproject.ui.floor
+package com.example.maadminiproject.ui.room
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,17 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.maadminiproject.R
-import com.example.maadminiproject.databinding.ActivityFirstFloorDetailBinding
+import com.example.maadminiproject.databinding.ActivityBedroom2Binding
 import com.example.maadminiproject.ui.dashboard.MainActivity
+import com.example.maadminiproject.ui.floor.FloorActivity
 import com.example.maadminiproject.ui.settings.SettingsActivity
 
-class FirstFloorDetailActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityFirstFloorDetailBinding
+class Bedroom2Activity : AppCompatActivity() {
+    private lateinit var binding: ActivityBedroom2Binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityFirstFloorDetailBinding.inflate(layoutInflater)
+        binding = ActivityBedroom2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
@@ -30,27 +31,35 @@ class FirstFloorDetailActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        binding.btnBathroom.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.room.BathroomActivity::class.java))
-        }
-
-        binding.btnWorkRoom.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.room.WorkRoomActivity::class.java))
-        }
-
-        binding.btnMasterBedroom.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.room.MasterBedroomActivity::class.java))
-        }
-
-        binding.btnBedroom2.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.room.Bedroom2Activity::class.java))
-        }
-
+        setupControls()
         setupBottomNav()
     }
 
+    private fun setupControls() {
+        binding.swLight.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.tvLightStatus.text = getString(R.string.online)
+                binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                binding.ivLightIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                binding.ivLightIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.deep_midnight))
+            } else {
+                binding.tvLightStatus.text = getString(R.string.status_off)
+                binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
+                binding.ivLightIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
+                binding.ivLightIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
+            }
+        }
+
+        binding.sliderBrightness.addOnChangeListener { _, value, _ ->
+            binding.tvBrightnessValue.text = "${value.toInt()}%"
+            if (value > 0 && !binding.swLight.isChecked) {
+                binding.swLight.isChecked = true
+            }
+        }
+    }
+
     private fun setupBottomNav() {
-        binding.bottomNav.selectedItemId = R.id.nav_floors
+        binding.bottomNav.selectedItemId = 0
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {

@@ -112,6 +112,23 @@ class DeviceRepository {
     }
 
     /**
+     * Removes an active device listener.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param listener The listener to be removed.
+     */
+    fun removeDevicesListener(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        listener: ValueEventListener
+    ) {
+        dataSource.removeDeviceListener(homeId, floorId, zoneId, listener)
+    }
+
+    /**
      * Removes a listener from a database reference.
      *
      * @param reference The database reference to detach the listener from.

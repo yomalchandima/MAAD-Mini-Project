@@ -46,6 +46,19 @@ class ReportRepository {
     }
 
     /**
+     * Removes an active reports listener.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param listener The listener to be removed.
+     */
+    fun removeReportsListener(
+        homeId: String,
+        listener: ValueEventListener,
+    ) {
+        dataSource.removeReportListener(homeId, listener)
+    }
+
+    /**
      * Removes a listener from a database reference.
      *
      * @param reference The database reference to detach the listener from.

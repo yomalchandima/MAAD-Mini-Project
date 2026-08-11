@@ -15,6 +15,8 @@ import com.example.maadminiproject.ui.settings.SettingsActivity
 class MasterBedroomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMasterBedroomBinding
     private var currentTemp = 21
+    private var ironMaxDuration = 10
+    private var ironTimer: android.os.CountDownTimer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -90,15 +92,52 @@ class MasterBedroomActivity : AppCompatActivity() {
 
         binding.swIron.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.tvIronStatus.text = getString(R.string.status_on)
-                binding.tvIronStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                binding.ivIronIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                startIronSafetyTimer()
+                binding.ivIronIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.error_red))
+                binding.ivIronIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(0x20FF5252.toInt())
             } else {
+                stopIronSafetyTimer()
                 binding.tvIronStatus.text = getString(R.string.status_off)
                 binding.tvIronStatus.setTextColor(getColor(R.color.soft_gray))
                 binding.ivIronIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
+                binding.ivIronIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
             }
         }
+
+        binding.sliderIronDuration.addOnChangeListener { _, value, _ ->
+            ironMaxDuration = value.toInt()
+            binding.tvIronDurationValue.text = getString(R.string.duration_format, ironMaxDuration)
+            if (binding.swIron.isChecked) {
+                // Restart timer if duration changed while running
+                startIronSafetyTimer()
+            }
+        }
+    }
+
+    private fun startIronSafetyTimer() {
+        ironTimer?.cancel()
+        
+        binding.tvIronStatus.text = getString(R.string.auto_off_status, ironMaxDuration)
+        binding.tvIronStatus.setTextColor(getColor(R.color.error_red))
+
+        // Note: Real minutes would be ironMaxDuration * 60 * 1000
+        // For demonstration, we'll treat 1 slider unit as a shorter interval if needed, 
+        // but for assignment compliance we'll use the logic.
+        ironTimer = object : android.os.CountDownTimer((ironMaxDuration * 60 * 1000).toLong(), 60000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val minsLeft = (millisUntilFinished / 60000).toInt() + 1
+                binding.tvIronStatus.text = getString(R.string.auto_off_status, minsLeft)
+            }
+
+            override fun onFinish() {
+                binding.swIron.isChecked = false
+            }
+        }.start()
+    }
+
+    private fun stopIronSafetyTimer() {
+        ironTimer?.cancel()
+        ironTimer = null
     }
 
     private fun updateTempUI() {

@@ -184,6 +184,9 @@
     <string name="on_80">ON</string>
     <string name="smart_plug">Smart Plug</string>
     <string name="iron">Iron</string>
+    <string name="max_duration_label">MAX DURATION</string>
+    <string name="duration_format">%1$d MIN</string>
+    <string name="auto_off_status">Auto-off in %1$d min</string>
     <string name="off_standby">Off • Standby</string>
     <string name="temp_16">16°C</string>
     <string name="temp_21">21°C</string>

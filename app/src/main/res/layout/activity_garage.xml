@@ -188,17 +188,6 @@
                     app:layout_constraintStart_toEndOf="@id/ivLightIcon"
                     app:layout_constraintTop_toTopOf="@id/ivLightIcon" />
 
-                <TextView
-                    android:id="@+id/tvBrightnessLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/brightness_60"
-                    android:textColor="@color/soft_gray"
-                    android:textSize="14sp"
-                    app:layout_constraintStart_toStartOf="@id/tvLightTitle"
-                    app:layout_constraintTop_toBottomOf="@id/tvLightTitle" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/swLight"
                     android:layout_width="wrap_content"
@@ -209,38 +198,21 @@
                     app:thumbTint="@color/switch_thumb_selector"
                     app:trackTint="@color/switch_track_selector" />
 
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/sliderBrightness"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/tvLightStatus"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:value="60"
-                    android:valueFrom="0"
-                    android:valueTo="100"
-                    app:thumbColor="@color/white"
-                    app:trackColorActive="@color/vibrant_cyan"
-                    app:trackColorInactive="@color/surface_container"
-                    app:layout_constraintTop_toBottomOf="@id/ivLightIcon" />
+                    android:layout_marginTop="4dp"
+                    android:text="@string/status_on"
+                    android:textColor="@color/vibrant_cyan"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/bg_social_circle"
+                    app:drawableTint="@color/vibrant_cyan"
+                    android:drawablePadding="6dp"
+                    app:layout_constraintStart_toStartOf="@id/tvLightTitle"
+                    app:layout_constraintTop_toBottomOf="@id/tvLightTitle" />
 
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_brightness_low"
-                    app:layout_constraintBottom_toBottomOf="@id/sliderBrightness"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/sliderBrightness"
-                    app:tint="@color/soft_gray"
-                    tools:ignore="ContentDescription" />
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:src="@drawable/ic_brightness_high"
-                    app:layout_constraintBottom_toBottomOf="@id/sliderBrightness"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/sliderBrightness"
-                    app:tint="@color/soft_gray"
-                    tools:ignore="ContentDescription" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Driveway Cam Card -->

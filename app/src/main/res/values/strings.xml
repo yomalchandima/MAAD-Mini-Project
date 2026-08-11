@@ -107,11 +107,11 @@
     <string name="ground_floor_title">Ground Floor</string>
     <string name="active_7">7 Active</string>
     <string name="active_11">11 Active</string>
-    <string name="on_4">4 On</string>
-    <string name="on_2">2 On</string>
+    <string name="on_4">ON</string>
+    <string name="on_2">ON</string>
     <string name="staircase">Staircase</string>
     <string name="dining_room">Dining Room</string>
-    <string name="on_1">1 On</string>
+    <string name="on_1">ON</string>
 
     <!-- Living Room Details -->
     <string name="living_room">Living Room</string>
@@ -119,13 +119,8 @@
     <string name="devices_active_3">3 Devices Active</string>
     <string name="main_lighting">Main Lighting</string>
     <string name="online">Online</string>
-    <string name="power_usage_label">Power Usage</string>
-    <string name="power_usage_value">15W</string>
     <string name="ceiling_fan">Ceiling Fan</string>
-    <string name="speed_2">Speed 2</string>
-    <string name="low">Low</string>
-    <string name="mid">Mid</string>
-    <string name="high">High</string>
+    <string name="On">On</string>
     <string name="entrance_cam">Entrance Cam</string>
     <string name="live">Live</string>
     <string name="rec">REC</string>
@@ -133,13 +128,9 @@
     <!-- Kitchen Room Details -->
     <string name="devices_online_2">2 Devices Online</string>
     <string name="espresso_machine">Espresso Machine</string>
-    <string name="standby">STANDBY</string>
-    <string name="current_draw">Current Draw</string>
-    <string name="current_draw_val">0.2 W</string>
+    <string name="standby">Off</string>
     <string name="usage_logs">Usage Logs</string>
-    <string name="brightness">Brightness</string>
     <string name="devices">Devices</string>
-    <string name="brightness_val_85">85%</string>
     <string name="status_off">OFF</string>
     <string name="status_on">ON</string>
     <string name="online_caps">ONLINE</string>
@@ -151,14 +142,14 @@
     <string name="online_active">ONLINE &amp; ACTIVE</string>
     <string name="energy_today">Energy Today</string>
     <string name="energy_val_0_4">0.4 kWh</string>
-    <string name="brightness_0">0%</string>
+    <string name="brightness_0">OFF</string>
 
     <!-- Staircase Room Details -->
     <string name="active_zone">ACTIVE ZONE</string>
     <string name="light_label">Light</string>
     <string name="tw_current">12W Current</string>
     <string name="intensity">INTENSITY</string>
-    <string name="intensity_75">75%</string>
+    <string name="intensity_75">ON</string>
 
     <!-- Dining Room Details -->
     <string name="room_label_caps">ROOM</string>
@@ -166,7 +157,7 @@
     <string name="usage_label_caps">USAGE</string>
     <string name="usage_val_45w">45 W</string>
     <string name="pendant_light">Pendant Light</string>
-    <string name="brightness_80">Brightness: 80%</string>
+    <string name="brightness_80">ON</string>
     <string name="coffee_maker">Coffee Maker</string>
     <string name="w_currently_0">0 W currently</string>
 
@@ -174,12 +165,13 @@
     <string name="connected_caps">CONNECTED</string>
     <string name="overhead_lights">Overhead Lights</string>
     <string name="brightness_60">60% Brightness</string>
+    <string name="brightness_percent">%1$d%% Brightness</string>
     <string name="driveway_cam">Driveway Cam</string>
     <string name="live_recording">LIVE RECORDING</string>
     <string name="rec_timer">REC 00:04:25</string>
 
     <!-- Work Room Details -->
-    <string name="active_85">Active • 85%</string>
+    <string name="active_85">ON</string>
     <string name="desk_setup">Desk Setup</string>
     <string name="standby_12w">Standby • 12W</string>
     <string name="usage_1_2">1.2 kWh</string>
@@ -189,16 +181,19 @@
     <string name="todays_usage">Today\'s Usage</string>
 
     <!-- Master Bedroom Details -->
-    <string name="on_80">On • 80%</string>
+    <string name="on_80">ON</string>
     <string name="smart_plug">Smart Plug</string>
+    <string name="iron">Iron</string>
     <string name="off_standby">Off • Standby</string>
     <string name="temp_16">16°C</string>
     <string name="temp_21">21°C</string>
     <string name="temp_30">30°C</string>
+    <string name="temp_unit">°C</string>
+    <string name="temp_format">%1$d°C</string>
 
     <!-- Bedroom 2 Details -->
     <string name="all_systems_optimal">All systems optimal</string>
-    <string name="brightness_75">75%</string>
+    <string name="brightness_75">ON</string>
 
     <!-- Hallway Details -->
     <string name="active_devices_2">2 Active Devices</string>

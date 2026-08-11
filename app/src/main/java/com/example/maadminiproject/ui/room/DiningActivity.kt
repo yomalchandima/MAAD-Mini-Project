@@ -38,15 +38,15 @@ class DiningActivity : AppCompatActivity() {
     private fun setupSwitchListeners() {
         binding.swPendant.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.tvPendantStatus.text = getString(R.string.online)
+                binding.tvPendantStatus.text = getString(R.string.status_on)
                 binding.tvPendantStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                binding.tvPendantStatus.backgroundTintList = android.content.res.ColorStateList.valueOf(0x2000E5FF.toInt())
+                binding.tvPendantStatus.compoundDrawableTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
                 binding.ivPendantIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
                 binding.ivPendantIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.deep_midnight))
             } else {
                 binding.tvPendantStatus.text = getString(R.string.status_off)
                 binding.tvPendantStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.tvPendantStatus.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
+                binding.tvPendantStatus.compoundDrawableTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
                 binding.ivPendantIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
                 binding.ivPendantIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
             }
@@ -56,13 +56,13 @@ class DiningActivity : AppCompatActivity() {
             if (isChecked) {
                 binding.tvCoffeeStatus.text = getString(R.string.status_on)
                 binding.tvCoffeeStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                binding.tvCoffeeStatus.backgroundTintList = android.content.res.ColorStateList.valueOf(0x2000E5FF.toInt())
+                binding.tvCoffeeStatus.compoundDrawableTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
                 binding.ivCoffeeIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
                 binding.ivCoffeeIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.deep_midnight))
             } else {
-                binding.tvCoffeeStatus.text = getString(R.string.standby)
+                binding.tvCoffeeStatus.text = getString(R.string.status_off)
                 binding.tvCoffeeStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.tvCoffeeStatus.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
+                binding.tvCoffeeStatus.compoundDrawableTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
                 binding.ivCoffeeIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
                 binding.ivCoffeeIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
             }

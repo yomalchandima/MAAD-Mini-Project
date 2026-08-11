@@ -32,29 +32,23 @@ class GarageActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
-        setupControls()
-        setupBottomNav()
-    }
-
-    private fun setupControls() {
         binding.swLight.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.tvBrightnessLabel.setTextColor(getColor(R.color.soft_gray))
+                binding.tvLightStatus.text = getString(R.string.status_on)
+                binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                binding.tvLightStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
                 binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
                 binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.deep_midnight))
             } else {
-                binding.tvBrightnessLabel.setTextColor(getColor(R.color.soft_gray))
+                binding.tvLightStatus.text = getString(R.string.status_off)
+                binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
+                binding.tvLightStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
                 binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
-                binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
             }
         }
 
-        binding.sliderBrightness.addOnChangeListener { _, value, _ ->
-            binding.tvBrightnessLabel.text = "${value.toInt()}% Brightness"
-            if (value > 0 && !binding.swLight.isChecked) {
-                binding.swLight.isChecked = true
-            }
-        }
+        setupBottomNav()
     }
 
     private fun setupBottomNav() {

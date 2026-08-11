@@ -204,64 +204,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:thumbTint="@color/switch_thumb_selector"
                     app:trackTint="@color/switch_track_selector" />
-
-                <LinearLayout
-                    android:id="@+id/brightnessContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/ivLightIcon">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_brightness_low"
-                        app:tint="@color/soft_gray"
-                        tools:ignore="ContentDescription" />
-
-                    <com.google.android.material.slider.Slider
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:value="80"
-                        android:valueFrom="0"
-                        android:valueTo="100"
-                        app:thumbColor="@color/white"
-                        app:trackColorActive="@color/vibrant_cyan"
-                        app:trackColorInactive="@color/surface_container" />
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_brightness_high"
-                        app:tint="@color/soft_gray"
-                        tools:ignore="ContentDescription" />
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/power_usage_label"
-                    android:textColor="@color/soft_gray"
-                    android:textSize="14sp"
-                    app:drawableStartCompat="@drawable/ic_bolt"
-                    app:drawableTint="@color/soft_gray"
-                    android:drawablePadding="8dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/brightnessContainer" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/power_usage_value"
-                    android:textColor="@color/vibrant_cyan"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Ceiling Fan Card -->
@@ -301,7 +243,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/speed_2"
+                    android:text="@string/On"
                     android:textColor="@color/vibrant_cyan"
                     android:textSize="14sp"
                     app:drawableStartCompat="@drawable/bg_social_circle"
@@ -329,29 +271,6 @@
                     app:singleSelection="true"
                     app:checkedButton="@+id/btnMed">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnLow"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/low" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnMed"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/mid" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/btnHigh"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@string/high" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -40,12 +40,6 @@ class BathroomActivity : AppCompatActivity() {
             updateUI(isChecked)
         }
 
-        binding.sliderBrightness.addOnChangeListener { _, value, _ ->
-            binding.tvBrightnessValue.text = "${value.toInt()}%"
-            if (value > 0 && !binding.swMainLighting.isChecked) {
-                binding.swMainLighting.isChecked = true
-            }
-        }
     }
 
     private fun updateUI(isOn: Boolean) {
@@ -54,15 +48,11 @@ class BathroomActivity : AppCompatActivity() {
             binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
             binding.ivLightIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
             binding.ivLightIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.deep_midnight))
-            if (binding.sliderBrightness.value == 0f) {
-                binding.sliderBrightness.value = 80f
-            }
         } else {
             binding.tvLightStatus.text = getString(R.string.status_off)
             binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
             binding.ivLightIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
             binding.ivLightIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
-            binding.sliderBrightness.value = 0f
         }
     }
 

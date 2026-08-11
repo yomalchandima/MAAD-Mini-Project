@@ -14,6 +14,7 @@ import com.example.maadminiproject.ui.settings.SettingsActivity
 
 class WorkRoomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWorkRoomBinding
+    private var currentTemp = 21
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,7 +39,7 @@ class WorkRoomActivity : AppCompatActivity() {
     private fun setupControls() {
         binding.swMainLight.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.tvLightStatus.text = getString(R.string.active_85)
+                binding.tvLightStatus.text = getString(R.string.status_on)
                 binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
                 binding.ivLightIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
             } else {
@@ -53,22 +54,42 @@ class WorkRoomActivity : AppCompatActivity() {
                 binding.tvDeskStatus.text = getString(R.string.status_on)
                 binding.tvDeskStatus.setTextColor(getColor(R.color.vibrant_cyan))
             } else {
-                binding.tvDeskStatus.text = getString(R.string.standby_12w)
+                binding.tvDeskStatus.text = getString(R.string.status_off)
                 binding.tvDeskStatus.setTextColor(getColor(R.color.soft_gray))
             }
         }
 
         binding.swAc.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.tvAcStatus.text = getString(R.string.cooling_22)
+                binding.tvAcStatus.text = getString(R.string.status_on)
                 binding.tvAcStatus.setTextColor(getColor(R.color.vibrant_cyan))
                 binding.ivAcIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(0x2000E5FF.toInt())
+                binding.tempControl.visibility = android.view.View.VISIBLE
             } else {
                 binding.tvAcStatus.text = getString(R.string.status_off)
                 binding.tvAcStatus.setTextColor(getColor(R.color.soft_gray))
                 binding.ivAcIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
+                binding.tempControl.visibility = android.view.View.GONE
             }
         }
+
+        binding.btnTempMinus.setOnClickListener {
+            if (currentTemp > 16) {
+                currentTemp--
+                updateTempUI()
+            }
+        }
+
+        binding.btnTempPlus.setOnClickListener {
+            if (currentTemp < 30) {
+                currentTemp++
+                updateTempUI()
+            }
+        }
+    }
+
+    private fun updateTempUI() {
+        binding.tvTemperature.text = getString(R.string.temp_format, currentTemp)
     }
 
     private fun setupBottomNav() {

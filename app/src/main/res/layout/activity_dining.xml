@@ -164,61 +164,6 @@
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Usage Card -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_card_dark"
-                android:padding="24dp">
-
-                <ImageView
-                    android:id="@+id/ivBolt"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@drawable/ic_bolt"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/vibrant_cyan" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/usage_label_caps"
-                    android:textColor="@color/soft_gray"
-                    android:textSize="12sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="horizontal"
-                    android:gravity="bottom"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivBolt">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="45"
-                        android:textColor="@color/white"
-                        android:textSize="32sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginBottom="4dp"
-                        android:text="W"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="16sp" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -266,28 +211,17 @@
                     android:id="@+id/tvPendantStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_social_button"
-                    android:backgroundTint="#2000E5FF"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="2dp"
-                    android:text="@string/online"
-                    android:textColor="@color/vibrant_cyan"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/tvPendantTitle"
-                    app:layout_constraintStart_toEndOf="@id/tvPendantTitle"
-                    app:layout_constraintTop_toTopOf="@id/tvPendantTitle" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/brightness_80"
-                    android:textColor="@color/soft_gray"
+                    android:text="@string/status_on"
+                    android:textColor="@color/vibrant_cyan"
                     android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/bg_social_circle"
+                    app:drawableTint="@color/vibrant_cyan"
+                    android:drawablePadding="6dp"
                     app:layout_constraintStart_toStartOf="@id/tvPendantTitle"
                     app:layout_constraintTop_toBottomOf="@id/tvPendantTitle" />
+
 
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/swPendant"
@@ -336,25 +270,14 @@
                     android:id="@+id/tvCoffeeStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/bg_social_button"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="2dp"
-                    android:text="@string/standby"
-                    android:textColor="@color/soft_gray"
-                    android:textSize="10sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/tvCoffeeTitle"
-                    app:layout_constraintStart_toEndOf="@id/tvCoffeeTitle"
-                    app:layout_constraintTop_toTopOf="@id/tvCoffeeTitle" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/w_currently_0"
+                    android:text="@string/status_off"
                     android:textColor="@color/soft_gray"
                     android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/bg_social_circle"
+                    app:drawableTint="@color/soft_gray"
+                    android:drawablePadding="6dp"
                     app:layout_constraintStart_toStartOf="@id/tvCoffeeTitle"
                     app:layout_constraintTop_toBottomOf="@id/tvCoffeeTitle" />
 

@@ -14,6 +14,7 @@ import com.example.maadminiproject.ui.settings.SettingsActivity
 
 class MasterBedroomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMasterBedroomBinding
+    private var currentTemp = 21
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,20 +42,33 @@ class MasterBedroomActivity : AppCompatActivity() {
                 binding.tvAcStatus.text = getString(R.string.status_on)
                 binding.tvAcStatus.setTextColor(getColor(R.color.vibrant_cyan))
                 binding.ivAcIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(0x2000E5FF.toInt())
+                binding.tempControl.visibility = android.view.View.VISIBLE
             } else {
                 binding.tvAcStatus.text = getString(R.string.status_off)
                 binding.tvAcStatus.setTextColor(getColor(R.color.soft_gray))
                 binding.ivAcIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
+                binding.tempControl.visibility = android.view.View.GONE
             }
         }
 
-        binding.sliderTemp.addOnChangeListener { _, value, _ ->
-            binding.tvCurrentTemp.text = "${value.toInt()}°C"
+        binding.btnTempMinus.setOnClickListener {
+            if (currentTemp > 16) {
+                currentTemp--
+                updateTempUI()
+            }
         }
+
+        binding.btnTempPlus.setOnClickListener {
+            if (currentTemp < 30) {
+                currentTemp++
+                updateTempUI()
+            }
+        }
+
 
         binding.swMainLights.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.tvLightsStatus.text = getString(R.string.on_80)
+                binding.tvLightsStatus.text = getString(R.string.status_on)
                 binding.tvLightsStatus.setTextColor(getColor(R.color.vibrant_cyan))
                 binding.ivLightsIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
             } else {
@@ -69,10 +83,26 @@ class MasterBedroomActivity : AppCompatActivity() {
                 binding.tvPlugStatus.text = getString(R.string.status_on)
                 binding.tvPlugStatus.setTextColor(getColor(R.color.vibrant_cyan))
             } else {
-                binding.tvPlugStatus.text = getString(R.string.off_standby)
+                binding.tvPlugStatus.text = getString(R.string.status_off)
                 binding.tvPlugStatus.setTextColor(getColor(R.color.soft_gray))
             }
         }
+
+        binding.swIron.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.tvIronStatus.text = getString(R.string.status_on)
+                binding.tvIronStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                binding.ivIronIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+            } else {
+                binding.tvIronStatus.text = getString(R.string.status_off)
+                binding.tvIronStatus.setTextColor(getColor(R.color.soft_gray))
+                binding.ivIronIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
+            }
+        }
+    }
+
+    private fun updateTempUI() {
+        binding.tvTemperature.text = getString(R.string.temp_format, currentTemp)
     }
 
     private fun setupBottomNav() {

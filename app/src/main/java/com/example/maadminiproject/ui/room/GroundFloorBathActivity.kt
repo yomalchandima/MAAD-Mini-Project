@@ -50,13 +50,6 @@ class GroundFloorBathActivity : AppCompatActivity() {
                 binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
             }
         }
-
-        binding.sliderBrightness.addOnChangeListener { _, value, _ ->
-            binding.tvBrightnessValue.text = "${value.toInt()}%"
-            if (value > 0 && !binding.swMainLight.isChecked) {
-                binding.swMainLight.isChecked = true
-            }
-        }
     }
 
     private fun setupBottomNav() {

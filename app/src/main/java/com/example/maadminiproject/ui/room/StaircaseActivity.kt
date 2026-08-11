@@ -51,12 +51,6 @@ class StaircaseActivity : AppCompatActivity() {
             }
         }
 
-        binding.sliderIntensity.addOnChangeListener { _, value, _ ->
-            binding.tvIntensityValue.text = "${value.toInt()}%"
-            if (value > 0 && !binding.swLight.isChecked) {
-                binding.swLight.isChecked = true
-            }
-        }
     }
 
     private fun setupBottomNav() {

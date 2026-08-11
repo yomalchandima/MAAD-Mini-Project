@@ -39,7 +39,7 @@ class HallwayActivity : AppCompatActivity() {
     private fun setupControls() {
         binding.swLight.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.tvLightStatus.text = "On • 85%"
+                binding.tvLightStatus.text = getString(R.string.status_on)
                 binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
                 binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
                 binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.deep_midnight))
@@ -51,12 +51,6 @@ class HallwayActivity : AppCompatActivity() {
             }
         }
 
-        binding.sliderBrightness.addOnChangeListener { _, value, _ ->
-            binding.tvLightStatus.text = "On • ${value.toInt()}%"
-            if (value > 0 && !binding.swLight.isChecked) {
-                binding.swLight.isChecked = true
-            }
-        }
 
         binding.swCam.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {

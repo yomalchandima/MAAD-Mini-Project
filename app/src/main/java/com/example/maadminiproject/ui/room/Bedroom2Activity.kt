@@ -49,13 +49,6 @@ class Bedroom2Activity : AppCompatActivity() {
                 binding.ivLightIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
             }
         }
-
-        binding.sliderBrightness.addOnChangeListener { _, value, _ ->
-            binding.tvBrightnessValue.text = "${value.toInt()}%"
-            if (value > 0 && !binding.swLight.isChecked) {
-                binding.swLight.isChecked = true
-            }
-        }
     }
 
     private fun setupBottomNav() {

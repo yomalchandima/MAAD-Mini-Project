@@ -224,61 +224,6 @@
                         app:thumbTint="@color/switch_thumb_selector"
                         app:trackTint="@color/switch_track_selector" />
 
-                    <TextView
-                        android:id="@+id/tvBrightnessLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:text="@string/brightness"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ivLightIcon" />
-
-                    <TextView
-                        android:id="@+id/tvBrightnessValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/brightness_0"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="@id/tvBrightnessLabel"
-                        app:layout_constraintEnd_toEndOf="parent" />
-
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/sliderBrightness"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:value="0"
-                        android:valueFrom="0"
-                        android:valueTo="100"
-                        app:thumbColor="@color/white"
-                        app:trackColorActive="@color/vibrant_cyan"
-                        app:trackColorInactive="@color/surface_container"
-                        app:layout_constraintTop_toBottomOf="@id/tvBrightnessLabel" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="32dp"
-                        android:drawablePadding="12dp"
-                        android:text="@string/energy_today"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:drawableStartCompat="@drawable/ic_bolt"
-                        app:drawableTint="@color/soft_gray"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/sliderBrightness" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/energy_val_0_4"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </LinearLayout>

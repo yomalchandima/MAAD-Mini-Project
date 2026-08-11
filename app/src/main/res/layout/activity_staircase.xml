@@ -192,12 +192,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:drawablePadding="8dp"
-                    android:text="@string/tw_current"
-                    android:textColor="@color/soft_gray"
+                    android:text="@string/status_on"
+                    android:textColor="@color/vibrant_cyan"
                     android:textSize="14sp"
-                    app:drawableStartCompat="@drawable/ic_bolt"
-                    app:drawableTint="@color/soft_gray"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/bg_social_circle"
+                    app:drawableTint="@color/vibrant_cyan"
+                    android:drawablePadding="6dp"
                     app:layout_constraintStart_toStartOf="@id/tvLightTitle"
                     app:layout_constraintTop_toBottomOf="@id/tvLightTitle" />
 
@@ -211,41 +212,6 @@
                     app:thumbTint="@color/switch_thumb_selector"
                     app:trackTint="@color/switch_track_selector" />
 
-                <TextView
-                    android:id="@+id/tvIntensityLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:text="@string/intensity"
-                    android:textColor="@color/soft_gray"
-                    android:textSize="14sp"
-                    android:letterSpacing="0.1"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ivLightIcon" />
-
-                <TextView
-                    android:id="@+id/tvIntensityValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/intensity_75"
-                    android:textColor="@color/vibrant_cyan"
-                    android:textSize="22sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/tvIntensityLabel"
-                    app:layout_constraintEnd_toEndOf="parent" />
-
-                <com.google.android.material.slider.Slider
-                    android:id="@+id/sliderIntensity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:value="75"
-                    android:valueFrom="0"
-                    android:valueTo="100"
-                    app:thumbColor="@color/white"
-                    app:trackColorActive="@color/vibrant_cyan"
-                    app:trackColorInactive="@color/surface_container"
-                    app:layout_constraintTop_toBottomOf="@id/tvIntensityLabel" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

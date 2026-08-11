@@ -190,61 +190,54 @@
                     app:thumbTint="@color/switch_thumb_selector"
                     app:trackTint="@color/switch_track_selector" />
 
-                <!-- Temperature Slider Section -->
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
+                <!-- Compact Temp Control -->
+                <LinearLayout
+                    android:id="@+id/tempControl"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="32dp"
-                    app:layout_constraintTop_toBottomOf="@id/ivAcIcon">
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    app:layout_constraintTop_toBottomOf="@id/ivAcIcon"
+                    app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
-                        android:id="@+id/tvMinTemp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/temp_16"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:id="@+id/btnTempMinus"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_social_circle"
+                        android:backgroundTint="#20FFFFFF"
+                        android:gravity="center"
+                        android:text="-"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:clickable="true"
+                        android:focusable="true" />
 
                     <TextView
-                        android:id="@+id/tvCurrentTemp"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tvTemperature"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:text="@string/temp_21"
                         android:textColor="@color/white"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:gravity="center" />
 
                     <TextView
-                        android:id="@+id/tvMaxTemp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/temp_30"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:id="@+id/btnTempPlus"
+                        android:layout_width="36dp"
+                        android:layout_height="36dp"
+                        android:background="@drawable/bg_social_circle"
+                        android:backgroundTint="#20FFFFFF"
+                        android:gravity="center"
+                        android:text="+"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:clickable="true"
+                        android:focusable="true" />
+                </LinearLayout>
 
-                    <com.google.android.material.slider.Slider
-                        android:id="@+id/sliderTemp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:value="21"
-                        android:valueFrom="16"
-                        android:valueTo="30"
-                        app:haloRadius="0dp"
-                        app:thumbColor="@color/white"
-                        app:thumbRadius="12dp"
-                        app:trackColorActive="@color/vibrant_cyan"
-                        app:trackColorInactive="#1AFFFFFF"
-                        app:trackHeight="12dp"
-                        app:layout_constraintTop_toBottomOf="@id/tvCurrentTemp" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!-- Main Lights Card -->
@@ -285,7 +278,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/on_80"
+                    android:text="@string/status_on"
                     android:textColor="@color/vibrant_cyan"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="@id/tvLightsTitle"
@@ -339,7 +332,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/off_standby"
+                    android:text="@string/status_off"
                     android:textColor="@color/soft_gray"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="@id/tvPlugTitle"
@@ -347,6 +340,60 @@
 
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/swSmartPlug"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/switch_thumb_selector"
+                    app:trackTint="@color/switch_track_selector" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Iron Card -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_dark"
+                android:padding="20dp">
+
+                <ImageView
+                    android:id="@+id/ivIronIcon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:background="@drawable/bg_social_button"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_power_plug"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/soft_gray"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:id="@+id/tvIronTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/iron"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@id/ivIronIcon"
+                    app:layout_constraintTop_toTopOf="@id/ivIronIcon" />
+
+                <TextView
+                    android:id="@+id/tvIronStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="@string/status_off"
+                    android:textColor="@color/soft_gray"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/tvIronTitle"
+                    app:layout_constraintTop_toBottomOf="@id/tvIronTitle" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swIron"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false"

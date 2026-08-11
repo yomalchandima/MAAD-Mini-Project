@@ -64,17 +64,6 @@
             android:layout_height="wrap_content"
             android:padding="20dp">
 
-            <ImageView
-                android:id="@+id/ivBuildingIcon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:background="@drawable/bg_social_button"
-                android:padding="12dp"
-                android:src="@drawable/ic_building"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/vibrant_cyan" />
-
             <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="0dp"
@@ -127,7 +116,6 @@
                         android:text="@string/rooms_count_6"
                         android:textColor="@color/vibrant_cyan"
                         android:textSize="12sp"
-                        app:drawableStartCompat="@drawable/ic_hub"
                         app:drawableTint="@color/vibrant_cyan" />
 
                     <TextView
@@ -304,7 +292,6 @@
                         android:text="@string/rooms_count_4"
                         android:textColor="@color/vibrant_cyan"
                         android:textSize="12sp"
-                        app:drawableStartCompat="@drawable/ic_hub"
                         app:drawableTint="@color/vibrant_cyan" />
 
                     <TextView

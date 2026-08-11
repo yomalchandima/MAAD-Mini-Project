@@ -172,25 +172,6 @@
                         app:drawableTint="@color/soft_gray"
                         android:drawablePadding="8dp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/alerts_value"
-                        android:textColor="#FF5252"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/alerts_sub"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="11sp"
-                        android:maxLines="1"
-                        android:ellipsize="end" />
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -245,15 +226,6 @@
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tvSystemsTitle" />
-
-                <ImageView
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:src="@drawable/ic_hub"
-                    android:contentDescription="Hub Icon"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/vibrant_cyan" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -316,6 +288,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
                 <TextView
+                    android:id="@+id/tvManage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/manage"
@@ -327,11 +300,15 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardGroundFloor"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/surface_container">
+                app:cardBackgroundColor="@color/surface_container"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -362,11 +339,15 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cardFirstFloor"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
-                app:cardBackgroundColor="@color/surface_container">
+                app:cardBackgroundColor="@color/surface_container"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground">
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -395,148 +376,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Favorites Section -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/favorites"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:src="@android:drawable/ic_menu_more"
-                    android:contentDescription="More"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/soft_gray" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:columnCount="3"
-                android:useDefaultMargins="false">
-
-                <!-- Favorite Card 1 -->
-                <LinearLayout
-                    android:id="@+id/btnLivingRoom"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_marginEnd="4dp"
-                    android:background="@drawable/bg_card_dark"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:padding="16dp">
-                    <ImageView
-                        android:id="@+id/ivLivingRoom"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_lightbulb"
-                        android:contentDescription="Light Icon"
-                        app:tint="@color/vibrant_cyan" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/living_room"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tvLivingRoomStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/living_room_status"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <!-- Favorite Card 2 -->
-                <LinearLayout
-                    android:id="@+id/btnKitchenPlug"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_marginHorizontal="4dp"
-                    android:background="@drawable/bg_card_dark"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:padding="16dp">
-                    <ImageView
-                        android:id="@+id/ivKitchenPlug"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_power_plug"
-                        android:contentDescription="Power Icon"
-                        app:tint="@color/soft_gray" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/kitchen_plug"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tvKitchenPlugStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/kitchen_plug_status"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="11sp" />
-                </LinearLayout>
-
-                <!-- Favorite Card 3 -->
-                <LinearLayout
-                    android:id="@+id/btnAcMaster"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_columnWeight="1"
-                    android:layout_marginStart="4dp"
-                    android:background="@drawable/bg_card_dark"
-                    android:orientation="vertical"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:padding="16dp">
-                    <ImageView
-                        android:id="@+id/ivAcMaster"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_ac"
-                        android:contentDescription="AC Icon"
-                        app:tint="@color/vibrant_cyan" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/ac_master"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:textStyle="bold" />
-                    <TextView
-                        android:id="@+id/tvAcMasterStatus"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:text="@string/ac_master_status"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="11sp" />
-                </LinearLayout>
-            </GridLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

@@ -28,7 +28,7 @@
     <string name="confirm_password_label">Confirm Password</string>
     <string name="terms_privacy">I agree to the Terms &amp; Privacy Policy</string>
     <string name="finalize_encryption">Sign up</string>
-    <string name="already_inhabitant">Already an inhabitant?</string>
+    <string name="already_inhabitant">Already have an account?</string>
     <string name="login_link">Login</string>
 
     <!-- Accessibility / Icons -->
@@ -49,8 +49,6 @@
     <string name="energy_label">ENERGY</string>
     <string name="energy_value">12.4 kWh</string>
     <string name="alerts_label">ALERTS</string>
-    <string name="alerts_value">1 Unresolved</string>
-    <string name="alerts_sub">Front door motion detected</string>
     <string name="home_systems">Home Systems</string>
     <string name="devices_connected">22 devices connected</string>
     <string name="cameras">Cameras</string>
@@ -61,13 +59,6 @@
     <string name="ground_floor_status">11 Active  •  6 Rooms</string>
     <string name="first_floor">First Floor</string>
     <string name="first_floor_status">11 Active  •  5 Rooms</string>
-    <string name="favorites">Favorites</string>
-    <string name="living_room">Living Room</string>
-    <string name="living_room_status">On • 80%</string>
-    <string name="kitchen_plug">Kitchen Plug</string>
-    <string name="kitchen_plug_status">Off</string>
-    <string name="ac_master">AC Master</string>
-    <string name="ac_master_status">On • 22°C</string>
     <string name="nav_home">Home</string>
     <string name="nav_floors">Floors</string>
     <string name="nav_reports">Reports</string>
@@ -123,6 +114,7 @@
     <string name="on_1">1 On</string>
 
     <!-- Living Room Details -->
+    <string name="living_room">Living Room</string>
     <string name="hello_alex">Hello, Alex</string>
     <string name="devices_active_3">3 Devices Active</string>
     <string name="main_lighting">Main Lighting</string>

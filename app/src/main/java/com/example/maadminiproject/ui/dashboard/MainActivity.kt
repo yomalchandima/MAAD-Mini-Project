@@ -26,6 +26,18 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        binding.tvManage.setOnClickListener {
+            startActivity(Intent(this, FloorActivity::class.java))
+        }
+
+        binding.cardGroundFloor.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.floor.GroundFloorDetailActivity::class.java))
+        }
+
+        binding.cardFirstFloor.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.floor.FirstFloorDetailActivity::class.java))
+        }
+
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> true

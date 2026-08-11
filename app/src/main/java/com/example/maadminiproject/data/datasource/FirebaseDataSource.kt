@@ -55,7 +55,7 @@ class FirebaseDataSource {
     fun observeMetadata(
         homeId: String,
         onData: (DataSnapshot) -> Unit,
-        onFailure: (DatabaseError) -> Unit
+        onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "metadata"), onData, onFailure)
     }
@@ -71,7 +71,7 @@ class FirebaseDataSource {
     fun observeFloors(
         homeId: String,
         onData: (DataSnapshot) -> Unit,
-        onFailure: (DatabaseError) -> Unit
+        onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "floors"), onData, onFailure)
     }
@@ -93,7 +93,7 @@ class FirebaseDataSource {
         floorId: String,
         zoneId: String,
         onData: (DataSnapshot) -> Unit,
-        onFailure: (DatabaseError) -> Unit
+        onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         val devicesRef = getHomeReference(homeId)
             .child("floors").child(floorId)
@@ -122,7 +122,7 @@ class FirebaseDataSource {
         deviceId: String,
         updates: Map<String, Any>,
         onSuccess: (() -> Unit)? = null,
-        onFailure: ((Exception) -> Unit)? = null
+        onFailure: ((Exception) -> Unit)? = null,
     ) {
         val deviceRef = getHomeReference(homeId)
             .child("floors").child(floorId)
@@ -143,7 +143,7 @@ class FirebaseDataSource {
     fun observeSchedules(
         homeId: String,
         onData: (DataSnapshot) -> Unit,
-        onFailure: (DatabaseError) -> Unit
+        onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "schedules"), onData, onFailure)
     }
@@ -159,7 +159,7 @@ class FirebaseDataSource {
     fun observeReports(
         homeId: String,
         onData: (DataSnapshot) -> Unit,
-        onFailure: (DatabaseError) -> Unit
+        onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "reports"), onData, onFailure)
     }
@@ -175,7 +175,7 @@ class FirebaseDataSource {
     fun observeNotifications(
         homeId: String,
         onData: (DataSnapshot) -> Unit,
-        onFailure: (DatabaseError) -> Unit
+        onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "notifications"), onData, onFailure)
     }
@@ -196,7 +196,7 @@ class FirebaseDataSource {
         notificationId: String,
         updates: Map<String, Any>,
         onSuccess: (() -> Unit)? = null,
-        onFailure: ((Exception) -> Unit)? = null
+        onFailure: ((Exception) -> Unit)? = null,
     ) {
         val notificationRef = getHomeReference(homeId)
             .child("notifications").child(notificationId)
@@ -215,7 +215,7 @@ class FirebaseDataSource {
     fun observeActivityLogs(
         homeId: String,
         onData: (DataSnapshot) -> Unit,
-        onFailure: (DatabaseError) -> Unit
+        onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "activityLogs"), onData, onFailure)
     }
@@ -231,9 +231,23 @@ class FirebaseDataSource {
     fun observeSettings(
         homeId: String,
         onData: (DataSnapshot) -> Unit,
-        onFailure: (DatabaseError) -> Unit
+        onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "settings"), onData, onFailure)
+    }
+
+    /**
+     * Removes a floor listener from a specific home.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param listener The listener to remove.
+     */
+    fun removeFloorListener(
+        homeId: String,
+        listener: ValueEventListener,
+    ) {
+        val floorsRef = getHomeReference(homeId).child("floors")
+        helper.removeListener(floorsRef, listener)
     }
 
     /**

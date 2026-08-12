@@ -48,6 +48,20 @@ class GarageActivity : AppCompatActivity() {
             }
         }
 
+        binding.swCam.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.tvCamStatus.text = getString(R.string.live_recording)
+                binding.tvCamStatus.setTextColor(android.graphics.Color.parseColor("#FF8A80"))
+                binding.tvCamStatus.compoundDrawableTintList = ColorStateList.valueOf(android.graphics.Color.parseColor("#FF8A80"))
+                binding.camFrame.alpha = 1.0f
+            } else {
+                binding.tvCamStatus.text = getString(R.string.status_disconnected)
+                binding.tvCamStatus.setTextColor(getColor(R.color.soft_gray))
+                binding.tvCamStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                binding.camFrame.alpha = 0.3f
+            }
+        }
+
         setupBottomNav()
     }
 

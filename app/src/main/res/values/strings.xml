@@ -133,6 +133,8 @@
     <string name="devices">Devices</string>
     <string name="status_off">OFF</string>
     <string name="status_on">ON</string>
+    <string name="status_error">ERROR</string>
+    <string name="status_disconnected">DISCONNECTED</string>
     <string name="online_caps">ONLINE</string>
 
     <!-- Bathroom Room Details -->

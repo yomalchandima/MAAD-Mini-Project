@@ -248,6 +248,7 @@
                     app:layout_constraintTop_toTopOf="@id/ivCamIcon" />
 
                 <TextView
+                    android:id="@+id/tvCamStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -261,6 +262,16 @@
                     app:drawableTint="#FF8A80"
                     app:layout_constraintStart_toStartOf="@id/tvCamTitle"
                     app:layout_constraintTop_toBottomOf="@id/tvCamTitle" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swCam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/switch_thumb_selector"
+                    app:trackTint="@color/switch_track_selector" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/camFrame"

@@ -34,13 +34,12 @@
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:layout_marginStart="12dp"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@drawable/my_logo"
             android:background="@drawable/bg_social_circle"
             android:padding="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/btnBack"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/vibrant_cyan"
             tools:ignore="ContentDescription" />
 
         <LinearLayout
@@ -67,18 +66,6 @@
                 android:textColor="@color/soft_gray"
                 android:textSize="12sp" />
         </LinearLayout>
-
-        <ImageView
-            android:id="@+id/ivNotification"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginEnd="16dp"
-            android:src="@drawable/ic_bell"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ivProfile"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/white"
-            tools:ignore="ContentDescription" />
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProfile"
@@ -307,6 +294,7 @@
                     app:layout_constraintTop_toTopOf="@id/ivCamIcon" />
 
                 <TextView
+                    android:id="@+id/tvCamStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -319,6 +307,16 @@
                     app:layout_constraintStart_toStartOf="@id/tvCamTitle"
                     app:layout_constraintTop_toBottomOf="@id/tvCamTitle" />
 
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/swCam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:thumbTint="@color/switch_thumb_selector"
+                    app:trackTint="@color/switch_track_selector" />
+
                 <View
                     android:layout_width="8dp"
                     android:layout_height="8dp"
@@ -328,6 +326,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/camFrame"
                     android:layout_width="match_parent"
                     android:layout_height="140dp"
                     android:layout_marginTop="20dp"

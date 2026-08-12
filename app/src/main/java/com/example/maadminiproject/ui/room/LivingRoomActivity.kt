@@ -63,6 +63,22 @@ class LivingRoomActivity : AppCompatActivity() {
                 binding.ivFanIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
             }
         }
+
+        binding.swCam.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.tvCamStatus.text = getString(R.string.live)
+                binding.tvCamStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                binding.tvCamStatus.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                binding.ivCamIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                binding.camFrame.alpha = 1.0f
+            } else {
+                binding.tvCamStatus.text = getString(R.string.status_off)
+                binding.tvCamStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
+                binding.tvCamStatus.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
+                binding.ivCamIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
+                binding.camFrame.alpha = 0.5f
+            }
+        }
     }
 
     private fun setupBottomNav() {

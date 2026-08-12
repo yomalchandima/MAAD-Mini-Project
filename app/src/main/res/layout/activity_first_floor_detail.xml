@@ -33,11 +33,10 @@
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
-            android:src="@drawable/ic_launcher_foreground"
+            android:src="@drawable/my_logo"
             app:layout_constraintBottom_toBottomOf="@id/btnBack"
             app:layout_constraintStart_toEndOf="@id/btnBack"
-            app:layout_constraintTop_toTopOf="@id/btnBack"
-            app:tint="@color/vibrant_cyan" />
+            app:layout_constraintTop_toTopOf="@id/btnBack" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -220,16 +219,6 @@
                         app:tint="@color/vibrant_cyan" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/active"
-                        android:textColor="@color/vibrant_cyan"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
                         android:id="@+id/tvBed2Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -318,15 +307,6 @@
                         app:tint="@color/soft_gray" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/idle"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
                         android:id="@+id/tvBathTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -370,15 +350,6 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tint="@color/soft_gray" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/auto"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="12sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/tvHallTitle"

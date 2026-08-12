@@ -59,6 +59,7 @@
     <string name="ground_floor_status">11 Active  •  6 Rooms</string>
     <string name="first_floor">First Floor</string>
     <string name="first_floor_status">11 Active  •  5 Rooms</string>
+    <string name="smart_lights">Smart Lights</string>
     <string name="nav_home">Home</string>
     <string name="nav_floors">Floors</string>
     <string name="nav_reports">Reports</string>
@@ -87,48 +88,41 @@
     <string name="active_devices_8">8 Active Devices</string>
     <string name="devices_count_9">9 Devices</string>
     <string name="master_bedroom">Master Bedroom</string>
-    <string name="devices_4_temp">3 Devices • 22°C</string>
-    <string name="smart_lights">Smart Lights</string>
-    <string name="air_purifier">Air Purifier</string>
+    <string name="devices_4_temp">3 Devices</string>
     <string name="bedroom_2">Bedroom 2</string>
     <string name="devices_3_rooms">3 Devices</string>
     <string name="devices_2_rooms">2 Devices</string>
-    <string name="active">Active</string>
-    <string name="work_room">Work Room</string>
+    <string name="work_room">Home Office</string>
     <string name="devices_5">3 Devices</string>
     <string name="bathroom">Bathroom</string>
     <string name="device_1">1 Device</string>
-    <string name="idle">Idle</string>
     <string name="hallway">Hallway</string>
     <string name="devices_2">2 Devices</string>
-    <string name="auto">Auto</string>
 
     <!-- Ground Floor Detail -->
     <string name="ground_floor_title">Ground Floor</string>
     <string name="active_7">7 Active</string>
     <string name="active_11">11 Active</string>
-    <string name="on_4">ON</string>
-    <string name="on_2">ON</string>
     <string name="staircase">Staircase</string>
     <string name="dining_room">Dining Room</string>
-    <string name="on_1">ON</string>
 
     <!-- Living Room Details -->
     <string name="living_room">Living Room</string>
     <string name="hello_alex">Hello, Alex</string>
     <string name="devices_active_3">3 Devices Active</string>
-    <string name="main_lighting">Main Lighting</string>
+    <string name="main_lighting">Living Light</string>
     <string name="online">Online</string>
     <string name="ceiling_fan">Ceiling Fan</string>
-    <string name="On">On</string>
-    <string name="entrance_cam">Entrance Cam</string>
+    <string name="On">ON</string>
+    <string name="entrance_cam">Entrance Camera</string>
     <string name="live">Live</string>
     <string name="rec">REC</string>
 
     <!-- Kitchen Room Details -->
     <string name="devices_online_2">2 Devices Online</string>
-    <string name="espresso_machine">Espresso Machine</string>
-    <string name="standby">Off</string>
+    <string name="espresso_machine">Kitchen Smart Plug</string>
+    <string name="kitchen_light">Kitchen Light</string>
+    <string name="standby">OFF</string>
     <string name="usage_logs">Usage Logs</string>
     <string name="devices">Devices</string>
     <string name="status_off">OFF</string>
@@ -148,48 +142,40 @@
 
     <!-- Staircase Room Details -->
     <string name="active_zone">ACTIVE ZONE</string>
-    <string name="light_label">Light</string>
+    <string name="light_label">Stairway Light</string>
     <string name="tw_current">12W Current</string>
     <string name="intensity">INTENSITY</string>
     <string name="intensity_75">ON</string>
 
     <!-- Dining Room Details -->
-    <string name="room_label_caps">ROOM</string>
     <string name="devices_active_2">2 Devices Active</string>
-    <string name="usage_label_caps">USAGE</string>
-    <string name="usage_val_45w">45 W</string>
-    <string name="pendant_light">Pendant Light</string>
+    <string name="pendant_light">Dining Light</string>
     <string name="brightness_80">ON</string>
-    <string name="coffee_maker">Coffee Maker</string>
-    <string name="w_currently_0">0 W currently</string>
+    <string name="coffee_maker">Dining Smart Plug</string>
 
     <!-- Garage Room Details -->
     <string name="connected_caps">CONNECTED</string>
-    <string name="overhead_lights">Overhead Lights</string>
-    <string name="brightness_60">60% Brightness</string>
-    <string name="brightness_percent">%1$d%% Brightness</string>
-    <string name="driveway_cam">Driveway Cam</string>
+    <string name="overhead_lights">Garage Light</string>
+    <string name="driveway_cam">Garage Camera</string>
     <string name="live_recording">LIVE RECORDING</string>
     <string name="rec_timer">REC 00:04:25</string>
 
     <!-- Work Room Details -->
     <string name="active_85">ON</string>
-    <string name="desk_setup">Desk Setup</string>
-    <string name="standby_12w">Standby • 12W</string>
-    <string name="usage_1_2">1.2 kWh</string>
-    <string name="cooling_22">Cooling • 22°C</string>
-    <string name="main_light">Main Light</string>
-    <string name="air_conditioner">Air Conditioner</string>
-    <string name="todays_usage">Today\'s Usage</string>
+    <string name="desk_setup">Office Smart Plug</string>
+    <string name="main_light">Office Light</string>
+    <string name="air_conditioner">Office AC</string>
 
     <!-- Master Bedroom Details -->
     <string name="on_80">ON</string>
-    <string name="smart_plug">Smart Plug</string>
+    <string name="smart_plug">Bedroom Smart Plug</string>
     <string name="iron">Iron</string>
+    <string name="master_bedroom_light">Master Bedroom Light</string>
+    <string name="master_bedroom_ac">Master Bedroom AC</string>
     <string name="max_duration_label">MAX DURATION</string>
     <string name="duration_format">%1$d MIN</string>
     <string name="auto_off_status">Auto-off in %1$d min</string>
-    <string name="off_standby">Off • Standby</string>
+    <string name="off_standby">OFF • Standby</string>
     <string name="temp_16">16°C</string>
     <string name="temp_21">21°C</string>
     <string name="temp_30">30°C</string>
@@ -202,7 +188,7 @@
 
     <!-- Hallway Details -->
     <string name="active_devices_2">2 Active Devices</string>
-    <string name="entryway_cam">Entryway Cam</string>
+    <string name="entryway_cam">Indoor Camera</string>
     <string name="detecting_motion">Detecting motion</string>
 
     <!-- Reports Screen -->

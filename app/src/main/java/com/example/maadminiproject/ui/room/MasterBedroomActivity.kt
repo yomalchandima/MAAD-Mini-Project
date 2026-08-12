@@ -82,11 +82,13 @@ class MasterBedroomActivity : AppCompatActivity() {
 
         binding.swSmartPlug.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                binding.tvPlugStatus.text = getString(R.string.status_on)
-                binding.tvPlugStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                binding.tvPlugStatus.text = getString(R.string.status_error)
+                binding.tvPlugStatus.setTextColor(getColor(R.color.error_red))
+                binding.ivPlugIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.error_red))
             } else {
                 binding.tvPlugStatus.text = getString(R.string.status_off)
                 binding.tvPlugStatus.setTextColor(getColor(R.color.soft_gray))
+                binding.ivPlugIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
             }
         }
 

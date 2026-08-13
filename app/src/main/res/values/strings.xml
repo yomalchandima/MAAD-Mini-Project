@@ -210,13 +210,13 @@
     <string name="percent_35">35%</string>
     <string name="percent_20">20%</string>
     <string name="top_consumers">Top Consumers</string>
-    <string name="hvac_system">HVAC System</string>
+    <string name="hvac_system">Master Bedroom AC</string>
     <string name="hvac_usage">6.4 kWh • $1.92</string>
     <string name="increase_4">4%</string>
-    <string name="water_heater">Water Heater</string>
+    <string name="water_heater">Kitchen Appliances</string>
     <string name="water_heater_usage">3.2 kWh • $0.96</string>
     <string name="decrease_2">2%</string>
-    <string name="ev_charger">EV Charger</string>
+    <string name="ev_charger">Master Bedroom Iron</string>
     <string name="ev_charger_usage">2.8 kWh • $0.84</string>
     <string name="percent_0">0%</string>
 </resources>

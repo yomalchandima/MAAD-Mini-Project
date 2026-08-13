@@ -37,20 +37,20 @@
             app:layout_constraintStart_toEndOf="@id/ivLogo"
             app:layout_constraintTop_toTopOf="@id/ivLogo">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Lumina"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/homesync"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="System Analytics"
-                android:textColor="@color/vibrant_cyan"
-                android:textSize="10sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="System Analytics"
+                    android:textColor="@color/vibrant_cyan"
+                    android:textSize="10sp" />
         </LinearLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -303,22 +303,29 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tvChartTitle" />
 
-                <!-- Simulating a chart -->
-                <View
-                    android:id="@+id/chartMock"
+                <LinearLayout
+                    android:id="@+id/chartContainer"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
                     android:layout_marginTop="24dp"
-                    android:background="@drawable/bg_gradient_button"
-                    android:alpha="0.2"
-                    app:layout_constraintTop_toBottomOf="@id/tvChartTitle" />
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toBottomOf="@id/tvChartTitle">
+                    <View android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
+                    <View android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
+                    <View android:layout_width="0dp" android:layout_height="90dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/vibrant_cyan" />
+                    <View android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
+                    <View android:layout_width="0dp" android:layout_height="75dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
+                    <View android:layout_width="0dp" android:layout_height="110dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/vibrant_cyan" />
+                    <View android:layout_width="0dp" android:layout_height="45dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/chartMock">
+                    app:layout_constraintTop_toBottomOf="@id/chartContainer">
                     <TextView style="@style/ChartDayLabel" android:text="Mon" />
                     <TextView style="@style/ChartDayLabel" android:text="Tue" />
                     <TextView style="@style/ChartDayLabel" android:text="Wed" />
@@ -447,7 +454,7 @@
                 <ImageView
                     android:id="@+id/ivWater"
                     style="@style/ConsumerIcon"
-                    android:src="@drawable/ic_bath"
+                    android:src="@drawable/ic_kitchen"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
                 <TextView
@@ -473,7 +480,7 @@
                 <ImageView
                     android:id="@+id/ivEv"
                     style="@style/ConsumerIcon"
-                    android:src="@drawable/ic_bolt"
+                    android:src="@drawable/ic_power_plug"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
                 <TextView

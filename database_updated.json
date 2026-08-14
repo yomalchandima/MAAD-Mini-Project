@@ -13,6 +13,7 @@
         "floor1": {
           "floorId": "floor1",
           "floorName": "Ground Floor",
+          "floorPlanImage": "ground_floor_map",
           "zones": {
             "livingRoom": {
               "zoneId": "livingRoom",
@@ -238,6 +239,7 @@
         "floor2": {
           "floorId": "floor2",
           "floorName": "First Floor",
+          "floorPlanImage": "first_floor_map",
           "zones": {
             "masterBedroom": {
               "zoneId": "masterBedroom",
@@ -286,6 +288,21 @@
                   "online": true,
                   "x": 0.82,
                   "y": 0.64,
+                  "lastUpdated": 0
+                },
+                "iron01": {
+                  "deviceId": "iron01",
+                  "deviceName": "Smart Clothing Iron",
+                  "type": "IRON",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 1200.0,
+                  "unit": "Watts",
+                  "icon": "iron",
+                  "online": true,
+                  "maxActiveDuration": 15,
+                  "x": 0.6,
+                  "y": 0.38,
                   "lastUpdated": 0
                 }
               }
@@ -374,21 +391,6 @@
                   "online": true,
                   "x": 0.74,
                   "y": 0.82,
-                  "lastUpdated": 0
-                },
-                "iron01": {
-                  "deviceId": "iron01",
-                  "deviceName": "Smart Clothing Iron",
-                  "type": "IRON",
-                  "state": false,
-                  "status": "Normal",
-                  "power": 1200.0,
-                  "unit": "Watts",
-                  "icon": "iron",
-                  "online": true,
-                  "maxActiveDuration": 15,
-                  "x": 0.6,
-                  "y": 0.38,
                   "lastUpdated": 0
                 }
               }

@@ -12,8 +12,18 @@ import com.example.maadminiproject.ui.dashboard.MainActivity
 import com.example.maadminiproject.ui.floor.FloorActivity
 import com.example.maadminiproject.ui.settings.SettingsActivity
 
+import android.content.res.ColorStateList
+import androidx.lifecycle.ViewModelProvider
+import com.example.maadminiproject.viewmodel.device.DeviceViewModel
+
 class KitchenActivity : AppCompatActivity() {
     private lateinit var binding: ActivityKitchenBinding
+    private lateinit var deviceViewModel: DeviceViewModel
+    private var isProgrammaticUpdate = false
+
+    private val homeId = "home001"
+    private val floorId = "floor1"
+    private val zoneId = "kitchen"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,39 +41,68 @@ class KitchenActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        deviceViewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
+
         setupSwitchListeners()
         setupBottomNav()
+        observeDevices()
+
+        deviceViewModel.observeDevices(homeId, floorId, zoneId)
+    }
+
+    private fun observeDevices() {
+        deviceViewModel.devices.observe(this) { deviceList ->
+            // 1. light02 - Kitchen Light
+            val light = deviceList.find { it.deviceId == "light02" }
+            if (light != null) {
+                isProgrammaticUpdate = true
+                binding.swMainLighting.isChecked = light.state
+                if (light.state) {
+                    binding.tvLightStatus.text = getString(R.string.online_caps)
+                    binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                    binding.tvLightStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                    binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                } else {
+                    binding.tvLightStatus.text = getString(R.string.status_off)
+                    binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
+                    binding.tvLightStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                    binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
+                }
+                isProgrammaticUpdate = false
+            }
+
+            // 2. plug01 - Kitchen Smart Plug (Espresso Machine)
+            val plug = deviceList.find { it.deviceId == "plug01" }
+            if (plug != null) {
+                isProgrammaticUpdate = true
+                binding.swEspresso.isChecked = plug.state
+                if (plug.state) {
+                    binding.tvEspressoStatus.text = getString(R.string.status_on)
+                    binding.tvEspressoStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                    binding.tvEspressoStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                    binding.ivPlugIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                    binding.ivPlugIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.deep_midnight))
+                } else {
+                    binding.tvEspressoStatus.text = getString(R.string.status_off)
+                    binding.tvEspressoStatus.setTextColor(getColor(R.color.soft_gray))
+                    binding.tvEspressoStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                    binding.ivPlugIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
+                    binding.ivPlugIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                }
+                isProgrammaticUpdate = false
+            }
+        }
     }
 
     private fun setupSwitchListeners() {
         binding.swMainLighting.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvLightStatus.text = getString(R.string.online_caps)
-                binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                binding.tvLightStatus.compoundDrawableTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
-                binding.ivLightIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
-            } else {
-                binding.tvLightStatus.text = getString(R.string.status_off)
-                binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.tvLightStatus.compoundDrawableTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
-                binding.ivLightIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "light02", isChecked)
         }
 
         binding.swEspresso.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvEspressoStatus.text = getString(R.string.status_on)
-                binding.tvEspressoStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                binding.tvEspressoStatus.compoundDrawableTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
-                binding.ivPlugIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
-                binding.ivPlugIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.deep_midnight))
-            } else {
-                binding.tvEspressoStatus.text = getString(R.string.status_off)
-                binding.tvEspressoStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.tvEspressoStatus.compoundDrawableTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
-                binding.ivPlugIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
-                binding.ivPlugIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "plug01", isChecked)
         }
     }
 

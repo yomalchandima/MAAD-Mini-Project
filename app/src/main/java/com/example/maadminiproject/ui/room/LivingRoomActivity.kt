@@ -14,10 +14,17 @@ import com.example.maadminiproject.ui.settings.SettingsActivity
 
 import android.content.res.ColorStateList
 import androidx.core.content.ContextCompat
-import com.google.android.material.button.MaterialButton
+import androidx.lifecycle.ViewModelProvider
+import com.example.maadminiproject.viewmodel.device.DeviceViewModel
 
 class LivingRoomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLivingRoomBinding
+    private lateinit var deviceViewModel: DeviceViewModel
+    private var isProgrammaticUpdate = false
+
+    private val homeId = "home001"
+    private val floorId = "floor1"
+    private val zoneId = "livingRoom"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,49 +42,90 @@ class LivingRoomActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        deviceViewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
+
         setupBottomNav()
         setupLightingControls()
+        observeDevices()
+
+        deviceViewModel.observeDevices(homeId, floorId, zoneId)
+    }
+
+    private fun observeDevices() {
+        deviceViewModel.devices.observe(this) { deviceList ->
+            // 1. light01 - Living Light
+            val light = deviceList.find { it.deviceId == "light01" }
+            if (light != null) {
+                isProgrammaticUpdate = true
+                binding.swMainLighting.isChecked = light.state
+                if (light.state) {
+                    binding.tvLightStatus.text = getString(R.string.status_on)
+                    binding.tvLightStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                    binding.ivLightIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                } else {
+                    binding.tvLightStatus.text = getString(R.string.status_off)
+                    binding.tvLightStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
+                    binding.ivLightIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
+                }
+                isProgrammaticUpdate = false
+            }
+
+            // 2. fan01 - Ceiling Fan
+            val fan = deviceList.find { it.deviceId == "fan01" }
+            if (fan != null) {
+                isProgrammaticUpdate = true
+                binding.swCeilingFan.isChecked = fan.state
+                if (fan.state) {
+                    binding.tvFanStatus.text = getString(R.string.status_on)
+                    binding.tvFanStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                    binding.ivFanIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                } else {
+                    binding.tvFanStatus.text = getString(R.string.status_off)
+                    binding.tvFanStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
+                    binding.ivFanIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
+                }
+                isProgrammaticUpdate = false
+            }
+
+            // 3. camera01 - Entrance Camera
+            val camera = deviceList.find { it.deviceId == "camera01" }
+            if (camera != null) {
+                isProgrammaticUpdate = true
+                val isActive = camera.state || (camera.recording == true)
+                binding.swCam.isChecked = isActive
+                if (isActive) {
+                    binding.tvCamStatus.text = getString(R.string.live)
+                    binding.tvCamStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                    binding.tvCamStatus.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                    binding.ivCamIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                    binding.camFrame.alpha = 1.0f
+                } else {
+                    binding.tvCamStatus.text = getString(R.string.status_off)
+                    binding.tvCamStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
+                    binding.tvCamStatus.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
+                    binding.ivCamIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
+                    binding.camFrame.alpha = 0.5f
+                }
+                isProgrammaticUpdate = false
+            }
+        }
     }
 
     private fun setupLightingControls() {
         binding.swMainLighting.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvLightStatus.text = getString(R.string.status_on)
-                binding.tvLightStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
-                binding.ivLightIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
-            } else {
-                binding.tvLightStatus.text = getString(R.string.status_off)
-                binding.tvLightStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
-                binding.ivLightIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "light01", isChecked)
         }
 
         binding.swCeilingFan.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvFanStatus.text = getString(R.string.status_on)
-                binding.tvFanStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
-                binding.ivFanIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
-            } else {
-                binding.tvFanStatus.text = getString(R.string.status_off)
-                binding.tvFanStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
-                binding.ivFanIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "fan01", isChecked)
         }
 
         binding.swCam.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvCamStatus.text = getString(R.string.live)
-                binding.tvCamStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
-                binding.tvCamStatus.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
-                binding.ivCamIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
-                binding.camFrame.alpha = 1.0f
-            } else {
-                binding.tvCamStatus.text = getString(R.string.status_off)
-                binding.tvCamStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
-                binding.tvCamStatus.compoundDrawableTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
-                binding.ivCamIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
-                binding.camFrame.alpha = 0.5f
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "camera01", isChecked)
+            deviceViewModel.setRecording(homeId, floorId, zoneId, "camera01", isChecked)
         }
     }
 

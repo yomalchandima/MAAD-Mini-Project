@@ -12,9 +12,17 @@ import com.example.maadminiproject.databinding.ActivityStaircaseBinding
 import com.example.maadminiproject.ui.dashboard.MainActivity
 import com.example.maadminiproject.ui.floor.FloorActivity
 import com.example.maadminiproject.ui.settings.SettingsActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.maadminiproject.viewmodel.device.DeviceViewModel
 
 class StaircaseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStaircaseBinding
+    private lateinit var deviceViewModel: DeviceViewModel
+    private var isProgrammaticUpdate = false
+
+    private val homeId = "home001"
+    private val floorId = "floor1"
+    private val zoneId = "staircase"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,25 +40,43 @@ class StaircaseActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        deviceViewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
+
         setupControls()
         setupBottomNav()
+        observeDevices()
+
+        deviceViewModel.observeDevices(homeId, floorId, zoneId)
+    }
+
+    private fun observeDevices() {
+        deviceViewModel.devices.observe(this) { deviceList ->
+            // 1. light06 - Stairway Light
+            val light = deviceList.find { it.deviceId == "light06" }
+            if (light != null) {
+                isProgrammaticUpdate = true
+                binding.swLight.isChecked = light.state
+                if (light.state) {
+                    binding.tvLightStatus.text = getString(R.string.online_caps)
+                    binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                    binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                    binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.deep_midnight))
+                } else {
+                    binding.tvLightStatus.text = getString(R.string.status_off)
+                    binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
+                    binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
+                    binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                }
+                isProgrammaticUpdate = false
+            }
+        }
     }
 
     private fun setupControls() {
         binding.swLight.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvLightStatus.text = getString(R.string.online_caps)
-                binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
-                binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.deep_midnight))
-            } else {
-                binding.tvLightStatus.text = getString(R.string.status_off)
-                binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
-                binding.ivLightIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "light06", isChecked)
         }
-
     }
 
     private fun setupBottomNav() {

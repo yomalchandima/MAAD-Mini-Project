@@ -82,6 +82,147 @@ class ScheduleViewModel : ViewModel() {
     }
 
     /**
+     * Creates a new schedule for the smart home.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param schedule The schedule object to create.
+     * @param onSuccess Optional callback with the generated scheduleId.
+     */
+    fun createSchedule(
+        homeId: String,
+        schedule: Schedule,
+        onSuccess: ((String) -> Unit)? = null,
+    ) {
+        if (schedule.deviceId.isBlank()) {
+            _errorMessage.value = "Failed to create schedule: Device ID must not be blank"
+            return
+        }
+        if (schedule.action.isBlank()) {
+            _errorMessage.value = "Failed to create schedule: Action must not be blank"
+            return
+        }
+        if (schedule.startTime.isBlank()) {
+            _errorMessage.value = "Failed to create schedule: Start time must not be blank"
+            return
+        }
+
+        repository.createSchedule(
+            homeId = homeId,
+            schedule = schedule,
+            onSuccess = onSuccess,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to create schedule: ${exception.message}"
+            },
+        )
+    }
+
+    /**
+     * Updates an existing schedule.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param schedule The schedule object with updated fields.
+     * @param onSuccess Optional callback upon successful update.
+     */
+    fun updateSchedule(
+        homeId: String,
+        schedule: Schedule,
+        onSuccess: (() -> Unit)? = null,
+    ) {
+        if (schedule.scheduleId.isBlank()) {
+            _errorMessage.value = "Failed to update schedule: Schedule ID must not be blank"
+            return
+        }
+
+        repository.updateSchedule(
+            homeId = homeId,
+            schedule = schedule,
+            onSuccess = onSuccess,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to update schedule: ${exception.message}"
+            },
+        )
+    }
+
+    /**
+     * Sets the enabled state of a specific schedule.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param scheduleId Unique identifier of the schedule.
+     * @param enabled The new enabled state.
+     * @param onSuccess Optional callback upon successful update.
+     */
+    fun setScheduleEnabled(
+        homeId: String,
+        scheduleId: String,
+        enabled: Boolean,
+        onSuccess: (() -> Unit)? = null,
+    ) {
+        if (scheduleId.isBlank()) {
+            _errorMessage.value = "Failed to update schedule: Schedule ID must not be blank"
+            return
+        }
+
+        repository.setScheduleEnabled(
+            homeId = homeId,
+            scheduleId = scheduleId,
+            enabled = enabled,
+            onSuccess = onSuccess,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to set schedule state: ${exception.message}"
+            },
+        )
+    }
+
+    /**
+     * Toggles the enabled state of a specific schedule.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param scheduleId Unique identifier of the schedule.
+     * @param onSuccess Optional callback upon successful update.
+     */
+    fun toggleScheduleEnabled(
+        homeId: String,
+        scheduleId: String,
+        onSuccess: (() -> Unit)? = null,
+    ) {
+        val currentSchedule = _schedules.value?.find { it.scheduleId == scheduleId }
+        val currentEnabled = currentSchedule?.enabled ?: true
+        setScheduleEnabled(
+            homeId = homeId,
+            scheduleId = scheduleId,
+            enabled = !currentEnabled,
+            onSuccess = onSuccess,
+        )
+    }
+
+    /**
+     * Deletes a schedule.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param scheduleId Unique identifier of the schedule to delete.
+     * @param onSuccess Optional callback upon successful deletion.
+     */
+    fun deleteSchedule(
+        homeId: String,
+        scheduleId: String,
+        onSuccess: (() -> Unit)? = null,
+    ) {
+        if (scheduleId.isBlank()) {
+            _errorMessage.value = "Failed to delete schedule: Schedule ID must not be blank"
+            return
+        }
+
+        repository.deleteSchedule(
+            homeId = homeId,
+            scheduleId = scheduleId,
+            onSuccess = onSuccess,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to delete schedule: ${exception.message}"
+            },
+        )
+    }
+
+    /**
      * Clears the current error message.
      */
     fun clearError() {

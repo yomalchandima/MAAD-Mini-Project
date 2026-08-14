@@ -215,4 +215,29 @@
     <string name="ev_charger">Master Bedroom Iron</string>
     <string name="ev_charger_usage">2.8 kWh • $0.84</string>
     <string name="percent_0">0%</string>
+
+    <!-- Floor Management & Floor Plan Strings -->
+    <string name="add_floor">Add Floor</string>
+    <string name="add_new_floor">Add New Floor</string>
+    <string name="floor_name_hint">Floor Name (e.g. Second Floor, Basement)</string>
+    <string name="select_floor_plan">Select Floor Plan Layout</string>
+    <string name="plan_ground_floor">Ground Floor Layout</string>
+    <string name="plan_first_floor">First Floor Layout</string>
+    <string name="plan_studio">Modern Studio Layout</string>
+    <string name="rename_floor">Rename Floor</string>
+    <string name="delete_floor">Delete Floor</string>
+    <string name="delete_floor_confirm">Are you sure you want to delete \"%1$s\" and all its rooms and devices?</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="create">Create</string>
+    <string name="delete">Delete</string>
+    <string name="grid_toggle">Grid View</string>
+    <string name="grid_on">Grid ON</string>
+    <string name="grid_off">Grid OFF</string>
+    <string name="enter_floor">Enter Floor</string>
+    <string name="rooms_count_dynamic">%1$d Rooms</string>
+    <string name="devices_count_dynamic">%1$d Devices</string>
+    <string name="active_count_dynamic">%1$d Active</string>
+    <string name="quick_device_control">Device Controls</string>
+    <string name="go_to_room">Go to Room</string>
 </resources>

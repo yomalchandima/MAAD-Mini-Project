@@ -58,366 +58,91 @@
         app:layout_constraintBottom_toTopOf="@id/bottomNav"
         app:layout_constraintTop_toBottomOf="@id/headerBar">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:paddingBottom="40dp">
 
             <TextView
                 android:id="@+id/tvDescription"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="60dp"
                 android:text="@string/floor_description"
                 android:textColor="@color/soft_gray"
-                android:textSize="14sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="14sp" />
 
-            <!-- Ground Floor Card -->
+            <!-- Floors Title and Add Floor Button -->
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardGroundFloor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/bg_card_dark"
-                android:padding="20dp"
-                app:layout_constraintTop_toBottomOf="@id/tvDescription">
+                android:layout_marginTop="24dp">
 
                 <TextView
-                    android:id="@+id/tvGroundLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ground_floor_label"
-                    android:textColor="@color/vibrant_cyan"
-                    android:textSize="16sp"
+                    android:text="@string/floors"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <LinearLayout
-                    android:id="@+id/badgesGround"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvGroundLabel">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_social_button"
-                        android:drawablePadding="8dp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="@string/rooms_count_6"
-                        android:textColor="@color/vibrant_cyan"
-                        android:textSize="12sp"
-                        app:drawableTint="@color/vibrant_cyan" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_social_button"
-                        android:drawablePadding="8dp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="@string/devices_count_11"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="12sp"
-                        app:drawableStartCompat="@drawable/ic_bolt"
-                        app:drawableTint="@color/soft_gray" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="@drawable/bg_social_button"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_stairs"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/vibrant_cyan" />
-
-                <!-- Room Icons -->
-                <LinearLayout
-                    android:id="@+id/roomIconsGround"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/badgesGround">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_kitchen"
-                            app:tint="@color/white" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/kitchen"
-                            android:textColor="@color/soft_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_sofa"
-                            app:tint="@color/white" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/living"
-                            android:textColor="@color/soft_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_garage"
-                            app:tint="@color/white" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/garage"
-                            android:textColor="@color/soft_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_patio"
-                            app:tint="@color/white" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/patio"
-                            android:textColor="@color/soft_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-                </LinearLayout>
-
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEnterGroundFloor"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="32dp"
+                    android:id="@+id/btnAddFloor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
                     android:backgroundTint="@color/vibrant_cyan"
-                    android:text="@string/enter_ground_floor"
+                    android:paddingHorizontal="16dp"
+                    android:text="@string/add_floor"
                     android:textAllCaps="false"
                     android:textColor="@color/deep_midnight"
+                    android:textSize="13sp"
                     android:textStyle="bold"
                     app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_arrow_right"
-                    app:iconGravity="textEnd"
+                    app:icon="@drawable/ic_layers"
                     app:iconTint="@color/deep_midnight"
-                    app:layout_constraintTop_toBottomOf="@id/roomIconsGround" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- First Floor Card -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/cardFirstFloor"
+            <!-- Dynamic Floors RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvFloors"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/bg_card_dark"
-                android:padding="20dp"
-                app:layout_constraintTop_toBottomOf="@id/cardGroundFloor"
-                tools:layout_editor_absoluteX="36dp">
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Empty State Layout -->
+            <LinearLayout
+                android:id="@+id/layoutEmptyFloors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_floors"
+                    app:tint="@color/soft_gray" />
 
                 <TextView
-                    android:id="@+id/tvFirstLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/first_floor_label"
-                    android:textColor="@color/vibrant_cyan"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/badgesFirst"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tvFirstLabel">
+                    android:text="No floors found. Add a floor to get started."
+                    android:textColor="@color/soft_gray"
+                    android:textSize="14sp" />
+            </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_social_button"
-                        android:drawablePadding="8dp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="@string/rooms_count_4"
-                        android:textColor="@color/vibrant_cyan"
-                        android:textSize="12sp"
-                        app:drawableTint="@color/vibrant_cyan" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:background="@drawable/bg_social_button"
-                        android:drawablePadding="8dp"
-                        android:paddingHorizontal="12dp"
-                        android:paddingVertical="4dp"
-                        android:text="@string/devices_count_9"
-                        android:textColor="@color/soft_gray"
-                        android:textSize="12sp"
-                        app:drawableStartCompat="@drawable/ic_bolt"
-                        app:drawableTint="@color/soft_gray" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:background="@drawable/bg_social_button"
-                    android:padding="10dp"
-                    android:src="@drawable/ic_layers"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:tint="@color/vibrant_cyan" />
-
-                <!-- Room Icons -->
-                <LinearLayout
-                    android:id="@+id/roomIconsFirst"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/badgesFirst">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_bed"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/master"
-                            android:textColor="@color/soft_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_briefcase"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/office"
-                            android:textColor="@color/soft_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <ImageView
-                            android:layout_width="24dp"
-                            android:layout_height="24dp"
-                            android:src="@drawable/ic_bath"
-                            app:tint="@color/white" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="@string/bath"
-                            android:textColor="@color/soft_gray"
-                            android:textSize="12sp" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-                </LinearLayout>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnEnterFirstFloor"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_marginTop="32dp"
-                    android:backgroundTint="@color/vibrant_cyan"
-                    android:text="@string/enter_first_floor"
-                    android:textAllCaps="false"
-                    android:textColor="@color/deep_midnight"
-                    android:textStyle="bold"
-                    app:cornerRadius="12dp"
-                    app:icon="@drawable/ic_arrow_right"
-                    app:iconGravity="textEnd"
-                    app:iconTint="@color/deep_midnight"
-                    app:layout_constraintTop_toBottomOf="@id/roomIconsFirst" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <!-- Bottom Navigation -->

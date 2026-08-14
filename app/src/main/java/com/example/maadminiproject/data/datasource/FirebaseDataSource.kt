@@ -2,6 +2,8 @@ package com.example.maadminiproject.data.datasource
 
 import com.example.maadminiproject.core.firebase.FirebaseManager
 import com.example.maadminiproject.core.firebase.RealtimeDatabaseHelper
+import com.example.maadminiproject.data.models.Floor
+import com.example.maadminiproject.data.models.Schedule
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -74,6 +76,71 @@ class FirebaseDataSource {
         onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "floors"), onData, onFailure)
+    }
+
+    /**
+     * Creates a new floor node in Firebase under the specified home.
+     *
+     * Path: homes/{homeId}/floors/{floor.floorId}
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floor The Floor model to write.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun createFloor(
+        homeId: String,
+        floor: Floor,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val floorRef = getHomeReference(homeId)
+            .child("floors").child(floor.floorId)
+        helper.writeData(floorRef, floor, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates specific fields of an existing floor in Firebase.
+     *
+     * Path: homes/{homeId}/floors/{floorId}
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param updates Map of fields to update (e.g. "floorName", "floorPlanImage").
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateFloor(
+        homeId: String,
+        floorId: String,
+        updates: Map<String, Any>,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val floorRef = getHomeReference(homeId)
+            .child("floors").child(floorId)
+        helper.updateData(floorRef, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Deletes a floor and all its nested zones and devices from Firebase.
+     *
+     * Path: homes/{homeId}/floors/{floorId}
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor to delete.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun deleteFloor(
+        homeId: String,
+        floorId: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val floorRef = getHomeReference(homeId)
+            .child("floors").child(floorId)
+        helper.deleteData(floorRef, onSuccess, onFailure)
     }
 
     /**
@@ -357,6 +424,144 @@ class FirebaseDataSource {
         onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "schedules"), onData, onFailure)
+    }
+
+    /**
+     * Creates a new schedule in the specified home under homes/{homeId}/schedules/{scheduleId}.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param schedule The [Schedule] object to create. If [Schedule.scheduleId] is blank, a unique key is generated.
+     * @param onSuccess Optional callback receiving the created scheduleId upon success.
+     * @param onFailure Optional callback invoked with an [Exception] upon failure.
+     */
+    fun createSchedule(
+        homeId: String,
+        schedule: Schedule,
+        onSuccess: ((String) -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val schedulesRef = getHomeChildRef(homeId, "schedules")
+        val finalScheduleId = if (schedule.scheduleId.isNotBlank()) {
+            schedule.scheduleId
+        } else {
+            schedulesRef.push().key ?: java.util.UUID.randomUUID().toString()
+        }
+        val finalCreatedAt = if (schedule.createdAt > 0L) {
+            schedule.createdAt
+        } else {
+            System.currentTimeMillis()
+        }
+        val finalSchedule = schedule.copy(
+            scheduleId = finalScheduleId,
+            createdAt = finalCreatedAt,
+        )
+        val scheduleRef = schedulesRef.child(finalScheduleId)
+        helper.writeData(
+            scheduleRef,
+            finalSchedule,
+            onSuccess = { onSuccess?.invoke(finalScheduleId) },
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Updates an existing schedule under homes/{homeId}/schedules/{scheduleId}.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param schedule The [Schedule] object containing updated fields.
+     * @param onSuccess Optional callback invoked upon success.
+     * @param onFailure Optional callback invoked with an [Exception] upon failure.
+     */
+    fun updateSchedule(
+        homeId: String,
+        schedule: Schedule,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val scheduleRef = getHomeChildRef(homeId, "schedules").child(schedule.scheduleId)
+        val updates = mutableMapOf<String, Any>(
+            "scheduleId" to schedule.scheduleId,
+            "deviceId" to schedule.deviceId,
+            "deviceName" to schedule.deviceName,
+            "action" to schedule.action,
+            "startTime" to schedule.startTime,
+            "repeat" to schedule.repeat,
+            "enabled" to schedule.enabled,
+        )
+        if (schedule.endTime != null) {
+            updates["endTime"] = schedule.endTime
+        }
+        if (schedule.switchId != null) {
+            updates["switchId"] = schedule.switchId
+        }
+        if (schedule.createdAt > 0L) {
+            updates["createdAt"] = schedule.createdAt
+        }
+        helper.updateData(scheduleRef, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Performs a partial field update on a specific schedule.
+     *
+     * Path: homes/{homeId}/schedules/{scheduleId}
+     *
+     * @param homeId The unique identifier of the home.
+     * @param scheduleId The unique identifier of the schedule.
+     * @param updates A map containing field paths and new values.
+     * @param onSuccess Optional callback invoked upon success.
+     * @param onFailure Optional callback invoked with an [Exception] upon failure.
+     */
+    fun updateScheduleFields(
+        homeId: String,
+        scheduleId: String,
+        updates: Map<String, Any>,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val scheduleRef = getHomeChildRef(homeId, "schedules").child(scheduleId)
+        helper.updateData(scheduleRef, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the enabled state of a specific schedule.
+     *
+     * Path: homes/{homeId}/schedules/{scheduleId}/enabled
+     *
+     * @param homeId The unique identifier of the home.
+     * @param scheduleId The unique identifier of the schedule.
+     * @param enabled The new enabled state.
+     * @param onSuccess Optional callback invoked upon success.
+     * @param onFailure Optional callback invoked with an [Exception] upon failure.
+     */
+    fun updateScheduleEnabled(
+        homeId: String,
+        scheduleId: String,
+        enabled: Boolean,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val updates = mapOf<String, Any>("enabled" to enabled)
+        updateScheduleFields(homeId, scheduleId, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Deletes a schedule from the database.
+     *
+     * Path: homes/{homeId}/schedules/{scheduleId}
+     *
+     * @param homeId The unique identifier of the home.
+     * @param scheduleId The unique identifier of the schedule to delete.
+     * @param onSuccess Optional callback invoked upon success.
+     * @param onFailure Optional callback invoked with an [Exception] upon failure.
+     */
+    fun deleteSchedule(
+        homeId: String,
+        scheduleId: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val scheduleRef = getHomeChildRef(homeId, "schedules").child(scheduleId)
+        helper.deleteData(scheduleRef, onSuccess, onFailure)
     }
 
     /**

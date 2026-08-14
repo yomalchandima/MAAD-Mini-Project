@@ -82,6 +82,133 @@ class FloorViewModel : ViewModel() {
     }
 
     /**
+     * Creates a new floor with a generated deterministic ID (e.g. floor3, floor4)
+     * and writes it to Firebase.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorName User-friendly name for the new floor.
+     * @param floorPlanImage Optional floor plan template identifier.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun createFloor(
+        homeId: String,
+        floorName: String,
+        floorPlanImage: String? = null,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val currentFloors = _floors.value ?: emptyList()
+        val existingNumbers = currentFloors.mapNotNull { floor ->
+            floor.floorId.removePrefix("floor").toIntOrNull()
+        }.toSet()
+
+        var nextNum = 1
+        while (existingNumbers.contains(nextNum)) {
+            nextNum++
+        }
+
+        val newFloorId = "floor$nextNum"
+        val newFloor = Floor(
+            floorId = newFloorId,
+            floorName = floorName.ifBlank { "Floor $nextNum" },
+            floorPlanImage = floorPlanImage ?: "ground_floor_map",
+            zones = mutableMapOf(),
+        )
+
+        repository.createFloor(
+            homeId = homeId,
+            floor = newFloor,
+            onSuccess = onSuccess,
+            onFailure = { error ->
+                _errorMessage.value = "Failed to create floor: ${error.message}"
+                onFailure?.invoke(error)
+            },
+        )
+    }
+
+    /**
+     * Updates the name of an existing floor.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param newName The updated floor name.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateFloorName(
+        homeId: String,
+        floorId: String,
+        newName: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        repository.updateFloorName(
+            homeId = homeId,
+            floorId = floorId,
+            newName = newName,
+            onSuccess = onSuccess,
+            onFailure = { error ->
+                _errorMessage.value = "Failed to rename floor: ${error.message}"
+                onFailure?.invoke(error)
+            },
+        )
+    }
+
+    /**
+     * Updates the floor plan image reference of an existing floor.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param newPlanImage The updated floor plan image resource name.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateFloorPlan(
+        homeId: String,
+        floorId: String,
+        newPlanImage: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        repository.updateFloorPlan(
+            homeId = homeId,
+            floorId = floorId,
+            newPlanImage = newPlanImage,
+            onSuccess = onSuccess,
+            onFailure = { error ->
+                _errorMessage.value = "Failed to update floor plan: ${error.message}"
+                onFailure?.invoke(error)
+            },
+        )
+    }
+
+    /**
+     * Deletes a floor and all its contents from Firebase.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor to delete.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun deleteFloor(
+        homeId: String,
+        floorId: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        repository.deleteFloor(
+            homeId = homeId,
+            floorId = floorId,
+            onSuccess = onSuccess,
+            onFailure = { error ->
+                _errorMessage.value = "Failed to delete floor: ${error.message}"
+                onFailure?.invoke(error)
+            },
+        )
+    }
+
+    /**
      * Clears the current error message.
      */
     fun clearError() {

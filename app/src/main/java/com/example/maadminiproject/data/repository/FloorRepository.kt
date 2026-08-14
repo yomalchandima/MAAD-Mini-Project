@@ -55,6 +55,97 @@ class FloorRepository {
     }
 
     /**
+     * Creates a new floor under the specified home.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floor Floor model to create.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun createFloor(
+        homeId: String,
+        floor: Floor,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.createFloor(homeId, floor, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates specific fields of an existing floor.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param updates Map of fields to update.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateFloor(
+        homeId: String,
+        floorId: String,
+        updates: Map<String, Any>,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.updateFloor(homeId, floorId, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the name of an existing floor.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param newName The updated floor name.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateFloorName(
+        homeId: String,
+        floorId: String,
+        newName: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        updateFloor(homeId, floorId, mapOf("floorName" to newName), onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the floor plan image reference of an existing floor.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param newPlanImage The updated floor plan image resource/name.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateFloorPlan(
+        homeId: String,
+        floorId: String,
+        newPlanImage: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        updateFloor(homeId, floorId, mapOf("floorPlanImage" to newPlanImage), onSuccess, onFailure)
+    }
+
+    /**
+     * Deletes a floor from the specified home.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor to delete.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun deleteFloor(
+        homeId: String,
+        floorId: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.deleteFloor(homeId, floorId, onSuccess, onFailure)
+    }
+
+    /**
      * Helper function to map a [DataSnapshot] to a list of [Floor] models.
      *
      * @param snapshot The snapshot containing floor children.

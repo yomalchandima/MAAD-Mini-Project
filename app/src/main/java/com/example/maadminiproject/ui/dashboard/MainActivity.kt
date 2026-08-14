@@ -31,11 +31,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.cardGroundFloor.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.floor.GroundFloorDetailActivity::class.java))
+            startActivity(
+                Intent(this, com.example.maadminiproject.ui.floor.FloorDetailActivity::class.java)
+                    .putExtra("floorId", "floor1")
+            )
         }
 
         binding.cardFirstFloor.setOnClickListener {
-            startActivity(Intent(this, com.example.maadminiproject.ui.floor.FirstFloorDetailActivity::class.java))
+            startActivity(
+                Intent(this, com.example.maadminiproject.ui.floor.FloorDetailActivity::class.java)
+                    .putExtra("floorId", "floor2")
+            )
         }
 
         binding.bottomNav.setOnItemSelectedListener { item ->

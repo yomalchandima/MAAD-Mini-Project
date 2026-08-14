@@ -55,6 +55,112 @@ class ScheduleRepository {
     }
 
     /**
+     * Creates a new schedule.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param schedule The schedule to create.
+     * @param onSuccess Optional callback receiving the created scheduleId.
+     * @param onFailure Optional callback for failed creation.
+     */
+    fun createSchedule(
+        homeId: String,
+        schedule: Schedule,
+        onSuccess: ((String) -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        if (schedule.deviceId.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Device ID must not be blank"))
+            return
+        }
+        if (schedule.action.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Action must not be blank"))
+            return
+        }
+        if (schedule.startTime.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Start time must not be blank"))
+            return
+        }
+        dataSource.createSchedule(homeId, schedule, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates an existing schedule.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param schedule The schedule to update.
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun updateSchedule(
+        homeId: String,
+        schedule: Schedule,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        if (schedule.scheduleId.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Schedule ID must not be blank for updates"))
+            return
+        }
+        if (schedule.deviceId.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Device ID must not be blank"))
+            return
+        }
+        if (schedule.action.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Action must not be blank"))
+            return
+        }
+        if (schedule.startTime.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Start time must not be blank"))
+            return
+        }
+        dataSource.updateSchedule(homeId, schedule, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the enabled state of a specific schedule.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param scheduleId Unique identifier of the schedule.
+     * @param enabled New enabled state.
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun setScheduleEnabled(
+        homeId: String,
+        scheduleId: String,
+        enabled: Boolean,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        if (scheduleId.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Schedule ID must not be blank"))
+            return
+        }
+        dataSource.updateScheduleEnabled(homeId, scheduleId, enabled, onSuccess, onFailure)
+    }
+
+    /**
+     * Deletes a schedule.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param scheduleId Unique identifier of the schedule to delete.
+     * @param onSuccess Optional callback for successful deletion.
+     * @param onFailure Optional callback for failed deletion.
+     */
+    fun deleteSchedule(
+        homeId: String,
+        scheduleId: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        if (scheduleId.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Schedule ID must not be blank"))
+            return
+        }
+        dataSource.deleteSchedule(homeId, scheduleId, onSuccess, onFailure)
+    }
+
+    /**
      * Helper function to map a [DataSnapshot] to a list of [Schedule] models.
      *
      * @param snapshot The snapshot containing schedule children.

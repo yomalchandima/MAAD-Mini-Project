@@ -12,11 +12,21 @@ import com.example.maadminiproject.ui.dashboard.MainActivity
 import com.example.maadminiproject.ui.floor.FloorActivity
 import com.example.maadminiproject.ui.settings.SettingsActivity
 
+import android.content.res.ColorStateList
+import androidx.lifecycle.ViewModelProvider
+import com.example.maadminiproject.viewmodel.device.DeviceViewModel
+
 class MasterBedroomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMasterBedroomBinding
+    private lateinit var deviceViewModel: DeviceViewModel
+    private var isProgrammaticUpdate = false
+
     private var currentTemp = 21
     private var ironMaxDuration = 10
-    private var ironTimer: android.os.CountDownTimer? = null
+
+    private val homeId = "home001"
+    private val floorId = "floor2"
+    private val zoneId = "masterBedroom"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,116 +44,144 @@ class MasterBedroomActivity : AppCompatActivity() {
             onBackPressedDispatcher.onBackPressed()
         }
 
+        deviceViewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
+
         setupControls()
         setupBottomNav()
+        observeDevices()
+
+        deviceViewModel.observeDevices(homeId, floorId, zoneId)
+    }
+
+    private fun observeDevices() {
+        deviceViewModel.devices.observe(this) { deviceList ->
+            // 1. light07 - Master Bedroom Light
+            val light = deviceList.find { it.deviceId == "light07" }
+            if (light != null) {
+                isProgrammaticUpdate = true
+                binding.swMainLights.isChecked = light.state
+                if (light.state) {
+                    binding.tvLightsStatus.text = getString(R.string.status_on)
+                    binding.tvLightsStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                    binding.ivLightsIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                } else {
+                    binding.tvLightsStatus.text = getString(R.string.status_off)
+                    binding.tvLightsStatus.setTextColor(getColor(R.color.soft_gray))
+                    binding.ivLightsIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
+                }
+                isProgrammaticUpdate = false
+            }
+
+            // 2. ac01 - Master Bedroom AC
+            val ac = deviceList.find { it.deviceId == "ac01" }
+            if (ac != null) {
+                isProgrammaticUpdate = true
+                binding.swAc.isChecked = ac.state
+                if (ac.state) {
+                    binding.tvAcStatus.text = getString(R.string.status_on)
+                    binding.tvAcStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                    binding.ivAcIcon.backgroundTintList = ColorStateList.valueOf(0x2000E5FF.toInt())
+                    binding.tempControl.visibility = android.view.View.VISIBLE
+                } else {
+                    binding.tvAcStatus.text = getString(R.string.status_off)
+                    binding.tvAcStatus.setTextColor(getColor(R.color.soft_gray))
+                    binding.ivAcIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
+                    binding.tempControl.visibility = android.view.View.GONE
+                }
+                ac.temperature?.let { temp ->
+                    currentTemp = temp
+                    binding.tvTemperature.text = getString(R.string.temp_format, temp)
+                }
+                isProgrammaticUpdate = false
+            }
+
+            // 3. plug03 - Bedroom Smart Plug
+            val plug = deviceList.find { it.deviceId == "plug03" }
+            if (plug != null) {
+                isProgrammaticUpdate = true
+                binding.swSmartPlug.isChecked = plug.state
+                if (plug.state) {
+                    binding.tvPlugStatus.text = getString(R.string.status_on)
+                    binding.tvPlugStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                    binding.ivPlugIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                } else {
+                    binding.tvPlugStatus.text = getString(R.string.status_off)
+                    binding.tvPlugStatus.setTextColor(getColor(R.color.soft_gray))
+                    binding.ivPlugIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                }
+                isProgrammaticUpdate = false
+            }
+
+            // 4. iron01 - Smart Clothing Iron (Master Bedroom)
+            val iron = deviceList.find { it.deviceId == "iron01" }
+            if (iron != null) {
+                isProgrammaticUpdate = true
+                binding.swIron.isChecked = iron.state
+                if (iron.state) {
+                    binding.tvIronStatus.text = getString(R.string.status_on)
+                    binding.tvIronStatus.setTextColor(getColor(R.color.vibrant_cyan))
+                    binding.ivIronIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                    binding.ivIronIcon.backgroundTintList = ColorStateList.valueOf(0x2000E5FF.toInt())
+                } else {
+                    binding.tvIronStatus.text = getString(R.string.status_off)
+                    binding.tvIronStatus.setTextColor(getColor(R.color.soft_gray))
+                    binding.ivIronIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                    binding.ivIronIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
+                }
+                iron.maxActiveDuration?.let { dur ->
+                    ironMaxDuration = dur.toInt()
+                    binding.tvIronDurationValue.text = getString(R.string.duration_format, ironMaxDuration)
+                    binding.sliderIronDuration.value = ironMaxDuration.toFloat().coerceIn(1f, 30f)
+                }
+                isProgrammaticUpdate = false
+            }
+        }
     }
 
     private fun setupControls() {
         binding.swAc.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvAcStatus.text = getString(R.string.status_on)
-                binding.tvAcStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                binding.ivAcIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(0x2000E5FF.toInt())
-                binding.tempControl.visibility = android.view.View.VISIBLE
-            } else {
-                binding.tvAcStatus.text = getString(R.string.status_off)
-                binding.tvAcStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.ivAcIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
-                binding.tempControl.visibility = android.view.View.GONE
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "ac01", isChecked)
         }
 
         binding.btnTempMinus.setOnClickListener {
-            if (currentTemp > 16) {
-                currentTemp--
-                updateTempUI()
+            val ac = deviceViewModel.devices.value?.find { it.deviceId == "ac01" }
+            val temp = ac?.temperature ?: currentTemp
+            if (temp > 16) {
+                deviceViewModel.setTemperature(homeId, floorId, zoneId, "ac01", temp - 1)
             }
         }
 
         binding.btnTempPlus.setOnClickListener {
-            if (currentTemp < 30) {
-                currentTemp++
-                updateTempUI()
+            val ac = deviceViewModel.devices.value?.find { it.deviceId == "ac01" }
+            val temp = ac?.temperature ?: currentTemp
+            if (temp < 30) {
+                deviceViewModel.setTemperature(homeId, floorId, zoneId, "ac01", temp + 1)
             }
         }
 
-
         binding.swMainLights.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvLightsStatus.text = getString(R.string.status_on)
-                binding.tvLightsStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                binding.ivLightsIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
-            } else {
-                binding.tvLightsStatus.text = getString(R.string.status_off)
-                binding.tvLightsStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.ivLightsIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "light07", isChecked)
         }
 
         binding.swSmartPlug.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                binding.tvPlugStatus.text = getString(R.string.status_error)
-                binding.tvPlugStatus.setTextColor(getColor(R.color.error_red))
-                binding.ivPlugIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.error_red))
-            } else {
-                binding.tvPlugStatus.text = getString(R.string.status_off)
-                binding.tvPlugStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.ivPlugIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "plug03", isChecked)
         }
 
         binding.swIron.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                startIronSafetyTimer()
-                binding.ivIronIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.error_red))
-                binding.ivIronIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(0x20FF5252.toInt())
-            } else {
-                stopIronSafetyTimer()
-                binding.tvIronStatus.text = getString(R.string.status_off)
-                binding.tvIronStatus.setTextColor(getColor(R.color.soft_gray))
-                binding.ivIronIcon.imageTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.soft_gray))
-                binding.ivIronIcon.backgroundTintList = android.content.res.ColorStateList.valueOf(getColor(R.color.surface_container))
-            }
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "iron01", isChecked)
         }
 
-        binding.sliderIronDuration.addOnChangeListener { _, value, _ ->
+        binding.sliderIronDuration.addOnChangeListener { _, value, fromUser ->
             ironMaxDuration = value.toInt()
             binding.tvIronDurationValue.text = getString(R.string.duration_format, ironMaxDuration)
-            if (binding.swIron.isChecked) {
-                // Restart timer if duration changed while running
-                startIronSafetyTimer()
+            if (fromUser) {
+                deviceViewModel.setMaxActiveDuration(homeId, floorId, zoneId, "iron01", ironMaxDuration.toLong())
             }
         }
-    }
-
-    private fun startIronSafetyTimer() {
-        ironTimer?.cancel()
-        
-        binding.tvIronStatus.text = getString(R.string.auto_off_status, ironMaxDuration)
-        binding.tvIronStatus.setTextColor(getColor(R.color.error_red))
-
-        // Note: Real minutes would be ironMaxDuration * 60 * 1000
-        // For demonstration, we'll treat 1 slider unit as a shorter interval if needed, 
-        // but for assignment compliance we'll use the logic.
-        ironTimer = object : android.os.CountDownTimer((ironMaxDuration * 60 * 1000).toLong(), 60000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val minsLeft = (millisUntilFinished / 60000).toInt() + 1
-                binding.tvIronStatus.text = getString(R.string.auto_off_status, minsLeft)
-            }
-
-            override fun onFinish() {
-                binding.swIron.isChecked = false
-            }
-        }.start()
-    }
-
-    private fun stopIronSafetyTimer() {
-        ironTimer?.cancel()
-        ironTimer = null
-    }
-
-    private fun updateTempUI() {
-        binding.tvTemperature.text = getString(R.string.temp_format, currentTemp)
     }
 
     private fun setupBottomNav() {

@@ -1,99 +1,189 @@
-let activeFloor = "ground_floor";
+/* =====================================================================
+   HARDWARE SIMULATOR — APPLICATION CONTROLLER (PHASE 5)
+   =====================================================================
+   - Pure UI controller consuming DataLayer.
+   - Dynamic floor, zone, and device rendering from Firebase.
+   - Independent multi-switch unit controls.
+   - Safety badge display for appliances with maxActiveDuration.
+   - Distinct safety-system activity logging.
+   - Zero direct Firebase SDK calls.
+   ===================================================================== */
 
-function isRoomLit(room) {
-  return room.devices.some((deviceId) => {
-    const meta = DEVICE_META[deviceId];
-    return meta && meta.type === "light" && DataLayer.getState(deviceId).status === "ON";
-  });
+/* Presentation mappings: Firebase keys -> CSS layout classes/areas */
+const FLOOR_LAYOUT_MAP = {
+  floor1: "ground_floor",
+  floor2: "first_floor"
+};
+
+const ZONE_LAYOUT_MAP = {
+  livingRoom:     "living_room",
+  kitchen:        "kitchen",
+  diningRoom:     "dining_room",
+  garage:         "garage",
+  bathroomGF:     "bathroom_gf",
+  staircase:      "staircase",
+  masterBedroom:  "master_bedroom",
+  bedroom2:       "bedroom_2",
+  workRoom:       "work_room",
+  bathroomFF:     "bathroom_ff",
+  hallway:        "hallway"
+};
+
+const FLOOR_ORDER = ["floor1", "floor2"];
+
+const ZONE_ORDER = {
+  floor1: ["livingRoom", "kitchen", "diningRoom", "garage", "bathroomGF", "staircase"],
+  floor2: ["masterBedroom", "bedroom2", "workRoom", "bathroomFF", "hallway"]
+};
+
+const TYPE_ICON = {
+  LIGHT: "💡",
+  FAN: "🌀",
+  CAMERA: "📷",
+  SMART_PLUG: "🔌",
+  AIR_CONDITIONER: "❄️",
+  IRON: "👔",
+  MULTI_SWITCH: "🎛️"
+};
+
+let activeFloor = "floor1";
+
+/* Power state evaluations */
+function isDeviceOn(deviceId) {
+  const st = DataLayer.getState(deviceId);
+  return Boolean(st && st.state === true);
 }
 
-function areAllLightsOn() {
-  return Object.keys(DEVICE_META).every((deviceId) => {
-    const meta = DEVICE_META[deviceId];
-    return !meta || meta.type !== "light" || DataLayer.getState(deviceId).status === "ON";
+function getDeviceDisplayStatus(deviceId) {
+  const st = DataLayer.getState(deviceId);
+  if (!st) return "OFF";
+  if (st.status === "DISCONNECTED") return "DISCONNECTED";
+  if (st.status === "ERROR") return "ERROR";
+  return st.state === true ? "ON" : "OFF";
+}
+
+function isRoomLit(zone) {
+  if (!zone || !zone.devices) return false;
+  const deviceList = Object.values(zone.devices);
+  return deviceList.some((d) => {
+    const typeUpper = (d.type || "").toUpperCase();
+    return typeUpper === "LIGHT" && isDeviceOn(d.deviceId);
   });
 }
 
 function areAllFloorLightsOn(floorId) {
-  const floor = HOUSE[floorId];
-  return Object.values(floor.rooms).every((room) =>
-    room.devices.every((deviceId) => {
-      const meta = DEVICE_META[deviceId];
-      return !meta || meta.type !== "light" || DataLayer.getState(deviceId).status === "ON";
+  const zones = DataLayer.getZones(floorId);
+  return Object.values(zones).every((zone) =>
+    Object.values(zone.devices || {}).every((d) => {
+      const typeUpper = (d.type || "").toUpperCase();
+      return typeUpper !== "LIGHT" || isDeviceOn(d.deviceId);
     })
   );
+}
+
+function areAllLightsOn() {
+  const floors = DataLayer.getFloors();
+  const floorKeys = Object.keys(floors);
+  if (floorKeys.length === 0) return false;
+  return floorKeys.every((floorId) => areAllFloorLightsOn(floorId));
 }
 
 function updateLightingStates() {
   const board = document.querySelector(".board");
   const floorTabs = document.getElementById("floorTabs");
   const roomsContainer = document.getElementById("roomsContainer");
-  const floor = HOUSE[activeFloor];
+  const floors = DataLayer.getFloors();
+  const activeFloorObj = floors[activeFloor] || {};
 
   if (!board) return;
   const houseLit = areAllLightsOn();
+  const floorLit = areAllFloorLightsOn(activeFloor);
 
   board.dataset.houseLit = String(houseLit);
+
   if (floorTabs) {
-    Object.entries(HOUSE).forEach(([floorId]) => {
+    Object.keys(floors).forEach((floorId) => {
       const tab = floorTabs.querySelector(`[data-floor-id="${floorId}"]`);
-      if (!tab) return;
-      tab.dataset.lit = String(areAllFloorLightsOn(floorId));
+      if (tab) {
+        tab.dataset.lit = String(areAllFloorLightsOn(floorId));
+      }
     });
   }
 
   if (roomsContainer) {
-    roomsContainer.dataset.floor = activeFloor;
+    roomsContainer.dataset.floor = FLOOR_LAYOUT_MAP[activeFloor] || activeFloor;
     roomsContainer.dataset.houseLit = String(houseLit);
-    roomsContainer.dataset.floorLit = String(areAllFloorLightsOn(activeFloor));
-    roomsContainer.dataset.floorLabel = floor.label.toUpperCase();
+    roomsContainer.dataset.floorLit = String(floorLit);
+    roomsContainer.dataset.floorLabel = (activeFloorObj.floorName || activeFloor).toUpperCase();
   }
 }
 
-/*CLOCK*/
+/* CLOCK */
 function tickClock() {
   const el = document.getElementById("clock");
-  el.textContent = new Date().toLocaleTimeString("en-GB", { hour12: false });
+  if (el) el.textContent = new Date().toLocaleTimeString("en-GB", { hour12: false });
 }
 setInterval(tickClock, 1000);
 tickClock();
 
-/*FLOOR TABS*/
+/* FLOOR TABS */
 function renderFloorTabs() {
   const nav = document.getElementById("floorTabs");
+  if (!nav) return;
   nav.innerHTML = "";
-  Object.entries(HOUSE).forEach(([floorId, floor]) => {
+
+  const floors = DataLayer.getFloors();
+  const floorKeys = Object.keys(floors);
+  const sortedFloorIds = FLOOR_ORDER.filter((id) => floorKeys.includes(id))
+    .concat(floorKeys.filter((id) => !FLOOR_ORDER.includes(id)));
+
+  sortedFloorIds.forEach((floorId) => {
+    const floor = floors[floorId];
     const btn = document.createElement("button");
     btn.className = "floor-tab" + (floorId === activeFloor ? " active" : "");
     btn.dataset.floorId = floorId;
     btn.dataset.lit = String(areAllFloorLightsOn(floorId));
-    btn.textContent = floor.label;
-    btn.onclick = () => { activeFloor = floorId; renderFloorTabs(); renderRooms(); };
+    btn.textContent = floor.floorName || floorId;
+    btn.onclick = () => {
+      activeFloor = floorId;
+      renderFloorTabs();
+      renderRooms();
+    };
     nav.appendChild(btn);
   });
 }
 
-/*ROOMS + DEVICES*/
+/* ROOMS + DEVICES */
 function renderRooms() {
   const container = document.getElementById("roomsContainer");
+  if (!container) return;
   container.innerHTML = "";
   updateLightingStates();
 
-  const floor = HOUSE[activeFloor];
-  Object.entries(floor.rooms).forEach(([roomId, room]) => {
+  const zones = DataLayer.getZones(activeFloor);
+  const zoneKeys = Object.keys(zones);
+  const preferredOrder = ZONE_ORDER[activeFloor] || [];
+  const sortedZoneIds = preferredOrder.filter((id) => zoneKeys.includes(id))
+    .concat(zoneKeys.filter((id) => !preferredOrder.includes(id)));
+
+  sortedZoneIds.forEach((zoneId) => {
+    const zone = zones[zoneId];
+    const cssRoomId = ZONE_LAYOUT_MAP[zoneId] || zoneId;
+    const devices = Object.values(zone.devices || {});
+
     const roomEl = document.createElement("div");
     roomEl.className = "room";
-    roomEl.id = `room-${roomId}`;
-    roomEl.dataset.roomId = roomId;
-    if (isRoomLit(room)) roomEl.classList.add("room--lit");
+    roomEl.id = `room-${zoneId}`;
+    roomEl.dataset.roomId = cssRoomId;
+    if (isRoomLit(zone)) roomEl.classList.add("room--lit");
 
     const head = document.createElement("div");
     head.className = "room__label";
-    head.innerHTML = `<h3>${room.label}</h3><span class="room__count">${room.devices.length} device${room.devices.length > 1 ? "s" : ""}</span>`;
+    head.innerHTML = `<h3>${zone.zoneName || zoneId}</h3><span class="room__count">${devices.length} device${devices.length !== 1 ? "s" : ""}</span>`;
     roomEl.appendChild(head);
 
-    room.devices.forEach(deviceId => {
-      roomEl.appendChild(renderDeviceRow(deviceId));
+    devices.forEach((device) => {
+      roomEl.appendChild(renderDeviceRow(device.deviceId));
     });
 
     container.appendChild(roomEl);
@@ -101,27 +191,115 @@ function renderRooms() {
 }
 
 function renderDeviceRow(deviceId) {
-  const meta = DEVICE_META[deviceId];
-  const current = DataLayer.getState(deviceId);
+  const device = DataLayer.getState(deviceId);
+  const displayStatus = getDeviceDisplayStatus(deviceId);
+  const isOn = isDeviceOn(deviceId);
+  const deviceType = (device.type || "LIGHT").toUpperCase();
+  const iconChar = TYPE_ICON[deviceType] || TYPE_ICON[(device.icon || "").toUpperCase()] || "💡";
 
+  // Check if device is a multi-switch unit
+  const isMultiSwitch = deviceType === "MULTI_SWITCH" || (device.switches && (device.switchCount > 1 || Object.keys(device.switches).length > 1));
+
+  if (isMultiSwitch) {
+    const row = document.createElement("div");
+    row.className = "device device--multi";
+    row.id = `device-${deviceId}`;
+
+    const main = document.createElement("div");
+    main.className = "device__main";
+
+    const icon = document.createElement("div");
+    icon.className = "device__icon";
+    icon.textContent = iconChar;
+    main.appendChild(icon);
+
+    const info = document.createElement("div");
+    info.className = "device__info";
+
+    const switchesObj = device.switches || {};
+    const switchKeys = Object.keys(switchesObj);
+    const activeCount = switchKeys.filter((k) => switchesObj[k] === true).length;
+    const totalCount = device.switchCount || switchKeys.length || 3;
+
+    info.innerHTML = `
+      <div class="device__name">${device.deviceName || deviceId}</div>
+      <div class="device__meta" data-status="${isOn ? "ON" : "OFF"}">${activeCount}/${totalCount} ACTIVE</div>
+    `;
+    main.appendChild(info);
+    row.appendChild(main);
+
+    const switchesContainer = document.createElement("div");
+    switchesContainer.className = "device__switches";
+
+    const switchIdsToRender = switchKeys.length > 0
+      ? switchKeys.sort()
+      : Array.from({ length: totalCount }, (_, i) => `switch_${i + 1}`);
+
+    switchIdsToRender.forEach((sKey) => {
+      const sVal = Boolean(switchesObj[sKey]);
+      const sStatus = sVal ? "ON" : "OFF";
+      const sNumber = sKey.replace("switch_", "");
+
+      const sRow = document.createElement("div");
+      sRow.className = "sub-switch";
+      sRow.id = `switch-${deviceId}-${sKey}`;
+
+      const sLabel = document.createElement("span");
+      sLabel.className = "sub-switch__label";
+      sLabel.textContent = `SWITCH ${sNumber}`;
+      sRow.appendChild(sLabel);
+
+      const sMeta = document.createElement("span");
+      sMeta.className = "sub-switch__meta";
+      sMeta.dataset.status = sStatus;
+      sMeta.textContent = sStatus;
+      sRow.appendChild(sMeta);
+
+      const sRocker = document.createElement("div");
+      sRocker.className = "rocker rocker--small";
+      sRocker.dataset.status = sStatus;
+      sRocker.dataset.switchId = sKey;
+      sRocker.onclick = () => {
+        const currentDev = DataLayer.getState(deviceId);
+        const currentVal = Boolean(currentDev.switches?.[sKey]);
+        const nextVal = !currentVal;
+        DataLayer.setSwitchState(deviceId, sKey, nextVal, "simulator-ui");
+      };
+      sRow.appendChild(sRocker);
+
+      switchesContainer.appendChild(sRow);
+    });
+
+    row.appendChild(switchesContainer);
+    return row;
+  }
+
+  // Standard single-switch device or camera
   const row = document.createElement("div");
-  row.className = "device" + (meta.type === "camera" ? " device--camera" : "");
+  row.className = "device" + (deviceType === "CAMERA" ? " device--camera" : "");
   row.id = `device-${deviceId}`;
 
   const icon = document.createElement("div");
   icon.className = "device__icon";
-  icon.textContent = TYPE_ICON[meta.type] || "⬤";
+  icon.textContent = iconChar;
   row.appendChild(icon);
 
   const info = document.createElement("div");
   info.className = "device__info";
+
+  // Check for maxActiveDuration safety tag
+  const safetyTagHtml = device.maxActiveDuration
+    ? `<div class="device__safety-tag ${isOn ? "active" : ""}">MAX: ${device.maxActiveDuration} MIN${isOn ? " • ACTIVE" : ""}</div>`
+    : "";
+
   info.innerHTML = `
-    <div class="device__name">${meta.name}</div>
-    <div class="device__meta" data-status="${current.status}">${current.status}</div>
+    <div class="device__name">${device.deviceName || deviceId}</div>
+    <div class="device__meta" data-status="${displayStatus}">${displayStatus}</div>
+    ${safetyTagHtml}
   `;
   row.appendChild(info);
 
-  if (meta.type === "camera") {
+  if (deviceType === "CAMERA") {
     const btn = document.createElement("button");
     btn.className = "device__action";
     btn.textContent = "VIEW";
@@ -130,11 +308,13 @@ function renderDeviceRow(deviceId) {
   } else {
     const rocker = document.createElement("div");
     rocker.className = "rocker";
-    rocker.dataset.status = current.status;
+    rocker.dataset.status = displayStatus;
     rocker.onclick = () => {
-      if (current.status === "DISCONNECTED") return; // can't toggle a dead device
-      const next = DataLayer.getState(deviceId).status === "ON" ? "OFF" : "ON";
-      DataLayer.setDeviceStatus(deviceId, next, "simulator-ui");
+      const currentStatus = getDeviceDisplayStatus(deviceId);
+      if (currentStatus === "DISCONNECTED") return;
+      const currentOn = isDeviceOn(deviceId);
+      const nextBool = !currentOn;
+      DataLayer.setDeviceStatus(deviceId, nextBool, "simulator-ui");
     };
     row.appendChild(rocker);
   }
@@ -142,71 +322,134 @@ function renderDeviceRow(deviceId) {
   return row;
 }
 
-/*REACTIVE UPDATES*/
+/* REACTIVE UPDATES */
 DataLayer.onDeviceChange((snapshot) => {
-  updateDeviceRowUI(snapshot.deviceId, snapshot.status);
+  updateDeviceRowUI(snapshot.deviceId);
   updateRoomLightState(snapshot.deviceId);
   updateLightingStates();
   logActivity(snapshot);
 });
 
 function updateRoomLightState(deviceId) {
-  const floor = HOUSE[activeFloor];
-  for (const [roomId, room] of Object.entries(floor.rooms)) {
-    if (!room.devices.includes(deviceId)) continue;
-    const roomEl = document.getElementById(`room-${roomId}`);
-    if (!roomEl) return;
-    roomEl.classList.toggle("room--lit", isRoomLit(room));
-    return;
+  const deviceEntry = DataLayer.getDevice(deviceId);
+  if (!deviceEntry) return;
+  if (deviceEntry.floorId !== activeFloor) return;
+
+  const zone = DataLayer.getZone(deviceEntry.floorId, deviceEntry.zoneId);
+  if (!zone) return;
+
+  const roomEl = document.getElementById(`room-${deviceEntry.zoneId}`);
+  if (roomEl) {
+    roomEl.classList.toggle("room--lit", isRoomLit(zone));
   }
 }
 
-function updateDeviceRowUI(deviceId, status) {
+function updateDeviceRowUI(deviceId) {
   const row = document.getElementById(`device-${deviceId}`);
-  if (!row) return; // device belongs to the floor that's not currently shown
+  if (!row) return;
 
-  const metaEl = row.querySelector(".device__meta");
-  if (metaEl) {
-    metaEl.textContent = status;
-    metaEl.dataset.status = status;
+  const device = DataLayer.getState(deviceId);
+  const isMultiSwitch = row.classList.contains("device--multi");
+  const isOn = isDeviceOn(deviceId);
+
+  if (isMultiSwitch && device.switches) {
+    const switchesObj = device.switches || {};
+    const switchKeys = Object.keys(switchesObj);
+    const activeCount = switchKeys.filter((k) => switchesObj[k] === true).length;
+    const totalCount = device.switchCount || switchKeys.length || 3;
+
+    // Update main header meta
+    const mainMeta = row.querySelector(".device__main .device__meta");
+    if (mainMeta) {
+      mainMeta.textContent = `${activeCount}/${totalCount} ACTIVE`;
+      mainMeta.dataset.status = isOn ? "ON" : "OFF";
+    }
+
+    // Update individual sub-switches
+    switchKeys.forEach((sKey) => {
+      const sVal = Boolean(switchesObj[sKey]);
+      const sStatus = sVal ? "ON" : "OFF";
+      const sRow = document.getElementById(`switch-${deviceId}-${sKey}`);
+      if (sRow) {
+        const sMeta = sRow.querySelector(".sub-switch__meta");
+        if (sMeta) {
+          sMeta.textContent = sStatus;
+          sMeta.dataset.status = sStatus;
+        }
+        const sRocker = sRow.querySelector(".rocker");
+        if (sRocker) {
+          sRocker.dataset.status = sStatus;
+        }
+      }
+    });
+  } else {
+    const displayStatus = getDeviceDisplayStatus(deviceId);
+    const metaEl = row.querySelector(".device__meta");
+    if (metaEl) {
+      metaEl.textContent = displayStatus;
+      metaEl.dataset.status = displayStatus;
+    }
+    const rocker = row.querySelector(".rocker");
+    if (rocker) rocker.dataset.status = displayStatus;
+
+    // Update safety tag if present
+    const safetyTag = row.querySelector(".device__safety-tag");
+    if (safetyTag && device.maxActiveDuration) {
+      safetyTag.className = `device__safety-tag ${isOn ? "active" : ""}`;
+      safetyTag.textContent = `MAX: ${device.maxActiveDuration} MIN${isOn ? " • ACTIVE" : ""}`;
+    }
   }
-  const rocker = row.querySelector(".rocker");
-  if (rocker) rocker.dataset.status = status;
 }
 
-/*ACTIVITY LOG*/
+/* ACTIVITY LOG */
 function logActivity(snapshot) {
   const log = document.getElementById("activityLog");
-  const meta = DEVICE_META[snapshot.deviceId];
-  const time = new Date(snapshot.updatedAt).toLocaleTimeString("en-GB", { hour12: false });
+  if (!log) return;
+  const deviceName = snapshot.deviceName || DataLayer.getDevice(snapshot.deviceId)?.data?.deviceName || snapshot.deviceId;
+  const time = new Date(snapshot.updatedAt || Date.now()).toLocaleTimeString("en-GB", { hour12: false });
+
+  let statusText = snapshot.displayStatus || (snapshot.state ? "ON" : "OFF");
+  let labelText = deviceName;
+  let actorLabel = snapshot.updatedBy || snapshot.actor || "system";
+  let cls = { ON: "on", OFF: "off", ERROR: "error", DISCONNECTED: "disc" }[statusText] || (snapshot.state ? "on" : "off");
+
+  if (snapshot.actor === "safety-system" || snapshot.isSafetyShutdown) {
+    statusText = "OFF (SAFETY TIMEOUT)";
+    actorLabel = "safety-system";
+    cls = "error";
+  } else if (snapshot.changedSwitchId) {
+    const sNumber = snapshot.changedSwitchId.replace("switch_", "");
+    const sVal = snapshot.switches?.[snapshot.changedSwitchId];
+    statusText = sVal ? "ON" : "OFF";
+    labelText = `${deviceName} (Switch ${sNumber})`;
+    cls = sVal ? "on" : "off";
+  }
 
   const entry = document.createElement("div");
-  const cls = { ON: "on", OFF: "off", ERROR: "error", DISCONNECTED: "disc" }[snapshot.status] || "";
   entry.className = "log__entry " + cls;
-  entry.innerHTML = `<span class="t">${time}</span>${meta.name} → <strong>${snapshot.status}</strong> <span class="t">(${snapshot.updatedBy})</span>`;
+  entry.innerHTML = `<span class="t">${time}</span>${labelText} → <strong>${statusText}</strong> <span class="t">(${actorLabel})</span>`;
   log.appendChild(entry);
 
-  // cap log length
   while (log.children.length > 60) log.removeChild(log.firstChild);
 }
 
-/*CAMERA MODAL*/
+/* CAMERA MODAL */
 let cameraTimer = null;
 
 function openCameraModal(deviceId) {
-  const meta = DEVICE_META[deviceId];
-  const current = DataLayer.getState(deviceId);
+  const device = DataLayer.getState(deviceId);
+  const deviceName = device.deviceName || deviceId;
 
-  document.getElementById("cameraModalTitle").textContent = meta.name;
+  document.getElementById("cameraModalTitle").textContent = deviceName;
   document.getElementById("cameraModal").classList.add("open");
 
   const canvas = document.getElementById("cameraCanvas");
-  const draw = () => drawFakeFrame(canvas, meta.name);
+  const draw = () => drawFakeFrame(canvas, deviceName);
   draw();
   cameraTimer = setInterval(draw, 2000);
 
   const statusEl = document.getElementById("cameraModalStatus");
-  statusEl.textContent = current.status === "DISCONNECTED" ? "OFFLINE" : "ONLINE";
+  statusEl.textContent = device.status === "DISCONNECTED" ? "OFFLINE" : (device.status || "ONLINE");
 }
 
 document.getElementById("cameraModalClose").onclick = () => {
@@ -224,7 +467,7 @@ function drawFakeFrame(canvas, label) {
   // static noise
   const imgData = ctx.createImageData(w, h);
   for (let i = 0; i < imgData.data.length; i += 4) {
-    const v = Math.random() * 14; 
+    const v = Math.random() * 14;
     imgData.data[i] = v; imgData.data[i + 1] = v + 4; imgData.data[i + 2] = v + 8;
     imgData.data[i + 3] = 255;
   }
@@ -235,7 +478,7 @@ function drawFakeFrame(canvas, label) {
   ctx.fillStyle = "rgba(76,195,138,0.08)";
   ctx.fillRect(0, sweepY, w, 2);
 
-  // label + timestamp overlay, like a real camera OSD
+  // label + timestamp overlay
   ctx.font = "11px monospace";
   ctx.fillStyle = "rgba(234,237,242,0.65)";
   ctx.fillText(label.toUpperCase(), 10, 18);
@@ -244,14 +487,17 @@ function drawFakeFrame(canvas, label) {
   document.getElementById("cameraModalTime").textContent = "Frame captured " + new Date().toLocaleTimeString("en-GB", { hour12: false });
 }
 
-/*UPLINK SIMULATOR*/
+/* UPLINK SIMULATOR */
 function populateUplinkDeviceList() {
   const select = document.getElementById("uplinkDevice");
+  if (!select) return;
   select.innerHTML = "";
-  Object.entries(DEVICE_META).forEach(([id, meta]) => {
+  const deviceIds = DataLayer.getDiscoveredDevices();
+  deviceIds.forEach((id) => {
+    const st = DataLayer.getState(id);
     const opt = document.createElement("option");
     opt.value = id;
-    opt.textContent = `${meta.name} (${id})`;
+    opt.textContent = `${st.deviceName || id} (${id})`;
     select.appendChild(opt);
   });
 }
@@ -263,12 +509,13 @@ document.getElementById("uplinkPush").onclick = () => {
 };
 
 document.getElementById("uplinkChaos").onclick = () => {
-  const ids = Object.keys(DEVICE_META);
+  const ids = DataLayer.getDiscoveredDevices();
+  if (ids.length === 0) return;
   const randomId = ids[Math.floor(Math.random() * ids.length)];
   DataLayer.setDeviceStatus(randomId, "ERROR", "safety-worker");
 };
 
-/*BOOT*/
+/* BOOTSTRAP */
 DataLayer.init(() => {
   renderFloorTabs();
   renderRooms();
@@ -277,8 +524,10 @@ DataLayer.init(() => {
 
   const connIndicator = document.getElementById("connIndicator");
   const connLabel = document.getElementById("connLabel");
-  connIndicator.dataset.mode = DataLayer.mode;
-  connLabel.textContent = DataLayer.mode === "live"
-    ? "LIVE — connected to Firebase"
-    : "MOCK MODE — no cloud link";
+  if (connIndicator) connIndicator.dataset.mode = DataLayer.mode;
+  if (connLabel) {
+    connLabel.textContent = DataLayer.mode === "live"
+      ? "LIVE — connected to Firebase"
+      : "MOCK MODE — no cloud link";
+  }
 });

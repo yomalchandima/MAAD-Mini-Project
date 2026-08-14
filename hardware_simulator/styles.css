@@ -378,6 +378,113 @@ body{
 }
 .device--camera .device__action:hover{ border-color: var(--copper); }
 
+/* multi-switch unit */
+.device--multi{
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 8px;
+  padding: 11px 14px;
+}
+.device__main{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.device__switches{
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 8px 12px;
+  background: var(--bg-0);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  width: 100%;
+}
+.sub-switch{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 3px 0;
+  width: 100%;
+}
+.sub-switch__label{
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-hi);
+  letter-spacing: .05em;
+}
+.sub-switch__meta{
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .04em;
+  margin-left: auto;
+  margin-right: 8px;
+}
+.sub-switch__meta[data-status="ON"]{ color: var(--on); }
+.sub-switch__meta[data-status="OFF"]{ color: var(--text-low); }
+.sub-switch__meta[data-status="ERROR"]{ color: var(--error); }
+.sub-switch__meta[data-status="DISCONNECTED"]{ color: var(--disc); }
+
+.rocker--small{
+  --w: 36px; --h: 18px;
+  width: var(--w); height: var(--h);
+  border-radius: 20px;
+  background: var(--bg-2);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: background .15s, border-color .15s;
+}
+.rocker--small::after{
+  content: "";
+  position: absolute;
+  top: 2px; left: 2px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: var(--off);
+  transition: transform .15s ease, background .15s ease;
+}
+.rocker--small[data-status="ON"]{
+  background: rgba(76,195,138,.12);
+  border-color: var(--on);
+}
+.rocker--small[data-status="ON"]::after{
+  transform: translateX(18px);
+  background: var(--on);
+  box-shadow: 0 0 6px 1px var(--on-glow);
+}
+
+/* safety badge for safety-critical appliances */
+.device__safety-tag{
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: .06em;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-top: 3px;
+  background: rgba(229, 72, 77, .12);
+  color: var(--error);
+  border: 1px solid rgba(229, 72, 77, .3);
+  text-transform: uppercase;
+}
+.device__safety-tag.active{
+  background: rgba(201, 121, 63, .18);
+  color: #f7a361;
+  border-color: var(--copper);
+  animation: safetyPulse 1.6s infinite;
+}
+@keyframes safetyPulse{
+  0%, 100%{ opacity: 1; }
+  50%{ opacity: 0.55; }
+}
+
 /*SIDE RAIL*/
 .rail{
   display:flex;

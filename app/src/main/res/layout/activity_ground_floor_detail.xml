@@ -116,7 +116,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ground_floor"
+                    android:src="@drawable/ground_floor_map"
                     app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
                 <View

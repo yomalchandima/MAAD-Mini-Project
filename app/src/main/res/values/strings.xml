@@ -69,7 +69,7 @@
     <string name="floor_description">Explore your smart home layout and manage devices per level.</string>
     <string name="ground_floor_label">Ground Floor</string>
     <string name="rooms_count_6">6 Rooms</string>
-    <string name="devices_count_11">11 Devices</string>
+    <string name="devices_count_11">12 Devices</string>
     <string name="kitchen">Kitchen</string>
     <string name="living">Living</string>
     <string name="garage">Garage</string>
@@ -82,15 +82,11 @@
     <string name="bath">Bath</string>
     <string name="enter_first_floor">Enter First Floor</string>
 
-    <!-- Floor Detail -->
+    <!-- First Floor Detail -->
     <string name="floor_map_detail">Floor Map Detail</string>
-    <string name="system_status">SYSTEM STATUS</string>
-    <string name="active_devices_8">8 Active Devices</string>
-    <string name="devices_count_9">9 Devices</string>
     <string name="master_bedroom">Master Bedroom</string>
     <string name="devices_4_temp">3 Devices</string>
     <string name="bedroom_2">Bedroom 2</string>
-    <string name="devices_3_rooms">3 Devices</string>
     <string name="devices_2_rooms">2 Devices</string>
     <string name="work_room">Home Office</string>
     <string name="devices_5">3 Devices</string>

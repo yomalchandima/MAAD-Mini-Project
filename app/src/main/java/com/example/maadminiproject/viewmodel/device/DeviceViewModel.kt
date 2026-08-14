@@ -146,6 +146,236 @@ class DeviceViewModel : ViewModel() {
     }
 
     /**
+     * Sets the state of a specific switch channel within a multi-switch unit.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param switchId Identifier of the switch channel (e.g. "switch_1").
+     * @param newState The new state for the switch channel.
+     */
+    fun setSwitchState(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        switchId: String,
+        newState: Boolean,
+    ) {
+        val currentDevice = _devices.value?.find { it.deviceId == deviceId }
+        repository.setSwitchState(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            switchId = switchId,
+            newState = newState,
+            currentSwitches = currentDevice?.switches,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to update switch $switchId: ${exception.message}"
+            }
+        )
+    }
+
+    /**
+     * Toggles the state of a specific switch channel within a multi-switch unit.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param switchId Identifier of the switch channel (e.g. "switch_1").
+     */
+    fun toggleSwitchState(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        switchId: String,
+    ) {
+        val currentDevice = _devices.value?.find { it.deviceId == deviceId }
+        val currentVal = currentDevice?.switches?.get(switchId) ?: false
+        setSwitchState(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            switchId = switchId,
+            newState = !currentVal,
+        )
+    }
+
+    /**
+     * Sets the brightness level for a light device.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param brightness Brightness level (0-100).
+     */
+    fun setBrightness(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        brightness: Int,
+    ) {
+        val clampedBrightness = brightness.coerceIn(0, 100)
+        repository.setBrightness(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            brightness = clampedBrightness,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to set brightness: ${exception.message}"
+            }
+        )
+    }
+
+    /**
+     * Sets the fan speed setting.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param speed Fan speed level.
+     */
+    fun setFanSpeed(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        speed: Int,
+    ) {
+        repository.setFanSpeed(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            speed = speed,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to set fan speed: ${exception.message}"
+            }
+        )
+    }
+
+    /**
+     * Sets the temperature setting for an AC device.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param temperature Temperature in degrees Celsius.
+     */
+    fun setTemperature(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        temperature: Int,
+    ) {
+        repository.setTemperature(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            temperature = temperature,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to set temperature: ${exception.message}"
+            }
+        )
+    }
+
+    /**
+     * Sets the operating mode for an AC device.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param mode Operating mode (e.g. "Cool", "Heat", "Auto", "Dry", "Fan").
+     */
+    fun setMode(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        mode: String,
+    ) {
+        repository.setMode(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            mode = mode,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to set mode: ${exception.message}"
+            }
+        )
+    }
+
+    /**
+     * Sets the camera recording state.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param recording Boolean flag indicating whether recording is active.
+     */
+    fun setRecording(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        recording: Boolean,
+    ) {
+        repository.setRecording(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            recording = recording,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to set recording: ${exception.message}"
+            }
+        )
+    }
+
+    /**
+     * Sets the maximum active duration safety parameter for safety-critical appliances.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param maxActiveDuration Maximum active duration in minutes.
+     */
+    fun setMaxActiveDuration(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        maxActiveDuration: Long,
+    ) {
+        repository.setMaxActiveDuration(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            maxActiveDuration = maxActiveDuration,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to set max active duration: ${exception.message}"
+            }
+        )
+    }
+
+    /**
      * Clears the current error message.
      */
     fun clearError() {

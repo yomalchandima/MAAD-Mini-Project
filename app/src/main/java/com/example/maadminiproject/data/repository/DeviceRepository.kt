@@ -112,6 +112,237 @@ class DeviceRepository {
     }
 
     /**
+     * Sets the state of an individual switch channel within a multi-switch device.
+     *
+     * Computes the overall device state (true if at least one switch is ON, false if all OFF)
+     * when [currentSwitches] is provided.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the multi-switch device.
+     * @param switchId Identifier of the switch channel (e.g. "switch_1").
+     * @param newState New boolean state for the switch channel.
+     * @param currentSwitches Current map of switches on the device, if known.
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun setSwitchState(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        switchId: String,
+        newState: Boolean,
+        currentSwitches: Map<String, Boolean>? = null,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val overallState = currentSwitches?.let { map ->
+            val updated = map.toMutableMap().apply { put(switchId, newState) }
+            updated.values.any { it }
+        } ?: if (newState) true else null
+
+        dataSource.updateDeviceSwitchState(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            switchId = switchId,
+            newState = newState,
+            overallState = overallState,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Sets the brightness level for a light device.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param brightness Brightness level (0-100).
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun setBrightness(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        brightness: Int,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.updateDeviceBrightness(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            brightness = brightness,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Sets the fan speed setting.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param speed Speed level.
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun setFanSpeed(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        speed: Int,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.updateDeviceFanSpeed(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            speed = speed,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Sets the temperature setting for an AC device.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param temperature Temperature in degrees Celsius.
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun setTemperature(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        temperature: Int,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.updateDeviceTemperature(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            temperature = temperature,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Sets the operating mode for an AC device.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param mode Operating mode string (e.g. "Cool", "Heat", "Auto", "Dry", "Fan").
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun setMode(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        mode: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.updateDeviceMode(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            mode = mode,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Sets the camera recording state.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param recording Boolean flag indicating whether recording is active.
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun setRecording(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        recording: Boolean,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.updateDeviceRecording(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            recording = recording,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Sets the maximum active duration safety parameter for safety-critical appliances.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param maxActiveDuration Maximum active duration in minutes.
+     * @param onSuccess Optional callback for successful update.
+     * @param onFailure Optional callback for failed update.
+     */
+    fun setMaxActiveDuration(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        maxActiveDuration: Long,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.updateDeviceMaxActiveDuration(
+            homeId = homeId,
+            floorId = floorId,
+            zoneId = zoneId,
+            deviceId = deviceId,
+            maxActiveDuration = maxActiveDuration,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+        )
+    }
+
+    /**
      * Removes an active device listener.
      *
      * @param homeId Unique identifier of the home.

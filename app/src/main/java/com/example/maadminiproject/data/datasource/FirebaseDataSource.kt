@@ -133,6 +133,217 @@ class FirebaseDataSource {
     }
 
     /**
+     * Updates an individual switch state within a multi-switch device.
+     *
+     * Path: homes/{homeId}/floors/{floorId}/zones/{zoneId}/devices/{deviceId}
+     * Target fields: "switches/{switchId}", "state" (optional overall state), "lastUpdated"
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the multi-switch device.
+     * @param switchId Identifier of the switch channel (e.g. "switch_1", "switch_2").
+     * @param newState The new boolean state for the switch channel.
+     * @param overallState Optional derived overall device state (true if at least one switch is ON).
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateDeviceSwitchState(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        switchId: String,
+        newState: Boolean,
+        overallState: Boolean? = null,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val updates = mutableMapOf<String, Any>(
+            "switches/$switchId" to newState,
+            "lastUpdated" to System.currentTimeMillis(),
+        )
+        if (overallState != null) {
+            updates["state"] = overallState
+        }
+        updateDevice(homeId, floorId, zoneId, deviceId, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the brightness level for a light device.
+     *
+     * Path: homes/{homeId}/floors/{floorId}/zones/{zoneId}/devices/{deviceId}/brightness
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param brightness Brightness level (0-100).
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateDeviceBrightness(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        brightness: Int,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val updates = mapOf<String, Any>(
+            "brightness" to brightness,
+            "lastUpdated" to System.currentTimeMillis(),
+        )
+        updateDevice(homeId, floorId, zoneId, deviceId, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the fan speed setting.
+     *
+     * Path: homes/{homeId}/floors/{floorId}/zones/{zoneId}/devices/{deviceId}/speed
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param speed Speed level.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateDeviceFanSpeed(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        speed: Int,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val updates = mapOf<String, Any>(
+            "speed" to speed,
+            "lastUpdated" to System.currentTimeMillis(),
+        )
+        updateDevice(homeId, floorId, zoneId, deviceId, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the temperature setting for an AC device.
+     *
+     * Path: homes/{homeId}/floors/{floorId}/zones/{zoneId}/devices/{deviceId}/temperature
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param temperature Temperature in degrees Celsius.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateDeviceTemperature(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        temperature: Int,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val updates = mapOf<String, Any>(
+            "temperature" to temperature,
+            "lastUpdated" to System.currentTimeMillis(),
+        )
+        updateDevice(homeId, floorId, zoneId, deviceId, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the operating mode for an AC device.
+     *
+     * Path: homes/{homeId}/floors/{floorId}/zones/{zoneId}/devices/{deviceId}/mode
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param mode Operating mode string (e.g. "Cool", "Heat", "Auto", "Dry", "Fan").
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateDeviceMode(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        mode: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val updates = mapOf<String, Any>(
+            "mode" to mode,
+            "lastUpdated" to System.currentTimeMillis(),
+        )
+        updateDevice(homeId, floorId, zoneId, deviceId, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the camera recording state.
+     *
+     * Path: homes/{homeId}/floors/{floorId}/zones/{zoneId}/devices/{deviceId}/recording
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param recording Boolean flag indicating whether recording is active.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateDeviceRecording(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        recording: Boolean,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val updates = mapOf<String, Any>(
+            "recording" to recording,
+            "lastUpdated" to System.currentTimeMillis(),
+        )
+        updateDevice(homeId, floorId, zoneId, deviceId, updates, onSuccess, onFailure)
+    }
+
+    /**
+     * Updates the maximum active duration safety parameter for safety-critical appliances.
+     *
+     * Path: homes/{homeId}/floors/{floorId}/zones/{zoneId}/devices/{deviceId}/maxActiveDuration
+     *
+     * @param homeId Unique identifier of the home.
+     * @param floorId Unique identifier of the floor.
+     * @param zoneId Unique identifier of the zone.
+     * @param deviceId Unique identifier of the device.
+     * @param maxActiveDuration Maximum active duration in minutes.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun updateDeviceMaxActiveDuration(
+        homeId: String,
+        floorId: String,
+        zoneId: String,
+        deviceId: String,
+        maxActiveDuration: Long,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val updates = mapOf<String, Any>(
+            "maxActiveDuration" to maxActiveDuration,
+            "lastUpdated" to System.currentTimeMillis(),
+        )
+        updateDevice(homeId, floorId, zoneId, deviceId, updates, onSuccess, onFailure)
+    }
+
+    /**
      * Observes schedules for a specific home.
      *
      * @param homeId The unique identifier of the home.

@@ -21,15 +21,18 @@ class BathroomActivity : AppCompatActivity() {
     private lateinit var deviceViewModel: DeviceViewModel
     private var isProgrammaticUpdate = false
 
-    private val homeId = "home001"
-    private val floorId = "floor2"
-    private val zoneId = "bathroomFF"
+    private var homeId = "home001"
+    private var floorId = "floor2"
+    private var zoneId = "bathroomFF"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityBathroomBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        floorId = intent.getStringExtra("floorId") ?: "floor2"
+        zoneId = intent.getStringExtra("zoneId") ?: "bathroomFF"
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

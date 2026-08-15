@@ -21,15 +21,18 @@ class KitchenActivity : AppCompatActivity() {
     private lateinit var deviceViewModel: DeviceViewModel
     private var isProgrammaticUpdate = false
 
-    private val homeId = "home001"
-    private val floorId = "floor1"
-    private val zoneId = "kitchen"
+    private var homeId = "home001"
+    private var floorId = "floor1"
+    private var zoneId = "kitchen"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityKitchenBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        floorId = intent.getStringExtra("floorId") ?: "floor1"
+        zoneId = intent.getStringExtra("zoneId") ?: "kitchen"
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -91,6 +94,19 @@ class KitchenActivity : AppCompatActivity() {
                 }
                 isProgrammaticUpdate = false
             }
+
+            // 3. switchUnit01 - Kitchen Multi-Switch
+            val multiSwitch = deviceList.find { it.deviceId == "switchUnit01" }
+            if (multiSwitch != null) {
+                binding.cardMultiSwitch.visibility = android.view.View.VISIBLE
+                isProgrammaticUpdate = true
+                binding.swMulti1.isChecked = multiSwitch.switches?.get("switch_1") ?: false
+                binding.swMulti2.isChecked = multiSwitch.switches?.get("switch_2") ?: false
+                binding.swMulti3.isChecked = multiSwitch.switches?.get("switch_3") ?: false
+                isProgrammaticUpdate = false
+            } else {
+                binding.cardMultiSwitch.visibility = android.view.View.GONE
+            }
         }
     }
 
@@ -103,6 +119,21 @@ class KitchenActivity : AppCompatActivity() {
         binding.swEspresso.setOnCheckedChangeListener { _, isChecked ->
             if (isProgrammaticUpdate) return@setOnCheckedChangeListener
             deviceViewModel.toggleDevice(homeId, floorId, zoneId, "plug01", isChecked)
+        }
+
+        binding.swMulti1.setOnCheckedChangeListener { _, isChecked ->
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.setSwitchState(homeId, floorId, zoneId, "switchUnit01", "switch_1", isChecked)
+        }
+
+        binding.swMulti2.setOnCheckedChangeListener { _, isChecked ->
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.setSwitchState(homeId, floorId, zoneId, "switchUnit01", "switch_2", isChecked)
+        }
+
+        binding.swMulti3.setOnCheckedChangeListener { _, isChecked ->
+            if (isProgrammaticUpdate) return@setOnCheckedChangeListener
+            deviceViewModel.setSwitchState(homeId, floorId, zoneId, "switchUnit01", "switch_3", isChecked)
         }
     }
 

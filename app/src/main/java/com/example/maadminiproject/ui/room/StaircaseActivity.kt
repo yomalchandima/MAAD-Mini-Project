@@ -20,15 +20,18 @@ class StaircaseActivity : AppCompatActivity() {
     private lateinit var deviceViewModel: DeviceViewModel
     private var isProgrammaticUpdate = false
 
-    private val homeId = "home001"
-    private val floorId = "floor1"
-    private val zoneId = "staircase"
+    private var homeId = "home001"
+    private var floorId = "floor1"
+    private var zoneId = "staircase"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityStaircaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        floorId = intent.getStringExtra("floorId") ?: "floor1"
+        zoneId = intent.getStringExtra("zoneId") ?: "staircase"
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

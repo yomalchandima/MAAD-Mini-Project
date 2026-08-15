@@ -22,15 +22,18 @@ class WorkRoomActivity : AppCompatActivity() {
     private var isProgrammaticUpdate = false
     private var currentTemp = 21
 
-    private val homeId = "home001"
-    private val floorId = "floor2"
-    private val zoneId = "workRoom"
+    private var homeId = "home001"
+    private var floorId = "floor2"
+    private var zoneId = "workRoom"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityWorkRoomBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        floorId = intent.getStringExtra("floorId") ?: "floor2"
+        zoneId = intent.getStringExtra("zoneId") ?: "workRoom"
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -62,10 +65,15 @@ class WorkRoomActivity : AppCompatActivity() {
                     binding.tvLightStatus.text = getString(R.string.status_on)
                     binding.tvLightStatus.setTextColor(getColor(R.color.vibrant_cyan))
                     binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
+                    binding.sliderBrightness.visibility = android.view.View.VISIBLE
                 } else {
                     binding.tvLightStatus.text = getString(R.string.status_off)
                     binding.tvLightStatus.setTextColor(getColor(R.color.soft_gray))
                     binding.ivLightIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
+                    binding.sliderBrightness.visibility = android.view.View.GONE
+                }
+                light.brightness?.let {
+                    binding.sliderBrightness.value = it.toFloat()
                 }
                 isProgrammaticUpdate = false
             }
@@ -95,15 +103,23 @@ class WorkRoomActivity : AppCompatActivity() {
                     binding.tvAcStatus.setTextColor(getColor(R.color.vibrant_cyan))
                     binding.ivAcIcon.backgroundTintList = ColorStateList.valueOf(0x2000E5FF.toInt())
                     binding.tempControl.visibility = android.view.View.VISIBLE
+                    binding.acModeToggleGroup.visibility = android.view.View.VISIBLE
                 } else {
                     binding.tvAcStatus.text = getString(R.string.status_off)
                     binding.tvAcStatus.setTextColor(getColor(R.color.soft_gray))
                     binding.ivAcIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
                     binding.tempControl.visibility = android.view.View.GONE
+                    binding.acModeToggleGroup.visibility = android.view.View.GONE
                 }
                 ac.temperature?.let { temp ->
                     currentTemp = temp
                     binding.tvTemperature.text = getString(R.string.temp_format, temp)
+                }
+                when (ac.mode?.uppercase()) {
+                    "COOL" -> binding.acModeToggleGroup.check(R.id.btnCool)
+                    "HEAT" -> binding.acModeToggleGroup.check(R.id.btnHeat)
+                    "AUTO" -> binding.acModeToggleGroup.check(R.id.btnAuto)
+                    else -> binding.acModeToggleGroup.check(android.view.View.NO_ID)
                 }
                 isProgrammaticUpdate = false
             }
@@ -116,6 +132,12 @@ class WorkRoomActivity : AppCompatActivity() {
             deviceViewModel.toggleDevice(homeId, floorId, zoneId, "light09", isChecked)
         }
 
+        binding.sliderBrightness.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                deviceViewModel.setBrightness(homeId, floorId, zoneId, "light09", value.toInt())
+            }
+        }
+
         binding.swDesk.setOnCheckedChangeListener { _, isChecked ->
             if (isProgrammaticUpdate) return@setOnCheckedChangeListener
             deviceViewModel.toggleDevice(homeId, floorId, zoneId, "plug04", isChecked)
@@ -124,6 +146,17 @@ class WorkRoomActivity : AppCompatActivity() {
         binding.swAc.setOnCheckedChangeListener { _, isChecked ->
             if (isProgrammaticUpdate) return@setOnCheckedChangeListener
             deviceViewModel.toggleDevice(homeId, floorId, zoneId, "ac03", isChecked)
+        }
+
+        binding.acModeToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isProgrammaticUpdate || !isChecked) return@addOnButtonCheckedListener
+            val mode = when (checkedId) {
+                R.id.btnCool -> "COOL"
+                R.id.btnHeat -> "HEAT"
+                R.id.btnAuto -> "AUTO"
+                else -> return@addOnButtonCheckedListener
+            }
+            deviceViewModel.setMode(homeId, floorId, zoneId, "ac03", mode)
         }
 
         binding.btnTempMinus.setOnClickListener {

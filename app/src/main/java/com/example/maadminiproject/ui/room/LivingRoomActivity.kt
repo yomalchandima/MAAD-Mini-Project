@@ -22,15 +22,18 @@ class LivingRoomActivity : AppCompatActivity() {
     private lateinit var deviceViewModel: DeviceViewModel
     private var isProgrammaticUpdate = false
 
-    private val homeId = "home001"
-    private val floorId = "floor1"
-    private val zoneId = "livingRoom"
+    private var homeId = "home001"
+    private var floorId = "floor1"
+    private var zoneId = "livingRoom"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityLivingRoomBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        floorId = intent.getStringExtra("floorId") ?: "floor1"
+        zoneId = intent.getStringExtra("zoneId") ?: "livingRoom"
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -45,7 +48,7 @@ class LivingRoomActivity : AppCompatActivity() {
         deviceViewModel = ViewModelProvider(this)[DeviceViewModel::class.java]
 
         setupBottomNav()
-        setupLightingControls()
+        setupControls()
         observeDevices()
 
         deviceViewModel.observeDevices(homeId, floorId, zoneId)
@@ -62,10 +65,15 @@ class LivingRoomActivity : AppCompatActivity() {
                     binding.tvLightStatus.text = getString(R.string.status_on)
                     binding.tvLightStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
                     binding.ivLightIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                    binding.sliderBrightness.visibility = android.view.View.VISIBLE
                 } else {
                     binding.tvLightStatus.text = getString(R.string.status_off)
                     binding.tvLightStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
                     binding.ivLightIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
+                    binding.sliderBrightness.visibility = android.view.View.GONE
+                }
+                light.brightness?.let {
+                    binding.sliderBrightness.value = it.toFloat()
                 }
                 isProgrammaticUpdate = false
             }
@@ -79,10 +87,18 @@ class LivingRoomActivity : AppCompatActivity() {
                     binding.tvFanStatus.text = getString(R.string.status_on)
                     binding.tvFanStatus.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
                     binding.ivFanIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                    binding.fanSpeedToggleGroup.visibility = android.view.View.VISIBLE
                 } else {
                     binding.tvFanStatus.text = getString(R.string.status_off)
                     binding.tvFanStatus.setTextColor(ContextCompat.getColor(this, R.color.soft_gray))
                     binding.ivFanIcon.imageTintList = ColorStateList.valueOf(ContextCompat.getColor(this, R.color.soft_gray))
+                    binding.fanSpeedToggleGroup.visibility = android.view.View.GONE
+                }
+                when (fan.speed) {
+                    1 -> binding.fanSpeedToggleGroup.check(R.id.btnLow)
+                    2 -> binding.fanSpeedToggleGroup.check(R.id.btnMed)
+                    3 -> binding.fanSpeedToggleGroup.check(R.id.btnHigh)
+                    else -> binding.fanSpeedToggleGroup.check(android.view.View.NO_ID)
                 }
                 isProgrammaticUpdate = false
             }
@@ -111,15 +127,32 @@ class LivingRoomActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupLightingControls() {
+    private fun setupControls() {
         binding.swMainLighting.setOnCheckedChangeListener { _, isChecked ->
             if (isProgrammaticUpdate) return@setOnCheckedChangeListener
             deviceViewModel.toggleDevice(homeId, floorId, zoneId, "light01", isChecked)
         }
 
+        binding.sliderBrightness.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                deviceViewModel.setBrightness(homeId, floorId, zoneId, "light01", value.toInt())
+            }
+        }
+
         binding.swCeilingFan.setOnCheckedChangeListener { _, isChecked ->
             if (isProgrammaticUpdate) return@setOnCheckedChangeListener
             deviceViewModel.toggleDevice(homeId, floorId, zoneId, "fan01", isChecked)
+        }
+
+        binding.fanSpeedToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isProgrammaticUpdate || !isChecked) return@addOnButtonCheckedListener
+            val speed = when (checkedId) {
+                R.id.btnLow -> 1
+                R.id.btnMed -> 2
+                R.id.btnHigh -> 3
+                else -> return@addOnButtonCheckedListener
+            }
+            deviceViewModel.setFanSpeed(homeId, floorId, zoneId, "fan01", speed)
         }
 
         binding.swCam.setOnCheckedChangeListener { _, isChecked ->

@@ -241,4 +241,17 @@
     <string name="active_count_dynamic">%1$d Active</string>
     <string name="quick_device_control">Device Controls</string>
     <string name="go_to_room">Go to Room</string>
+
+    <!-- Phase 6 Additional Strings -->
+    <string name="speed_low">1</string>
+    <string name="speed_med">2</string>
+    <string name="speed_high">3</string>
+    <string name="multi_switch">Multi-Switch</string>
+    <string name="switch_1">Switch 1</string>
+    <string name="switch_2">Switch 2</string>
+    <string name="switch_3">Switch 3</string>
+    <string name="mode_cool">Cool</string>
+    <string name="mode_heat">Heat</string>
+    <string name="mode_auto">Auto</string>
+    <string name="bedroom_ac">Bedroom AC</string>
 </resources>

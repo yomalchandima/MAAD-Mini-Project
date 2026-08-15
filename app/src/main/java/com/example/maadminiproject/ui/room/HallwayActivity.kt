@@ -20,15 +20,18 @@ class HallwayActivity : AppCompatActivity() {
     private lateinit var deviceViewModel: DeviceViewModel
     private var isProgrammaticUpdate = false
 
-    private val homeId = "home001"
-    private val floorId = "floor2"
-    private val zoneId = "hallway"
+    private var homeId = "home001"
+    private var floorId = "floor2"
+    private var zoneId = "hallway"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityHallwayBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        floorId = intent.getStringExtra("floorId") ?: "floor2"
+        zoneId = intent.getStringExtra("zoneId") ?: "hallway"
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())

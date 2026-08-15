@@ -173,7 +173,11 @@ class FloorDetailActivity : AppCompatActivity() {
             "hallway" -> HallwayActivity::class.java
             else -> LivingRoomActivity::class.java
         }
-        startActivity(Intent(this, targetClass))
+        val intent = Intent(this, targetClass).apply {
+            putExtra("floorId", floorId)
+            putExtra("zoneId", zone.zoneId)
+        }
+        startActivity(intent)
     }
 
     private fun setupBottomNav() {

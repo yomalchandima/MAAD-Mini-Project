@@ -42,7 +42,7 @@ class DeviceRepository {
             floorId,
             zoneId,
             onData = { snapshot ->
-                onDevicesChanged(mapDevices(snapshot))
+                onDevicesChanged(mapDevices(snapshot, floorId, zoneId))
             },
             onFailure = onFailure,
         )
@@ -373,14 +373,35 @@ class DeviceRepository {
     }
 
     /**
-     * Helper function to map a [DataSnapshot] to a list of [Device] models.
+     * Helper function to map a [DataSnapshot] to a list of [Device] models defensively.
+     *
+     * Injects the authoritative Firebase child keys for [Device.deviceId],
+     * [Device.floorId], and [Device.zoneId], and skips any non-map corrupt nodes.
      *
      * @param snapshot The snapshot containing device children.
-     * @return A list of [Device] objects, excluding any null results.
+     * @param floorId The floor identifier.
+     * @param zoneId The zone identifier.
+     * @return A list of [Device] objects, excluding any malformed results.
      */
-    private fun mapDevices(snapshot: DataSnapshot): List<Device> {
+    private fun mapDevices(
+        snapshot: DataSnapshot,
+        floorId: String = "",
+        zoneId: String = "",
+    ): List<Device> {
         return snapshot.children.mapNotNull { child ->
-            child.getValue(Device::class.java)
+            val devId = child.key ?: return@mapNotNull null
+            if (child.value !is Map<*, *>) return@mapNotNull null
+
+            try {
+                val device = child.getValue(Device::class.java)
+                device?.copy(
+                    deviceId = if (device.deviceId.isNotBlank()) device.deviceId else devId,
+                    floorId = if (device.floorId.isNotBlank()) device.floorId else floorId,
+                    zoneId = if (device.zoneId.isNotBlank()) device.zoneId else zoneId,
+                )
+            } catch (_: Exception) {
+                null
+            }
         }
     }
 }

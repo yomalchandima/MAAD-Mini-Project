@@ -127,13 +127,28 @@ class FloorDetailActivity : AppCompatActivity() {
             .setTitle(device.deviceName.ifBlank { device.deviceId })
             .setMessage("Type: ${device.type}\nStatus: ${device.status}\nCurrent State: $stateText")
             .setPositiveButton(toggleActionText) { dialog, _ ->
-                val targetZone = device.zoneId.ifBlank { "livingRoom" }
+                val currentFloor = floorViewModel.floors.value?.find { it.floorId == floorId }
+                val targetZone = if (device.zoneId.isNotBlank()) {
+                    device.zoneId
+                } else {
+                    currentFloor?.zones?.entries?.find { (_, z) ->
+                        z.devices.containsKey(device.deviceId)
+                    }?.key ?: currentFloor?.zones?.keys?.firstOrNull() ?: "livingRoom"
+                }
                 deviceViewModel.toggleDevice(homeId, floorId, targetZone, device.deviceId, !device.state)
-                Toast.makeText(this, "${device.deviceName} toggled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "${device.deviceName.ifBlank { device.deviceId }} toggled", Toast.LENGTH_SHORT).show()
                 dialog.dismiss()
             }
             .setNeutralButton(getString(R.string.go_to_room)) { dialog, _ ->
-                val dummyZone = Zone(zoneId = device.zoneId)
+                val currentFloor = floorViewModel.floors.value?.find { it.floorId == floorId }
+                val targetZoneId = if (device.zoneId.isNotBlank()) {
+                    device.zoneId
+                } else {
+                    currentFloor?.zones?.entries?.find { (_, z) ->
+                        z.devices.containsKey(device.deviceId)
+                    }?.key ?: ""
+                }
+                val dummyZone = Zone(zoneId = targetZoneId)
                 navigateToRoom(dummyZone)
                 dialog.dismiss()
             }

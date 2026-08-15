@@ -1,12 +1,12 @@
 /* =====================================================================
-   HARDWARE SIMULATOR — APPLICATION CONTROLLER (PHASE 5)
+   HARDWARE SIMULATOR — APPLICATION CONTROLLER (PHASE 5.5)
    =====================================================================
    - Pure UI controller consuming DataLayer.
    - Dynamic floor, zone, and device rendering from Firebase.
+   - Real-time bi-directional synchronization with Firebase & Android.
    - Independent multi-switch unit controls.
    - Safety badge display for appliances with maxActiveDuration.
    - Distinct safety-system activity logging.
-   - Zero direct Firebase SDK calls.
    ===================================================================== */
 
 /* Presentation mappings: Firebase keys -> CSS layout classes/areas */
@@ -64,28 +64,56 @@ function getDeviceDisplayStatus(deviceId) {
 
 function isRoomLit(zone) {
   if (!zone || !zone.devices) return false;
-  const deviceList = Object.values(zone.devices);
-  return deviceList.some((d) => {
+  return Object.entries(zone.devices).some(([devId, d]) => {
+    if (!d || typeof d !== "object") return false;
     const typeUpper = (d.type || "").toUpperCase();
-    return typeUpper === "LIGHT" && isDeviceOn(d.deviceId);
+    const resolvedId = d.deviceId || devId;
+    return typeUpper === "LIGHT" && isDeviceOn(resolvedId);
   });
 }
 
 function areAllFloorLightsOn(floorId) {
   const zones = DataLayer.getZones(floorId);
-  return Object.values(zones).every((zone) =>
-    Object.values(zone.devices || {}).every((d) => {
+  const zoneEntries = Object.values(zones || {}).filter((z) => z && typeof z === "object");
+  if (zoneEntries.length === 0) return false;
+
+  let hasLights = false;
+  for (const zone of zoneEntries) {
+    const devs = Object.entries(zone.devices || {});
+    for (const [devId, d] of devs) {
+      if (!d || typeof d !== "object") continue;
       const typeUpper = (d.type || "").toUpperCase();
-      return typeUpper !== "LIGHT" || isDeviceOn(d.deviceId);
-    })
-  );
+      if (typeUpper === "LIGHT") {
+        hasLights = true;
+        const resolvedId = d.deviceId || devId;
+        if (!isDeviceOn(resolvedId)) {
+          return false;
+        }
+      }
+    }
+  }
+  return hasLights;
 }
 
 function areAllLightsOn() {
   const floors = DataLayer.getFloors();
-  const floorKeys = Object.keys(floors);
+  const floorKeys = Object.keys(floors || {});
   if (floorKeys.length === 0) return false;
-  return floorKeys.every((floorId) => areAllFloorLightsOn(floorId));
+
+  let hasAnyFloorWithLights = false;
+  for (const floorId of floorKeys) {
+    const zones = DataLayer.getZones(floorId);
+    const hasFloorLights = Object.values(zones || {}).some((zone) =>
+      Object.values(zone.devices || {}).some((d) => (d?.type || "").toUpperCase() === "LIGHT")
+    );
+    if (hasFloorLights) {
+      hasAnyFloorWithLights = true;
+      if (!areAllFloorLightsOn(floorId)) {
+        return false;
+      }
+    }
+  }
+  return hasAnyFloorWithLights;
 }
 
 function updateLightingStates() {
@@ -134,11 +162,16 @@ function renderFloorTabs() {
 
   const floors = DataLayer.getFloors();
   const floorKeys = Object.keys(floors);
+  if (!floorKeys.includes(activeFloor) && floorKeys.length > 0) {
+    activeFloor = floorKeys[0];
+  }
+
   const sortedFloorIds = FLOOR_ORDER.filter((id) => floorKeys.includes(id))
     .concat(floorKeys.filter((id) => !FLOOR_ORDER.includes(id)));
 
   sortedFloorIds.forEach((floorId) => {
     const floor = floors[floorId];
+    if (!floor || typeof floor !== "object") return;
     const btn = document.createElement("button");
     btn.className = "floor-tab" + (floorId === activeFloor ? " active" : "");
     btn.dataset.floorId = floorId;
@@ -161,15 +194,17 @@ function renderRooms() {
   updateLightingStates();
 
   const zones = DataLayer.getZones(activeFloor);
-  const zoneKeys = Object.keys(zones);
+  const zoneKeys = Object.keys(zones || {});
   const preferredOrder = ZONE_ORDER[activeFloor] || [];
   const sortedZoneIds = preferredOrder.filter((id) => zoneKeys.includes(id))
     .concat(zoneKeys.filter((id) => !preferredOrder.includes(id)));
 
   sortedZoneIds.forEach((zoneId) => {
     const zone = zones[zoneId];
+    if (!zone || typeof zone !== "object") return;
+
     const cssRoomId = ZONE_LAYOUT_MAP[zoneId] || zoneId;
-    const devices = Object.values(zone.devices || {});
+    const devEntries = Object.entries(zone.devices || {}).filter(([_, d]) => d && typeof d === "object");
 
     const roomEl = document.createElement("div");
     roomEl.className = "room";
@@ -179,11 +214,15 @@ function renderRooms() {
 
     const head = document.createElement("div");
     head.className = "room__label";
-    head.innerHTML = `<h3>${zone.zoneName || zoneId}</h3><span class="room__count">${devices.length} device${devices.length !== 1 ? "s" : ""}</span>`;
+    head.innerHTML = `<h3>${zone.zoneName || zoneId}</h3><span class="room__count">${devEntries.length} device${devEntries.length !== 1 ? "s" : ""}</span>`;
     roomEl.appendChild(head);
 
-    devices.forEach((device) => {
-      roomEl.appendChild(renderDeviceRow(device.deviceId));
+    devEntries.forEach(([devId, devData]) => {
+      const effectiveId = devData.deviceId || devId;
+      const devRow = renderDeviceRow(effectiveId);
+      if (devRow) {
+        roomEl.appendChild(devRow);
+      }
     });
 
     container.appendChild(roomEl);
@@ -287,7 +326,6 @@ function renderDeviceRow(deviceId) {
   const info = document.createElement("div");
   info.className = "device__info";
 
-  // Check for maxActiveDuration safety tag
   const safetyTagHtml = device.maxActiveDuration
     ? `<div class="device__safety-tag ${isOn ? "active" : ""}">MAX: ${device.maxActiveDuration} MIN${isOn ? " • ACTIVE" : ""}</div>`
     : "";
@@ -330,6 +368,13 @@ DataLayer.onDeviceChange((snapshot) => {
   logActivity(snapshot);
 });
 
+DataLayer.onStructureChange(() => {
+  renderFloorTabs();
+  renderRooms();
+  populateUplinkDeviceList();
+  updateLightingStates();
+});
+
 function updateRoomLightState(deviceId) {
   const deviceEntry = DataLayer.getDevice(deviceId);
   if (!deviceEntry) return;
@@ -358,14 +403,12 @@ function updateDeviceRowUI(deviceId) {
     const activeCount = switchKeys.filter((k) => switchesObj[k] === true).length;
     const totalCount = device.switchCount || switchKeys.length || 3;
 
-    // Update main header meta
     const mainMeta = row.querySelector(".device__main .device__meta");
     if (mainMeta) {
       mainMeta.textContent = `${activeCount}/${totalCount} ACTIVE`;
       mainMeta.dataset.status = isOn ? "ON" : "OFF";
     }
 
-    // Update individual sub-switches
     switchKeys.forEach((sKey) => {
       const sVal = Boolean(switchesObj[sKey]);
       const sStatus = sVal ? "ON" : "OFF";
@@ -392,7 +435,6 @@ function updateDeviceRowUI(deviceId) {
     const rocker = row.querySelector(".rocker");
     if (rocker) rocker.dataset.status = displayStatus;
 
-    // Update safety tag if present
     const safetyTag = row.querySelector(".device__safety-tag");
     if (safetyTag && device.maxActiveDuration) {
       safetyTag.className = `device__safety-tag ${isOn ? "active" : ""}`;
@@ -464,7 +506,6 @@ function drawFakeFrame(canvas, label) {
   ctx.fillStyle = "#05070a";
   ctx.fillRect(0, 0, w, h);
 
-  // static noise
   const imgData = ctx.createImageData(w, h);
   for (let i = 0; i < imgData.data.length; i += 4) {
     const v = Math.random() * 14;
@@ -473,12 +514,10 @@ function drawFakeFrame(canvas, label) {
   }
   ctx.putImageData(imgData, 0, 0);
 
-  // scanline sweep
   const sweepY = (Date.now() / 8) % h;
   ctx.fillStyle = "rgba(76,195,138,0.08)";
   ctx.fillRect(0, sweepY, w, 2);
 
-  // label + timestamp overlay
   ctx.font = "11px monospace";
   ctx.fillStyle = "rgba(234,237,242,0.65)";
   ctx.fillText(label.toUpperCase(), 10, 18);

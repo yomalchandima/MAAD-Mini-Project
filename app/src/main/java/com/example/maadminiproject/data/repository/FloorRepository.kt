@@ -1,7 +1,9 @@
 package com.example.maadminiproject.data.repository
 
 import com.example.maadminiproject.data.datasource.FirebaseDataSource
+import com.example.maadminiproject.data.models.Device
 import com.example.maadminiproject.data.models.Floor
+import com.example.maadminiproject.data.models.Zone
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -146,14 +148,66 @@ class FloorRepository {
     }
 
     /**
-     * Helper function to map a [DataSnapshot] to a list of [Floor] models.
+     * Helper function to map a [DataSnapshot] to a list of [Floor] models defensively.
+     *
+     * Injects the Firebase child keys as authoritative [Floor.floorId], [Zone.zoneId],
+     * and [Device.deviceId] / [Device.floorId] / [Device.zoneId].
      *
      * @param snapshot The snapshot containing floor children.
-     * @return A list of [Floor] objects, excluding any null results.
+     * @return A list of valid [Floor] objects.
      */
     private fun mapFloors(snapshot: DataSnapshot): List<Floor> {
-        return snapshot.children.mapNotNull { child ->
-            child.getValue(Floor::class.java)
+        val floorsList = mutableListOf<Floor>()
+        for (floorSnap in snapshot.children) {
+            val floorId = floorSnap.key ?: continue
+            val floorName = floorSnap.child("floorName").getValue(String::class.java)
+                ?: floorId
+            val floorPlanImage = floorSnap.child("floorPlanImage").getValue(String::class.java)
+            val zonesMap = mutableMapOf<String, Zone>()
+
+            val zonesSnap = floorSnap.child("zones")
+            for (zoneSnap in zonesSnap.children) {
+                val zoneId = zoneSnap.key ?: continue
+                val zoneName = zoneSnap.child("zoneName").getValue(String::class.java)
+                    ?: zoneId
+                val devicesMap = mutableMapOf<String, Device>()
+
+                val devicesSnap = zoneSnap.child("devices")
+                for (devSnap in devicesSnap.children) {
+                    val devId = devSnap.key ?: continue
+                    if (devSnap.value !is Map<*, *>) continue
+
+                    try {
+                        val device = devSnap.getValue(Device::class.java)
+                        if (device != null) {
+                            val normalizedDevice = device.copy(
+                                deviceId = if (device.deviceId.isNotBlank()) device.deviceId else devId,
+                                floorId = if (device.floorId.isNotBlank()) device.floorId else floorId,
+                                zoneId = if (device.zoneId.isNotBlank()) device.zoneId else zoneId,
+                            )
+                            devicesMap[devId] = normalizedDevice
+                        }
+                    } catch (_: Exception) {
+                        // Safely skip malformed device children
+                    }
+                }
+
+                zonesMap[zoneId] = Zone(
+                    zoneId = zoneId,
+                    zoneName = zoneName,
+                    devices = devicesMap,
+                )
+            }
+
+            floorsList.add(
+                Floor(
+                    floorId = floorId,
+                    floorName = floorName,
+                    floorPlanImage = floorPlanImage,
+                    zones = zonesMap,
+                )
+            )
         }
+        return floorsList
     }
 }

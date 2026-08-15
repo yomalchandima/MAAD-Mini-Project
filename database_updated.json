@@ -32,7 +32,9 @@
                   "online": true,
                   "x": 0.28,
                   "y": 0.36,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "livingRoom"
                 },
                 "fan01": {
                   "deviceId": "fan01",
@@ -47,7 +49,9 @@
                   "online": true,
                   "x": 0.52,
                   "y": 0.44,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "livingRoom"
                 },
                 "camera01": {
                   "deviceId": "camera01",
@@ -62,9 +66,12 @@
                   "online": true,
                   "x": 0.1,
                   "y": 0.12,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "livingRoom"
                 }
-              }
+              },
+              "floorId": "floor1"
             },
             "kitchen": {
               "zoneId": "kitchen",
@@ -83,7 +90,9 @@
                   "online": true,
                   "x": 0.22,
                   "y": 0.25,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "kitchen"
                 },
                 "plug01": {
                   "deviceId": "plug01",
@@ -97,7 +106,9 @@
                   "online": true,
                   "x": 0.76,
                   "y": 0.6,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "kitchen"
                 },
                 "switchUnit01": {
                   "deviceId": "switchUnit01",
@@ -117,9 +128,12 @@
                   "online": true,
                   "x": 0.58,
                   "y": 0.32,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "kitchen"
                 }
-              }
+              },
+              "floorId": "floor1"
             },
             "diningRoom": {
               "zoneId": "diningRoom",
@@ -138,7 +152,9 @@
                   "online": true,
                   "x": 0.4,
                   "y": 0.22,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "diningRoom"
                 },
                 "plug02": {
                   "deviceId": "plug02",
@@ -152,9 +168,12 @@
                   "online": true,
                   "x": 0.18,
                   "y": 0.72,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "diningRoom"
                 }
-              }
+              },
+              "floorId": "floor1"
             },
             "garage": {
               "zoneId": "garage",
@@ -173,7 +192,9 @@
                   "online": true,
                   "x": 0.42,
                   "y": 0.18,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "garage"
                 },
                 "camera02": {
                   "deviceId": "camera02",
@@ -188,9 +209,12 @@
                   "online": true,
                   "x": 0.84,
                   "y": 0.84,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "garage"
                 }
-              }
+              },
+              "floorId": "floor1"
             },
             "bathroomGF": {
               "zoneId": "bathroomGF",
@@ -209,9 +233,12 @@
                   "online": true,
                   "x": 0.4,
                   "y": 0.38,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "bathroomGF"
                 }
-              }
+              },
+              "floorId": "floor1"
             },
             "staircase": {
               "zoneId": "staircase",
@@ -230,9 +257,12 @@
                   "online": true,
                   "x": 0.5,
                   "y": 0.5,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "staircase"
                 }
-              }
+              },
+              "floorId": "floor1"
             }
           }
         },
@@ -258,7 +288,9 @@
                   "online": true,
                   "x": 0.22,
                   "y": 0.18,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "masterBedroom"
                 },
                 "ac01": {
                   "deviceId": "ac01",
@@ -274,7 +306,9 @@
                   "online": true,
                   "x": 0.82,
                   "y": 0.18,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "masterBedroom"
                 },
                 "plug03": {
                   "deviceId": "plug03",
@@ -288,7 +322,9 @@
                   "online": true,
                   "x": 0.82,
                   "y": 0.64,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "masterBedroom"
                 },
                 "iron01": {
                   "deviceId": "iron01",
@@ -303,9 +339,12 @@
                   "maxActiveDuration": 15,
                   "x": 0.6,
                   "y": 0.38,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "masterBedroom"
                 }
-              }
+              },
+              "floorId": "floor2"
             },
             "bedroom2": {
               "zoneId": "bedroom2",
@@ -324,7 +363,9 @@
                   "online": true,
                   "x": 0.3,
                   "y": 0.2,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "bedroom2"
                 },
                 "ac02": {
                   "deviceId": "ac02",
@@ -340,9 +381,12 @@
                   "online": true,
                   "x": 0.88,
                   "y": 0.8,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "bedroom2"
                 }
-              }
+              },
+              "floorId": "floor2"
             },
             "workRoom": {
               "zoneId": "workRoom",
@@ -361,7 +405,9 @@
                   "online": true,
                   "x": 0.3,
                   "y": 0.2,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "workRoom"
                 },
                 "plug04": {
                   "deviceId": "plug04",
@@ -375,7 +421,9 @@
                   "online": true,
                   "x": 0.78,
                   "y": 0.54,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "workRoom"
                 },
                 "ac03": {
                   "deviceId": "ac03",
@@ -391,9 +439,12 @@
                   "online": true,
                   "x": 0.74,
                   "y": 0.82,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "workRoom"
                 }
-              }
+              },
+              "floorId": "floor2"
             },
             "bathroomFF": {
               "zoneId": "bathroomFF",
@@ -412,9 +463,12 @@
                   "online": true,
                   "x": 0.42,
                   "y": 0.42,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "bathroomFF"
                 }
-              }
+              },
+              "floorId": "floor2"
             },
             "hallway": {
               "zoneId": "hallway",
@@ -433,7 +487,9 @@
                   "online": true,
                   "x": 0.55,
                   "y": 0.5,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "hallway"
                 },
                 "camera03": {
                   "deviceId": "camera03",
@@ -448,9 +504,12 @@
                   "online": true,
                   "x": 0.88,
                   "y": 0.22,
-                  "lastUpdated": 0
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "hallway"
                 }
-              }
+              },
+              "floorId": "floor2"
             }
           }
         }

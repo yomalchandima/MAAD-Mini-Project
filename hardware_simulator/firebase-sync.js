@@ -1,12 +1,13 @@
 /* =====================================================================
-   HARDWARE SIMULATOR — FIREBASE DATA LAYER (PHASE 5)
+   HARDWARE SIMULATOR — FIREBASE DATA LAYER (PHASE 5.5)
    =====================================================================
-   Phase 5 Scope:
+   - Firebase Realtime Database is the SINGLE SOURCE OF TRUTH.
+   - Robust dynamic floor, zone, and device discovery.
+   - Strictly ignores primitive or corrupt non-device nodes.
    - Centralized Safety System for devices with maxActiveDuration (e.g. iron01).
    - Tracks continuous active duration using Firebase state and timestamps.
    - Automatic safety shutdown: writes state: false to Firebase on timeout.
-   - Isolated SAFETY_TEST_MODE configuration for rapid automated testing.
-   - Multi-switch and all single-switch Phase 1-4 capabilities preserved.
+   - Multi-switch and single-switch bidirectional synchronization.
    ===================================================================== */
 
 const FIREBASE_CONFIG = {
@@ -28,7 +29,6 @@ const DB_FLOORS_PATH = "homes/home001/floors";
    - Development/Test Mode: When SAFETY_TEST_MODE is true, 1 minute in
      Firebase configuration is scaled to 1 second for rapid testing
      (e.g. 15 minutes = 15 seconds).
-   - Note: The database value in Firebase remains untouched (15).
    ===================================================================== */
 const SAFETY_TEST_MODE = true;
 const SAFETY_POLL_INTERVAL_MS = 1000;
@@ -39,7 +39,6 @@ function getMaxDurationMs(maxActiveMinutes) {
     // Scale: 1 configured minute -> 1,000 ms (1 second)
     return maxActiveMinutes * 1000;
   }
-  // Production: 1 configured minute -> 60,000 ms (60 seconds)
   return maxActiveMinutes * 60 * 1000;
 }
 
@@ -48,19 +47,30 @@ const DataLayer = (() => {
   let isInitialized = false;
   let hasReceivedInitialData = false;
   let safetyIntervalId = null;
-  const listeners = new Set();
+  const deviceChangeListeners = new Set();
+  const structureChangeListeners = new Set();
   const localCache = {};      // deviceId -> normalized device object
   const deviceIndex = {};     // deviceId -> { floorId, zoneId, path, data }
   const recentActions = {};   // deviceId -> { actor, timestamp }
-  let floorsData = {};        // floorId -> floor object
+  let floorsData = {};        // floorId -> clean floor object
 
-  function notify(deviceId, stateObj, prevStatus, extraMeta = {}) {
+  function notifyDeviceChange(deviceId, stateObj, prevStatus, extraMeta = {}) {
     const snapshot = { deviceId, ...stateObj, prevStatus, ...extraMeta };
-    listeners.forEach((fn) => {
+    deviceChangeListeners.forEach((fn) => {
       try {
         fn(snapshot);
       } catch (err) {
-        console.error("[DataLayer] Listener callback error:", err);
+        console.error("[DataLayer] Device listener callback error:", err);
+      }
+    });
+  }
+
+  function notifyStructureChange() {
+    structureChangeListeners.forEach((fn) => {
+      try {
+        fn(floorsData);
+      } catch (err) {
+        console.error("[DataLayer] Structure listener callback error:", err);
       }
     });
   }
@@ -74,7 +84,7 @@ const DataLayer = (() => {
 
   /* Centralized Safety Monitor */
   function startSafetyMonitor() {
-    if (safetyIntervalId) return; // Prevent duplicate timers
+    if (safetyIntervalId) return;
 
     safetyIntervalId = setInterval(() => {
       if (!hasReceivedInitialData || !db) return;
@@ -88,23 +98,20 @@ const DataLayer = (() => {
         const maxDurationMinutes = device.maxActiveDuration;
         if (!maxDurationMinutes || maxDurationMinutes <= 0) return;
 
-        // Device is safety-critical and currently powered ON
         if (device.state === true) {
-          const startTime = device.lastUpdated || now;
+          const startTime = device.lastUpdated || device.updatedAt || now;
           const elapsedMs = now - startTime;
           const limitMs = getMaxDurationMs(maxDurationMinutes);
 
           if (elapsedMs >= limitMs) {
             console.warn(`[SafetySystem] Safety limit exceeded for ${deviceId} (${device.deviceName}). Elapsed: ${elapsedMs}ms, Limit: ${limitMs}ms. Initiating automatic shutdown.`);
             
-            // Mark action as safety-system shutdown
             recentActions[deviceId] = {
               actor: "safety-system",
               isSafetyShutdown: true,
               timestamp: now
             };
 
-            // Trigger atomic state write to Firebase
             DataLayer.setDeviceStatus(deviceId, false, "safety-system");
           }
         }
@@ -114,109 +121,174 @@ const DataLayer = (() => {
     console.log(`[SafetySystem] Safety monitor armed (Test Mode: ${SAFETY_TEST_MODE ? "ENABLED (1m = 1s)" : "DISABLED (Realtime)"}).`);
   }
 
-  function stopSafetyMonitor() {
-    if (safetyIntervalId) {
-      clearInterval(safetyIntervalId);
-      safetyIntervalId = null;
-    }
-  }
-
   function processFloorsSnapshot(rawFloors) {
-    if (!rawFloors) {
-      console.warn("[DataLayer] Empty floors data received from Firebase.");
+    if (!rawFloors || typeof rawFloors !== "object") {
+      console.warn("[DataLayer] Empty or invalid floors data received from Firebase.");
+      floorsData = {};
       return;
     }
-    floorsData = rawFloors;
+
+    const cleanFloors = {};
+    const discoveredDeviceIds = new Set();
     const discoveredCount = { floors: 0, zones: 0, devices: 0 };
     const now = Date.now();
+    let structureChanged = false;
 
-    Object.entries(rawFloors).forEach(([floorId, floorObj]) => {
+    // Previous state keys for diffing
+    const prevFloorKeys = Object.keys(floorsData).sort().join(",");
+    const prevDeviceKeys = Object.keys(deviceIndex).sort().join(",");
+
+    Object.entries(rawFloors).forEach(([floorId, rawFloorObj]) => {
+      if (!rawFloorObj || typeof rawFloorObj !== "object" || Array.isArray(rawFloorObj)) {
+        return; // Skip invalid floor node
+      }
+
       discoveredCount.floors++;
-      const zones = floorObj?.zones || {};
+      const cleanFloor = {
+        floorId: rawFloorObj.floorId || floorId,
+        floorName: rawFloorObj.floorName || floorId,
+        floorPlanImage: rawFloorObj.floorPlanImage || null,
+        zones: {}
+      };
 
-      Object.entries(zones).forEach(([zoneId, zoneObj]) => {
-        discoveredCount.zones++;
-        const devices = zoneObj?.devices || {};
+      const rawZones = rawFloorObj.zones || {};
+      if (typeof rawZones === "object" && !Array.isArray(rawZones)) {
+        Object.entries(rawZones).forEach(([zoneId, rawZoneObj]) => {
+          if (!rawZoneObj || typeof rawZoneObj !== "object" || Array.isArray(rawZoneObj)) {
+            return; // Skip invalid zone node
+          }
 
-        Object.entries(devices).forEach(([deviceId, deviceData]) => {
-          discoveredCount.devices++;
-          const realPath = `${DB_FLOORS_PATH}/${floorId}/zones/${zoneId}/devices/${deviceId}`;
-
-          // Index device
-          deviceIndex[deviceId] = {
-            floorId,
-            zoneId,
-            path: realPath,
-            data: deviceData
+          discoveredCount.zones++;
+          const cleanZone = {
+            zoneId: rawZoneObj.zoneId || zoneId,
+            zoneName: rawZoneObj.zoneName || zoneId,
+            floorId: rawZoneObj.floorId || floorId,
+            devices: {}
           };
 
-          // Determine power state
-          const stateBool = typeof deviceData.state === "boolean"
-            ? deviceData.state
-            : (deviceData.state === "true" || deviceData.status === "ON");
-
-          const prevCached = localCache[deviceId];
-          const prevDisplayStatus = prevCached?.displayStatus;
-          const prevStatus = prevCached?.status;
-          const displayStatus = stateBool
-            ? "ON"
-            : (deviceData.status === "DISCONNECTED" ? "DISCONNECTED" : (deviceData.status === "ERROR" ? "ERROR" : "OFF"));
-
-          // Check for sub-switch changes on multi-switch devices
-          let changedSwitchId = null;
-          if (deviceData.switches && prevCached?.switches) {
-            for (const sKey of Object.keys(deviceData.switches)) {
-              if (deviceData.switches[sKey] !== prevCached.switches[sKey]) {
-                changedSwitchId = sKey;
-                break;
+          const rawDevices = rawZoneObj.devices || {};
+          if (typeof rawDevices === "object" && !Array.isArray(rawDevices)) {
+            Object.entries(rawDevices).forEach(([deviceId, rawDevObj]) => {
+              // Ensure this child is a genuine device object, not a corrupt primitive or stub
+              if (!rawDevObj || typeof rawDevObj !== "object" || Array.isArray(rawDevObj)) {
+                return;
               }
-            }
+
+              // Filter out corrupt entries that lack minimum identification
+              const effectiveId = rawDevObj.deviceId || deviceId;
+              const effectiveName = rawDevObj.deviceName || deviceId;
+              const effectiveType = (rawDevObj.type || "LIGHT").toUpperCase();
+
+              discoveredCount.devices++;
+              discoveredDeviceIds.add(effectiveId);
+
+              const realPath = `${DB_FLOORS_PATH}/${floorId}/zones/${zoneId}/devices/${effectiveId}`;
+
+              // Determine power state
+              const stateBool = typeof rawDevObj.state === "boolean"
+                ? rawDevObj.state
+                : (rawDevObj.state === "true" || rawDevObj.status === "ON");
+
+              const prevCached = localCache[effectiveId];
+              const prevDisplayStatus = prevCached?.displayStatus;
+              const prevStatus = prevCached?.status;
+              const displayStatus = stateBool
+                ? "ON"
+                : (rawDevObj.status === "DISCONNECTED" ? "DISCONNECTED" : (rawDevObj.status === "ERROR" ? "ERROR" : "OFF"));
+
+              // Check for sub-switch changes on multi-switch devices
+              let changedSwitchId = null;
+              if (rawDevObj.switches && prevCached?.switches) {
+                for (const sKey of Object.keys(rawDevObj.switches)) {
+                  if (rawDevObj.switches[sKey] !== prevCached.switches[sKey]) {
+                    changedSwitchId = sKey;
+                    break;
+                  }
+                }
+              }
+
+              const switchesChanged = JSON.stringify(prevCached?.switches) !== JSON.stringify(rawDevObj.switches);
+
+              const isChanged = !prevCached ||
+                prevCached.state !== stateBool ||
+                prevCached.status !== rawDevObj.status ||
+                switchesChanged ||
+                prevCached.lastUpdated !== rawDevObj.lastUpdated;
+
+              // Determine source actor
+              let actor = "firebase";
+              let isSafetyShutdown = false;
+              const recent = recentActions[effectiveId];
+              if (recent && (now - recent.timestamp) < 6000) {
+                actor = recent.actor;
+                isSafetyShutdown = Boolean(recent.isSafetyShutdown);
+              }
+
+              const normalizedDevice = {
+                ...rawDevObj,
+                deviceId: effectiveId,
+                deviceName: effectiveName,
+                type: effectiveType,
+                floorId,
+                zoneId,
+                state: stateBool,
+                status: rawDevObj.status || "Normal",
+                maxActiveDuration: rawDevObj.maxActiveDuration || null,
+                switchCount: rawDevObj.switchCount || (rawDevObj.switches ? Object.keys(rawDevObj.switches).length : 0),
+                switches: rawDevObj.switches ? { ...rawDevObj.switches } : null,
+                displayStatus,
+                updatedAt: rawDevObj.lastUpdated || now,
+                updatedBy: actor
+              };
+
+              cleanZone.devices[effectiveId] = normalizedDevice;
+              localCache[effectiveId] = normalizedDevice;
+
+              deviceIndex[effectiveId] = {
+                floorId,
+                zoneId,
+                path: realPath,
+                data: normalizedDevice
+              };
+
+              if (isChanged && hasReceivedInitialData) {
+                console.log(`[DataLayer] Device update: ${effectiveId} (${effectiveName}) -> state=${stateBool}, actor=${actor}`);
+                notifyDeviceChange(effectiveId, localCache[effectiveId], prevDisplayStatus || prevStatus, { changedSwitchId, actor, isSafetyShutdown });
+              }
+            });
           }
 
-          const switchesChanged = JSON.stringify(prevCached?.switches) !== JSON.stringify(deviceData.switches);
-
-          const isChanged = !prevCached ||
-            prevCached.state !== stateBool ||
-            prevCached.status !== deviceData.status ||
-            switchesChanged ||
-            prevCached.lastUpdated !== deviceData.lastUpdated;
-
-          // Determine source actor
-          let actor = "firebase";
-          let isSafetyShutdown = false;
-          const recent = recentActions[deviceId];
-          if (recent && (now - recent.timestamp) < 6000) {
-            actor = recent.actor;
-            isSafetyShutdown = Boolean(recent.isSafetyShutdown);
-          }
-
-          localCache[deviceId] = {
-            ...deviceData,
-            deviceId,
-            floorId,
-            zoneId,
-            state: stateBool,
-            status: deviceData.status || "Normal",
-            maxActiveDuration: deviceData.maxActiveDuration || null,
-            switchCount: deviceData.switchCount || (deviceData.switches ? Object.keys(deviceData.switches).length : 0),
-            switches: deviceData.switches ? { ...deviceData.switches } : null,
-            displayStatus,
-            updatedAt: deviceData.lastUpdated || now,
-            updatedBy: actor
-          };
-
-          if (isChanged && hasReceivedInitialData) {
-            console.log(`[DataLayer] Device update: ${deviceId} (${deviceData.deviceName}) -> state=${stateBool}, actor=${actor}`);
-            notify(deviceId, localCache[deviceId], prevDisplayStatus || prevStatus, { changedSwitchId, actor, isSafetyShutdown });
-          }
+          cleanFloor.zones[zoneId] = cleanZone;
         });
-      });
+      }
+
+      cleanFloors[floorId] = cleanFloor;
     });
+
+    // Remove any stale devices that were deleted from Firebase
+    Object.keys(deviceIndex).forEach((devId) => {
+      if (!discoveredDeviceIds.has(devId)) {
+        delete deviceIndex[devId];
+        delete localCache[devId];
+        structureChanged = true;
+      }
+    });
+
+    floorsData = cleanFloors;
+
+    const currentFloorKeys = Object.keys(cleanFloors).sort().join(",");
+    const currentDeviceKeys = Object.keys(deviceIndex).sort().join(",");
+    if (prevFloorKeys !== currentFloorKeys || prevDeviceKeys !== currentDeviceKeys) {
+      structureChanged = true;
+    }
 
     if (!hasReceivedInitialData) {
       console.log(`[DataLayer] Initial discovery completed: ${discoveredCount.floors} floors, ${discoveredCount.zones} zones, ${discoveredCount.devices} devices.`);
       hasReceivedInitialData = true;
       startSafetyMonitor();
+    } else if (structureChanged) {
+      console.log(`[DataLayer] Structure changed. Re-notifying UI.`);
+      notifyStructureChange();
     }
   }
 
@@ -236,9 +308,8 @@ const DataLayer = (() => {
         }
         db = firebase.database();
         isInitialized = true;
-        console.log("[DataLayer] Firebase initialized for Phase 5 (Safety System).");
+        console.log("[DataLayer] Firebase initialized for Phase 5.5.");
 
-        // Monitor connection status
         db.ref(".info/connected").on("value", (snap) => {
           const connected = snap.val() === true;
           if (connected) {
@@ -250,7 +321,6 @@ const DataLayer = (() => {
           }
         });
 
-        // Attach listener to floors root: homes/home001/floors
         const floorsRef = db.ref(DB_FLOORS_PATH);
 
         floorsRef.on(
@@ -278,13 +348,18 @@ const DataLayer = (() => {
     },
 
     onDeviceChange(callback) {
-      listeners.add(callback);
+      deviceChangeListeners.add(callback);
+    },
+
+    onStructureChange(callback) {
+      structureChangeListeners.add(callback);
     },
 
     getState(deviceId) {
       return (
         localCache[deviceId] || {
           deviceId,
+          deviceName: deviceId,
           state: false,
           status: "Normal",
           displayStatus: "OFF",
@@ -390,7 +465,7 @@ const DataLayer = (() => {
           updatedAt: Date.now(),
           updatedBy: actor
         };
-        notify(deviceId, localCache[deviceId], prevStatus, { actor });
+        notifyDeviceChange(deviceId, localCache[deviceId], prevStatus, { actor });
       }
     },
 
@@ -420,7 +495,6 @@ const DataLayer = (() => {
       const currentSwitches = { ...(currentCached.switches || {}) };
       currentSwitches[switchId] = boolState;
 
-      // Overall state is true if at least one switch is ON
       const overallState = Object.values(currentSwitches).some((v) => v === true);
 
       const realPath = deviceEntry.path;

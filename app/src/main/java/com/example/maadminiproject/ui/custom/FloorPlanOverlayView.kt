@@ -160,8 +160,8 @@ class FloorPlanOverlayView @JvmOverloads constructor(
         if (containerWidth <= 0 || containerHeight <= 0) return
 
         for (device in devices) {
-            val clampedX = device.x.coerceIn(0.05f, 0.95f)
-            val clampedY = device.y.coerceIn(0.05f, 0.95f)
+            val clampedX = device.x.coerceIn(0.05, 0.95)
+            val clampedY = device.y.coerceIn(0.05, 0.95)
 
             val pxX = (clampedX * containerWidth).toInt()
             val pxY = (clampedY * containerHeight).toInt()

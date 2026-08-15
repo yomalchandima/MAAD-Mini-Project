@@ -114,6 +114,7 @@ class DashboardViewModel : ViewModel() {
             homeId = homeId,
             onFloorsChanged = { floorList ->
                 _floors.value = floorList
+                updateGlobalDeviceSummary(floorList)
                 markObservationComplete("floors")
             },
             onFailure = { handleError(it.message) },
@@ -154,6 +155,22 @@ class DashboardViewModel : ViewModel() {
             )
             deviceListeners[zoneId] = listener
         }
+    }
+
+    /**
+     * Recalculates total and active device counts from all floors.
+     */
+    private fun updateGlobalDeviceSummary(floorList: List<Floor>) {
+        var total = 0
+        var active = 0
+        floorList.forEach { floor ->
+            floor.zones.values.forEach { zone ->
+                total += zone.devices.size
+                active += zone.devices.values.count { it.state }
+            }
+        }
+        _totalDevices.value = total
+        _activeDevices.value = active
     }
 
     /**

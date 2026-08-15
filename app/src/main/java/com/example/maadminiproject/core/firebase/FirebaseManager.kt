@@ -22,7 +22,7 @@ object FirebaseManager {
     /**
      * The [FirebaseDatabase] instance used for Realtime Database operations.
      */
-    val database: FirebaseDatabase = FirebaseDatabase.getInstance()
+    val database: FirebaseDatabase = FirebaseDatabase.getInstance("https://maad-mini-project-4b71e-default-rtdb.asia-southeast1.firebasedatabase.app")
 
     /**
      * The root [DatabaseReference] of the Realtime Database.

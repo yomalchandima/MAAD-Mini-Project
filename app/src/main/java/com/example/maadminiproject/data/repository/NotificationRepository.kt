@@ -125,7 +125,15 @@ class NotificationRepository {
      */
     private fun mapNotifications(snapshot: DataSnapshot): List<Notification> {
         return snapshot.children.mapNotNull { child ->
-            child.getValue(Notification::class.java)
+            try {
+                if (child.hasChildren()) {
+                    child.getValue(Notification::class.java)?.copy(notificationId = child.key ?: "")
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }

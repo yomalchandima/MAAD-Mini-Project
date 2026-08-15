@@ -62,6 +62,10 @@ class SettingsRepository {
      * @return A [Settings] object if valid, null otherwise.
      */
     private fun mapSettings(snapshot: DataSnapshot): Settings? {
-        return snapshot.getValue(Settings::class.java)
+        return try {
+            snapshot.getValue(Settings::class.java)
+        } catch (e: Exception) {
+            null
+        }
     }
 }

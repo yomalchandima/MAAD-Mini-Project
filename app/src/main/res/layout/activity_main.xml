@@ -179,17 +179,19 @@
                         android:padding="16dp">
 
                         <TextView
+                            android:id="@+id/tvAlertsFloorName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/ground_floor"
+                            android:text="Ground Floor"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
+                            android:id="@+id/tvAlertsFloorStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/ground_floor_status"
+                            android:text="-- Active • -- Rooms"
                             android:textColor="#E0E0E0"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -220,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="@string/devices_connected"
+                    android:text="-- devices connected"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -329,9 +331,10 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tvGroundFloorStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/ground_floor_status"
+                        android:text="-- Active  •  -- Rooms"
                         android:textColor="#E0E0E0"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -367,9 +370,10 @@
                         android:textSize="16sp"
                         android:textStyle="bold" />
                     <TextView
+                        android:id="@+id/tvFirstFloorStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/first_floor_status"
+                        android:text="-- Active  •  -- Rooms"
                         android:textColor="#E0E0E0"
                         android:textSize="12sp" />
                 </LinearLayout>

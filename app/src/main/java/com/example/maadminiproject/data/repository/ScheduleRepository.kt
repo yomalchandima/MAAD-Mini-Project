@@ -168,7 +168,15 @@ class ScheduleRepository {
      */
     private fun mapSchedules(snapshot: DataSnapshot): List<Schedule> {
         return snapshot.children.mapNotNull { child ->
-            child.getValue(Schedule::class.java)
+            try {
+                if (child.hasChildren()) {
+                    child.getValue(Schedule::class.java)?.copy(scheduleId = child.key ?: "")
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                null
+            }
         }
     }
 }

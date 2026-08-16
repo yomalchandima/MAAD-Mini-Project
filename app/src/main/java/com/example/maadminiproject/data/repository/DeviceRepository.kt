@@ -21,6 +21,11 @@ class DeviceRepository {
     private val dataSource = FirebaseDataSource()
 
     /**
+     * Activity log repository for recording device actions.
+     */
+    private val activityLogRepository = ActivityLogRepository()
+
+    /**
      * Observes devices for a specific zone within a floor of a home.
      *
      * @param homeId Unique identifier of the home.
@@ -56,6 +61,8 @@ class DeviceRepository {
      * @param zoneId Unique identifier of the zone.
      * @param deviceId Unique identifier of the device.
      * @param newState The new boolean state for the device.
+     * @param deviceName Optional display name of the device for logging.
+     * @param performedBy Actor who initiated the action (default: "User").
      * @param onSuccess Optional callback for successful update.
      * @param onFailure Optional callback for failed update.
      */
@@ -65,6 +72,8 @@ class DeviceRepository {
         zoneId: String,
         deviceId: String,
         newState: Boolean,
+        deviceName: String = "",
+        performedBy: String = "User",
         onSuccess: (() -> Unit)? = null,
         onFailure: ((Exception) -> Unit)? = null,
     ) {
@@ -78,8 +87,21 @@ class DeviceRepository {
             zoneId,
             deviceId,
             updates,
-            onSuccess,
-            onFailure
+            onSuccess = {
+                val effectiveName = deviceName.ifBlank { deviceId }
+                val action = if (newState) "DEVICE_TURNED_ON" else "DEVICE_TURNED_OFF"
+                val description = "$effectiveName turned ${if (newState) "ON" else "OFF"} manually"
+                activityLogRepository.logDeviceAction(
+                    homeId = homeId,
+                    deviceId = deviceId,
+                    deviceName = effectiveName,
+                    action = action,
+                    description = description,
+                    performedBy = performedBy,
+                )
+                onSuccess?.invoke()
+            },
+            onFailure = onFailure
         )
     }
 
@@ -127,6 +149,8 @@ class DeviceRepository {
      * @param switchId Identifier of the switch channel (e.g. "switch_1").
      * @param newState New boolean state for the switch channel.
      * @param currentSwitches Current map of switches on the device, if known.
+     * @param deviceName Optional display name of the multi-switch unit for logging.
+     * @param performedBy Actor who initiated the action (default: "User").
      * @param onSuccess Optional callback for successful update.
      * @param onFailure Optional callback for failed update.
      */
@@ -138,6 +162,8 @@ class DeviceRepository {
         switchId: String,
         newState: Boolean,
         currentSwitches: Map<String, Boolean>? = null,
+        deviceName: String = "",
+        performedBy: String = "User",
         onSuccess: (() -> Unit)? = null,
         onFailure: ((Exception) -> Unit)? = null,
     ) {
@@ -154,7 +180,20 @@ class DeviceRepository {
             switchId = switchId,
             newState = newState,
             overallState = overallState,
-            onSuccess = onSuccess,
+            onSuccess = {
+                val effectiveName = deviceName.ifBlank { deviceId }
+                val action = if (newState) "SWITCH_TURNED_ON" else "SWITCH_TURNED_OFF"
+                val description = "$effectiveName ($switchId) turned ${if (newState) "ON" else "OFF"} manually"
+                activityLogRepository.logDeviceAction(
+                    homeId = homeId,
+                    deviceId = deviceId,
+                    deviceName = effectiveName,
+                    action = action,
+                    description = description,
+                    performedBy = performedBy,
+                )
+                onSuccess?.invoke()
+            },
             onFailure = onFailure,
         )
     }

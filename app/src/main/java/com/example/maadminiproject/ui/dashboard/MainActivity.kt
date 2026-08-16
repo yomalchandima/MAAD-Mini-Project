@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import com.example.maadminiproject.R
 import com.example.maadminiproject.databinding.ActivityMainBinding
 import com.example.maadminiproject.ui.floor.FloorActivity
+import com.example.maadminiproject.ui.notification.NotificationsActivity
 import com.example.maadminiproject.ui.settings.SettingsActivity
 import com.example.maadminiproject.viewmodel.dashboard.DashboardViewModel
 
@@ -62,6 +64,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, com.example.maadminiproject.ui.schedule.ScheduleActivity::class.java))
         }
 
+        binding.cardAlerts.setOnClickListener {
+            startActivity(Intent(this, NotificationsActivity::class.java))
+        }
+
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> true
@@ -100,13 +106,23 @@ class MainActivity : AppCompatActivity() {
                 val statusText = "$activeCount Active  •  $roomCount Rooms"
                 
                 when (floor.floorId) {
-                    "floor1" -> {
-                        binding.tvGroundFloorStatus.text = statusText
-                        binding.tvAlertsFloorName.text = floor.floorName
-                        binding.tvAlertsFloorStatus.text = statusText
-                    }
+                    "floor1" -> binding.tvGroundFloorStatus.text = statusText
                     "floor2" -> binding.tvFirstFloorStatus.text = statusText
                 }
+            }
+        }
+
+        viewModel.notifications.observe(this) { notifications ->
+            val unreadCount = notifications.count { !it.isRead }
+            if (unreadCount > 0) {
+                binding.tvAlertsCount.text = getString(R.string.unread_count_format, unreadCount)
+                binding.tvAlertsCount.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))
+                val latestUnread = notifications.firstOrNull { !it.isRead }
+                binding.tvAlertsStatus.text = latestUnread?.title ?: "New alert"
+            } else {
+                binding.tvAlertsCount.text = "0 Unread"
+                binding.tvAlertsCount.setTextColor(ContextCompat.getColor(this, R.color.white))
+                binding.tvAlertsStatus.text = getString(R.string.alerts_nominal)
             }
         }
     }

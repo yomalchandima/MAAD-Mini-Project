@@ -43,6 +43,59 @@ class NotificationRepository {
     }
 
     /**
+     * Creates a new notification entry in Firebase.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param notification The [Notification] object to write.
+     * @param onSuccess Optional callback returning the created notificationId upon success.
+     * @param onFailure Optional callback invoked with an [Exception] upon failure.
+     */
+    fun createNotification(
+        homeId: String,
+        notification: Notification,
+        onSuccess: ((String) -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        dataSource.createNotification(
+            homeId = homeId,
+            notification = notification,
+            onSuccess = onSuccess,
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Helper to quickly create and record a smart home notification.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param title Title of the alert/notification.
+     * @param message Detailed description.
+     * @param type Category (e.g. "SAFETY", "SCHEDULE", "SECURITY", "SYSTEM").
+     * @param deviceId Associated device identifier, if applicable.
+     * @param onSuccess Optional callback upon success.
+     * @param onFailure Optional callback upon failure.
+     */
+    fun pushNotification(
+        homeId: String,
+        title: String,
+        message: String,
+        type: String = "SYSTEM",
+        deviceId: String = "",
+        onSuccess: ((String) -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val notification = Notification(
+            title = title,
+            message = message,
+            type = type.uppercase(),
+            timestamp = System.currentTimeMillis(),
+            isRead = false,
+            deviceId = deviceId,
+        )
+        createNotification(homeId, notification, onSuccess, onFailure)
+    }
+
+    /**
      * Marks a specific notification as read.
      *
      * @param homeId Unique identifier of the home.
@@ -56,7 +109,7 @@ class NotificationRepository {
         onSuccess: (() -> Unit)? = null,
         onFailure: ((Exception) -> Unit)? = null,
     ) {
-        val updates = mapOf("read" to true)
+        val updates = mapOf<String, Any>("isRead" to true)
         dataSource.updateNotification(
             homeId,
             notificationId,
@@ -64,6 +117,40 @@ class NotificationRepository {
             onSuccess,
             onFailure,
         )
+    }
+
+    /**
+     * Marks all provided unread notifications as read.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param notifications List of notifications to process.
+     * @param onComplete Optional callback when all updates are dispatched.
+     */
+    fun markAllAsRead(
+        homeId: String,
+        notifications: List<Notification>,
+        onComplete: (() -> Unit)? = null,
+    ) {
+        val unread = notifications.filter { !it.isRead }
+        if (unread.isEmpty()) {
+            onComplete?.invoke()
+            return
+        }
+        var remaining = unread.size
+        unread.forEach { notif ->
+            markAsRead(
+                homeId = homeId,
+                notificationId = notif.notificationId,
+                onSuccess = {
+                    remaining--
+                    if (remaining == 0) onComplete?.invoke()
+                },
+                onFailure = {
+                    remaining--
+                    if (remaining == 0) onComplete?.invoke()
+                }
+            )
+        }
     }
 
     /**
@@ -121,19 +208,27 @@ class NotificationRepository {
      * Helper function to map a [DataSnapshot] to a list of [Notification] models.
      *
      * @param snapshot The snapshot containing notification children.
-     * @return A list of [Notification] objects, excluding any null results.
+     * @return A list of [Notification] objects sorted newest first.
      */
     private fun mapNotifications(snapshot: DataSnapshot): List<Notification> {
         return snapshot.children.mapNotNull { child ->
             try {
                 if (child.hasChildren()) {
-                    child.getValue(Notification::class.java)?.copy(notificationId = child.key ?: "")
+                    val notif = child.getValue(Notification::class.java)
+                    val isReadVal = child.child("isRead").getValue(Boolean::class.java)
+                        ?: child.child("read").getValue(Boolean::class.java)
+                        ?: notif?.isRead
+                        ?: false
+                    notif?.copy(
+                        notificationId = child.key ?: "",
+                        isRead = isReadVal,
+                    )
                 } else {
                     null
                 }
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 null
             }
-        }
+        }.sortedByDescending { it.timestamp }
     }
 }

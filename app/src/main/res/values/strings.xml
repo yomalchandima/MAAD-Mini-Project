@@ -282,4 +282,20 @@
     <string name="schedule_deleted">Schedule deleted</string>
     <string name="select_date_hint">Select Date (YYYY-MM-DD)</string>
     <string name="select_time_hint">Select Time (HH:MM)</string>
+
+    <!-- Phase 11B Notifications Strings -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_subtitle">Real-time alerts &amp; system notices</string>
+    <string name="mark_all_read">Mark all as read</string>
+    <string name="no_notifications_title">No Notifications</string>
+    <string name="no_notifications_desc">Important alerts, safety notices, and scheduled automations will appear here in real time.</string>
+    <string name="filter_all">All</string>
+    <string name="filter_unread">Unread</string>
+    <string name="type_safety">SAFETY</string>
+    <string name="type_schedule">SCHEDULE</string>
+    <string name="type_security">SECURITY</string>
+    <string name="type_system">SYSTEM</string>
+    <string name="unread_badge">NEW</string>
+    <string name="alerts_nominal">All systems nominal</string>
+    <string name="unread_count_format">%1$d Unread</string>
 </resources>

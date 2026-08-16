@@ -152,11 +152,15 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/cardAlerts"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:background="@drawable/bg_card_dark"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
                     android:orientation="vertical"
                     android:padding="16dp">
 
@@ -176,22 +180,23 @@
                         android:layout_height="match_parent"
                         android:gravity="bottom"
                         android:orientation="vertical"
-                        android:padding="16dp">
+                        android:paddingTop="12dp">
 
                         <TextView
-                            android:id="@+id/tvAlertsFloorName"
+                            android:id="@+id/tvAlertsCount"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Ground Floor"
+                            android:text="0 Unread"
                             android:textColor="@color/white"
                             android:textSize="16sp"
                             android:textStyle="bold" />
 
                         <TextView
-                            android:id="@+id/tvAlertsFloorStatus"
+                            android:id="@+id/tvAlertsStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="-- Active • -- Rooms"
+                            android:layout_marginTop="2dp"
+                            android:text="@string/alerts_nominal"
                             android:textColor="#E0E0E0"
                             android:textSize="12sp" />
                     </LinearLayout>

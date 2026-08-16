@@ -99,6 +99,56 @@ const DataLayer = (() => {
     if (connLabel) connLabel.textContent = labelText || (isLive ? "LIVE — connected to Firebase" : "OFFLINE / ERROR");
   }
 
+  /* Centralized Activity Logger (Phase 11A) */
+  function logActivityToFirebase(deviceId, deviceName, action, description, performedBy) {
+    if (!db) return;
+    try {
+      const logsRef = db.ref(`${DB_HOME_PATH}/activityLogs`);
+      const newLogRef = logsRef.push();
+      const logEntry = {
+        logId: newLogRef.key || `log_${Date.now()}`,
+        deviceId: deviceId || "",
+        deviceName: deviceName || deviceId || "",
+        action: action || "DEVICE_STATE_CHANGED",
+        description: description || "",
+        timestamp: Date.now(),
+        performedBy: performedBy || "system"
+      };
+      newLogRef.set(logEntry).then(() => {
+        console.log(`[ActivityLogger] Log recorded [${action}] for ${deviceId} by [${performedBy}]`);
+      }).catch((err) => {
+        console.error("[ActivityLogger] Failed to write activity log to Firebase:", err);
+      });
+    } catch (e) {
+      console.error("[ActivityLogger] Error creating log entry:", e);
+    }
+  }
+
+  /* Centralized Notification Generator (Phase 11B) */
+  function createNotificationInFirebase(title, message, type = "SYSTEM", deviceId = "") {
+    if (!db) return;
+    try {
+      const notifsRef = db.ref(`${DB_HOME_PATH}/notifications`);
+      const newNotifRef = notifsRef.push();
+      const notifEntry = {
+        notificationId: newNotifRef.key || `notif_${Date.now()}`,
+        title: title || "Notification",
+        message: message || "",
+        type: (type || "SYSTEM").toUpperCase(),
+        timestamp: Date.now(),
+        isRead: false,
+        deviceId: deviceId || ""
+      };
+      newNotifRef.set(notifEntry).then(() => {
+        console.log(`[NotificationSystem] Created [${type}] notification: "${title}"`);
+      }).catch((err) => {
+        console.error("[NotificationSystem] Failed to write notification to Firebase:", err);
+      });
+    } catch (e) {
+      console.error("[NotificationSystem] Error creating notification entry:", e);
+    }
+  }
+
   /* Centralized Safety Monitor */
   function startSafetyMonitor() {
     if (safetyIntervalId) return;
@@ -156,6 +206,22 @@ const DataLayer = (() => {
             };
 
             DataLayer.setDeviceStatus(deviceId, false, "safety-system");
+
+            const devName = device.deviceName || deviceId;
+            logActivityToFirebase(
+              deviceId,
+              devName,
+              "SAFETY_SHUTDOWN",
+              `${devName} automatically shut down by safety monitor after exceeding maximum active limit (${maxDurationMinutes} min)`,
+              "safety-system"
+            );
+
+            createNotificationInFirebase(
+              "Safety Alert",
+              `${devName} was automatically turned OFF after reaching its maximum active duration.`,
+              "SAFETY",
+              deviceId
+            );
           }
         }
       });
@@ -225,6 +291,22 @@ const DataLayer = (() => {
 
         // Set device status via existing DataLayer
         DataLayer.setDeviceStatus(schedule.deviceId, targetState, "schedule-executor");
+
+        const devName = schedule.deviceName || schedule.deviceId;
+        logActivityToFirebase(
+          schedule.deviceId,
+          devName,
+          targetState ? "SCHEDULE_TURN_ON" : "SCHEDULE_TURN_OFF",
+          `${devName} turned ${schedule.action} by schedule '${schedule.scheduleId}'`,
+          "schedule-executor"
+        );
+
+        createNotificationInFirebase(
+          "Schedule Executed",
+          `${devName} was turned ${schedule.action} by its scheduled automation.`,
+          "SCHEDULE",
+          schedule.deviceId
+        );
 
         // Handle one-time vs recurring
         if (rep === "NONE" || rep === "ONCE" || rep === "") {
@@ -636,6 +718,12 @@ const DataLayer = (() => {
           .update(updates)
           .then(() => {
             console.log(`[DataLayer] Firebase update confirmed for ${deviceId} (state=${boolState}, actor=${actor})`);
+            if (actor === "simulator-ui") {
+              const devName = deviceEntry?.data?.deviceName || localCache[deviceId]?.deviceName || deviceId;
+              const action = boolState ? "DEVICE_TURNED_ON" : "DEVICE_TURNED_OFF";
+              const desc = `${devName} turned ${boolState ? "ON" : "OFF"} via simulator`;
+              logActivityToFirebase(deviceId, devName, action, desc, "simulator-ui");
+            }
           })
           .catch((err) => {
             console.error(`[DataLayer] Error writing to Firebase (${realPath}):`, err);
@@ -653,6 +741,12 @@ const DataLayer = (() => {
           updatedBy: actor
         };
         notifyDeviceChange(deviceId, localCache[deviceId], prevStatus, { actor });
+        if (actor === "simulator-ui") {
+          const devName = localCache[deviceId]?.deviceName || deviceId;
+          const action = boolState ? "DEVICE_TURNED_ON" : "DEVICE_TURNED_OFF";
+          const desc = `${devName} turned ${boolState ? "ON" : "OFF"} via simulator`;
+          logActivityToFirebase(deviceId, devName, action, desc, "simulator-ui");
+        }
       }
     },
 
@@ -697,6 +791,12 @@ const DataLayer = (() => {
         .update(updates)
         .then(() => {
           console.log(`[DataLayer] Switch ${switchId} on ${deviceId} updated to ${boolState} in Firebase`);
+          if (actor === "simulator-ui") {
+            const devName = deviceEntry?.data?.deviceName || localCache[deviceId]?.deviceName || deviceId;
+            const action = boolState ? "SWITCH_TURNED_ON" : "SWITCH_TURNED_OFF";
+            const desc = `${devName} (${switchId}) turned ${boolState ? "ON" : "OFF"} via simulator`;
+            logActivityToFirebase(deviceId, devName, action, desc, "simulator-ui");
+          }
         })
         .catch((err) => {
           console.error(`[DataLayer] Error writing switch update to Firebase (${realPath}):`, err);

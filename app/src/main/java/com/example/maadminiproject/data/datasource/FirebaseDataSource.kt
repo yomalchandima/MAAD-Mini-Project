@@ -598,6 +598,44 @@ class FirebaseDataSource {
     }
 
     /**
+     * Creates a new notification under homes/{homeId}/notifications/{notificationId}.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param notification The [com.example.maadminiproject.data.models.Notification] to record.
+     * @param onSuccess Optional callback returning the created notificationId upon success.
+     * @param onFailure Optional callback invoked with an [Exception] upon failure.
+     */
+    fun createNotification(
+        homeId: String,
+        notification: com.example.maadminiproject.data.models.Notification,
+        onSuccess: ((String) -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val notifsRef = getHomeChildRef(homeId, "notifications")
+        val finalNotificationId = if (notification.notificationId.isNotBlank()) {
+            notification.notificationId
+        } else {
+            notifsRef.push().key ?: java.util.UUID.randomUUID().toString()
+        }
+        val finalTimestamp = if (notification.timestamp > 0L) {
+            notification.timestamp
+        } else {
+            System.currentTimeMillis()
+        }
+        val finalNotification = notification.copy(
+            notificationId = finalNotificationId,
+            timestamp = finalTimestamp,
+        )
+        val notifRef = notifsRef.child(finalNotificationId)
+        helper.writeData(
+            notifRef,
+            finalNotification,
+            onSuccess = { onSuccess?.invoke(finalNotificationId) },
+            onFailure = onFailure,
+        )
+    }
+
+    /**
      * Performs a partial update on a specific notification.
      *
      * Path: homes/{homeId}/notifications/{notificationId}
@@ -622,6 +660,24 @@ class FirebaseDataSource {
     }
 
     /**
+     * Deletes a notification from Firebase under homes/{homeId}/notifications/{notificationId}.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param notificationId The unique identifier of the notification to delete.
+     * @param onSuccess Optional success callback.
+     * @param onFailure Optional failure callback.
+     */
+    fun deleteNotification(
+        homeId: String,
+        notificationId: String,
+        onSuccess: (() -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val notifRef = getHomeChildRef(homeId, "notifications").child(notificationId)
+        helper.deleteData(notifRef, onSuccess, onFailure)
+    }
+
+    /**
      * Observes activity logs for a specific home.
      *
      * @param homeId The unique identifier of the home.
@@ -635,6 +691,58 @@ class FirebaseDataSource {
         onFailure: (DatabaseError) -> Unit,
     ): ValueEventListener {
         return helper.observe(getHomeChildRef(homeId, "activityLogs"), onData, onFailure)
+    }
+
+    /**
+     * Creates a new activity log entry under homes/{homeId}/activityLogs/{logId}.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param activityLog The [com.example.maadminiproject.data.models.ActivityLog] to record.
+     * @param onSuccess Optional callback returning the created logId upon success.
+     * @param onFailure Optional callback invoked with an [Exception] upon failure.
+     */
+    fun createActivityLog(
+        homeId: String,
+        activityLog: com.example.maadminiproject.data.models.ActivityLog,
+        onSuccess: ((String) -> Unit)? = null,
+        onFailure: ((Exception) -> Unit)? = null,
+    ) {
+        val logsRef = getHomeChildRef(homeId, "activityLogs")
+        val finalLogId = if (activityLog.logId.isNotBlank()) {
+            activityLog.logId
+        } else {
+            logsRef.push().key ?: java.util.UUID.randomUUID().toString()
+        }
+        val finalTimestamp = if (activityLog.timestamp > 0L) {
+            activityLog.timestamp
+        } else {
+            System.currentTimeMillis()
+        }
+        val finalLog = activityLog.copy(
+            logId = finalLogId,
+            timestamp = finalTimestamp,
+        )
+        val logRef = logsRef.child(finalLogId)
+        helper.writeData(
+            logRef,
+            finalLog,
+            onSuccess = { onSuccess?.invoke(finalLogId) },
+            onFailure = onFailure,
+        )
+    }
+
+    /**
+     * Removes an activity logs listener from a specific home.
+     *
+     * @param homeId The unique identifier of the home.
+     * @param listener The listener to remove.
+     */
+    fun removeActivityLogsListener(
+        homeId: String,
+        listener: ValueEventListener,
+    ) {
+        val logsRef = getHomeReference(homeId).child("activityLogs")
+        helper.removeListener(logsRef, listener)
     }
 
     /**

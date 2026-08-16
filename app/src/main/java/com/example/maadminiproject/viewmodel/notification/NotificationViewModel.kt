@@ -98,6 +98,35 @@ class NotificationViewModel : ViewModel() {
     }
 
     /**
+     * Marks all unread notifications in the observed home as read.
+     *
+     * @param homeId Unique identifier of the home.
+     */
+    fun markAllAsRead(homeId: String) {
+        val currentList = _notifications.value ?: return
+        repository.markAllAsRead(
+            homeId = homeId,
+            notifications = currentList,
+        )
+    }
+
+    /**
+     * Creates a new notification entry.
+     *
+     * @param homeId Unique identifier of the home.
+     * @param notification The [Notification] model to record.
+     */
+    fun createNotification(homeId: String, notification: Notification) {
+        repository.createNotification(
+            homeId = homeId,
+            notification = notification,
+            onFailure = { exception ->
+                _errorMessage.value = "Failed to create notification: ${exception.message}"
+            }
+        )
+    }
+
+    /**
      * Updates multiple fields of a specific notification.
      *
      * @param homeId Unique identifier of the home.

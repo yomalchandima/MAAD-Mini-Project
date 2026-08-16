@@ -13,4 +13,5 @@ data class Report(
     val activeDevices: Int = 0,
     val onlineDevices: Int = 0,
     val offlineDevices: Int = 0,
+    val totalDevices: Int = 0,
 )

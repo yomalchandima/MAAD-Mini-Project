@@ -105,12 +105,14 @@ class DeviceViewModel : ViewModel() {
         deviceId: String,
         newState: Boolean
     ) {
+        val devName = _devices.value?.find { it.deviceId == deviceId }?.deviceName ?: ""
         repository.updateDeviceState(
             homeId = homeId,
             floorId = floorId,
             zoneId = zoneId,
             deviceId = deviceId,
             newState = newState,
+            deviceName = devName,
             onFailure = { exception ->
                 _errorMessage.value = "Failed to toggle device: ${exception.message}"
             }
@@ -164,6 +166,7 @@ class DeviceViewModel : ViewModel() {
         newState: Boolean,
     ) {
         val currentDevice = _devices.value?.find { it.deviceId == deviceId }
+        val devName = currentDevice?.deviceName ?: ""
         repository.setSwitchState(
             homeId = homeId,
             floorId = floorId,
@@ -172,6 +175,7 @@ class DeviceViewModel : ViewModel() {
             switchId = switchId,
             newState = newState,
             currentSwitches = currentDevice?.switches,
+            deviceName = devName,
             onFailure = { exception ->
                 _errorMessage.value = "Failed to update switch $switchId: ${exception.message}"
             }

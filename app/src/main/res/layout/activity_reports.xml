@@ -37,20 +37,20 @@
             app:layout_constraintStart_toEndOf="@id/ivLogo"
             app:layout_constraintTop_toTopOf="@id/ivLogo">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/homesync"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/homesync"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="System Analytics"
-                    android:textColor="@color/vibrant_cyan"
-                    android:textSize="10sp" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System Analytics"
+                android:textColor="@color/vibrant_cyan"
+                android:textSize="10sp" />
         </LinearLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -93,6 +93,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
+                    android:id="@+id/tvLiveBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_social_button"
@@ -100,21 +101,23 @@
                     android:gravity="center_vertical"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="6dp"
-                    android:text="@string/weekly"
+                    android:text="LIVE DATA"
                     android:textColor="@color/vibrant_cyan"
-                    android:textSize="12sp"
-                    app:drawableStartCompat="@drawable/ic_layers"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_bolt"
                     app:drawableTint="@color/vibrant_cyan"
                     app:layout_constraintBottom_toBottomOf="@id/tvTitle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/tvTitle" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Efficiency Card -->
+            <!-- Efficiency / Summary Card -->
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardEfficiency"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="20dp"
                 android:background="@drawable/bg_card_dark"
                 android:padding="20dp">
 
@@ -127,7 +130,7 @@
                     android:drawablePadding="8dp"
                     android:paddingHorizontal="12dp"
                     android:paddingVertical="4dp"
-                    android:text="@string/efficiency_report"
+                    android:text="DEVICE STATUS REPORT"
                     android:textColor="@color/vibrant_cyan"
                     android:textSize="10sp"
                     android:textStyle="bold"
@@ -140,8 +143,8 @@
                     android:id="@+id/tvMainMsg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/efficiency_msg"
+                    android:layout_marginTop="14dp"
+                    android:text="0 of 0 Devices Active"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -149,16 +152,17 @@
                     app:layout_constraintTop_toBottomOf="@id/tvReportLabel" />
 
                 <TextView
+                    android:id="@+id/tvEfficiencySub"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/efficiency_sub"
+                    android:layout_marginTop="6dp"
+                    android:text="Current active load: 0 W • 0 devices online"
                     android:textColor="@color/soft_gray"
-                    android:textSize="14sp"
+                    android:textSize="13sp"
                     app:layout_constraintTop_toBottomOf="@id/tvMainMsg" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Stats Row -->
+            <!-- Stats Row: Live Active Load & Connectivity -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -174,44 +178,50 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvKwhLabel"
+                        android:id="@+id/tvActiveLoadLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/kwh_today_label"
+                        android:text="ACTIVE LOAD"
                         android:textColor="@color/soft_gray"
                         android:textSize="10sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/ic_arrow_back"
-                        android:rotation="-45"
+                        android:src="@drawable/ic_bolt"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="@color/vibrant_cyan" />
+                        app:tint="@color/vibrant_cyan"
+                        tools:ignore="ContentDescription" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="bottom"
+                        android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvKwhLabel">
+                        app:layout_constraintTop_toBottomOf="@id/tvActiveLoadLabel">
+
                         <TextView
+                            android:id="@+id/tvActiveLoadVal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/kwh_today_val"
+                            android:text="0"
                             android:textColor="@color/white"
                             android:textSize="22sp"
                             android:textStyle="bold" />
+
                         <TextView
+                            android:id="@+id/tvActiveLoadUnit"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_marginBottom="2dp"
-                            android:text="kWh"
+                            android:text="W"
                             android:textColor="@color/soft_gray"
                             android:textSize="12sp" />
                     </LinearLayout>
@@ -226,117 +236,56 @@
                     android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/tvCostLabel"
+                        android:id="@+id/tvConnectivityLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/est_cost_label"
+                        android:text="DEVICE HEALTH"
                         android:textColor="@color/soft_gray"
                         android:textSize="10sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:src="@drawable/ic_arrow_back"
-                        android:rotation="135"
+                        android:src="@drawable/ic_wifi"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:tint="#FF8A80" />
+                        app:tint="@color/vibrant_cyan"
+                        tools:ignore="ContentDescription" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="bottom"
+                        android:orientation="horizontal"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvCostLabel">
+                        app:layout_constraintTop_toBottomOf="@id/tvConnectivityLabel">
+
                         <TextView
+                            android:id="@+id/tvConnectedCountVal"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/est_cost_val"
+                            android:text="0 / 0"
                             android:textColor="@color/white"
                             android:textSize="22sp"
                             android:textStyle="bold" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:layout_marginBottom="2dp"
-                            android:text="@string/per_mo"
+                            android:text="Online"
                             android:textColor="@color/soft_gray"
                             android:textSize="12sp" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
-            <!-- Weekly Usage Chart Placeholder -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_card_dark"
-                android:padding="20dp">
-
-                <TextView
-                    android:id="@+id/tvChartTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/weekly_usage"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_social_button"
-                    android:backgroundTint="#2000E5FF"
-                    android:paddingHorizontal="8dp"
-                    android:paddingVertical="4dp"
-                    android:text="↓ 8%"
-                    android:textColor="@color/vibrant_cyan"
-                    android:textSize="10sp"
-                    app:layout_constraintBottom_toBottomOf="@id/tvChartTitle"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tvChartTitle" />
-
-                <LinearLayout
-                    android:id="@+id/chartContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="24dp"
-                    android:gravity="bottom"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/tvChartTitle">
-                    <View android:layout_width="0dp" android:layout_height="40dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
-                    <View android:layout_width="0dp" android:layout_height="60dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
-                    <View android:layout_width="0dp" android:layout_height="90dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/vibrant_cyan" />
-                    <View android:layout_width="0dp" android:layout_height="50dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
-                    <View android:layout_width="0dp" android:layout_height="75dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
-                    <View android:layout_width="0dp" android:layout_height="110dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/vibrant_cyan" />
-                    <View android:layout_width="0dp" android:layout_height="45dp" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:background="@color/cyan_glow" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintTop_toBottomOf="@id/chartContainer">
-                    <TextView style="@style/ChartDayLabel" android:text="Mon" />
-                    <TextView style="@style/ChartDayLabel" android:text="Tue" />
-                    <TextView style="@style/ChartDayLabel" android:text="Wed" />
-                    <TextView style="@style/ChartDayLabel" android:text="Thu" />
-                    <TextView style="@style/ChartDayLabel" android:text="Fri" />
-                    <TextView style="@style/ChartDayLabel" android:text="Sat" />
-                    <TextView style="@style/ChartDayLabel" android:text="Sun" />
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <!-- Device Load Section -->
+            <!-- Load Breakdown Section -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -348,67 +297,91 @@
                     android:id="@+id/tvLoadTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/device_load"
+                    android:text="Active Load Distribution"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     app:layout_constraintTop_toBottomOf="@id/tvLoadTitle">
 
-                    <View
-                        android:id="@+id/donutMock"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                    <FrameLayout
+                        android:id="@+id/donutContainer"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
                         android:background="@drawable/bg_social_circle"
-                        android:backgroundTint="@color/vibrant_cyan"
+                        android:backgroundTint="#2500F0FF"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="14.2\nkWh"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        android:gravity="center"
-                        app:layout_constraintBottom_toBottomOf="@id/donutMock"
-                        app:layout_constraintEnd_toEndOf="@id/donutMock"
-                        app:layout_constraintStart_toStartOf="@id/donutMock"
-                        app:layout_constraintTop_toTopOf="@id/donutMock" />
+                        <TextView
+                            android:id="@+id/tvLoadCenterText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="0 W\nActive"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="24dp"
+                        android:layout_marginStart="20dp"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/donutMock"
+                        app:layout_constraintStart_toEndOf="@id/donutContainer"
                         app:layout_constraintTop_toTopOf="parent">
 
-                        <LinearLayout style="@style/LoadItem">
+                        <LinearLayout
+                            style="@style/LoadItem"
+                            android:layout_marginBottom="6dp">
                             <View style="@style/LoadIndicator" android:backgroundTint="@color/vibrant_cyan" />
                             <TextView style="@style/LoadLabel" android:text="@string/climate" />
-                            <TextView style="@style/LoadPercent" android:text="@string/percent_45" />
+                            <TextView
+                                android:id="@+id/tvClimateLoadPercent"
+                                style="@style/LoadPercent"
+                                android:text="0 W (0%)" />
                         </LinearLayout>
 
-                        <LinearLayout style="@style/LoadItem">
+                        <LinearLayout
+                            style="@style/LoadItem"
+                            android:layout_marginBottom="6dp">
                             <View style="@style/LoadIndicator" android:backgroundTint="#FF8A80" />
                             <TextView style="@style/LoadLabel" android:text="@string/kitchen" />
-                            <TextView style="@style/LoadPercent" android:text="@string/percent_35" />
+                            <TextView
+                                android:id="@+id/tvKitchenLoadPercent"
+                                style="@style/LoadPercent"
+                                android:text="0 W (0%)" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/LoadItem"
+                            android:layout_marginBottom="6dp">
+                            <View style="@style/LoadIndicator" android:backgroundTint="#A58AFF" />
+                            <TextView style="@style/LoadLabel" android:text="@string/smart_lights" />
+                            <TextView
+                                android:id="@+id/tvLightsLoadPercent"
+                                style="@style/LoadPercent"
+                                android:text="0 W (0%)" />
                         </LinearLayout>
 
                         <LinearLayout style="@style/LoadItem">
-                            <View style="@style/LoadIndicator" android:backgroundTint="#A58AFF" />
-                            <TextView style="@style/LoadLabel" android:text="@string/smart_lights" />
-                            <TextView style="@style/LoadPercent" android:text="@string/percent_20" />
+                            <View style="@style/LoadIndicator" android:backgroundTint="@color/soft_gray" />
+                            <TextView style="@style/LoadLabel" android:text="Other" />
+                            <TextView
+                                android:id="@+id/tvOtherLoadPercent"
+                                style="@style/LoadPercent"
+                                android:text="0 W (0%)" />
                         </LinearLayout>
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
@@ -418,93 +391,152 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:text="@string/top_consumers"
+                android:layout_marginTop="20dp"
+                android:text="Top Power Devices"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="17sp"
                 android:textStyle="bold" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout style="@style/ConsumerCard">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardConsumer1"
+                style="@style/ConsumerCard"
+                android:layout_marginTop="10dp">
                 <ImageView
-                    android:id="@+id/ivHvac"
+                    android:id="@+id/ivConsumer1"
                     style="@style/ConsumerIcon"
                     android:src="@drawable/ic_ac"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
                 <TextView
-                    android:id="@+id/tvHvacName"
+                    android:id="@+id/tvConsumer1Name"
                     style="@style/ConsumerName"
-                    android:text="@string/hvac_system"
-                    app:layout_constraintStart_toEndOf="@id/ivHvac"
-                    app:layout_constraintTop_toTopOf="@id/ivHvac" />
+                    android:text="Smart Clothing Iron"
+                    app:layout_constraintStart_toEndOf="@id/ivConsumer1"
+                    app:layout_constraintTop_toTopOf="@id/ivConsumer1" />
                 <TextView
+                    android:id="@+id/tvConsumer1Usage"
                     style="@style/ConsumerUsage"
-                    android:text="@string/hvac_usage"
-                    app:layout_constraintStart_toStartOf="@id/tvHvacName"
-                    app:layout_constraintTop_toBottomOf="@id/tvHvacName" />
+                    android:text="1500 W Rating"
+                    app:layout_constraintStart_toStartOf="@id/tvConsumer1Name"
+                    app:layout_constraintTop_toBottomOf="@id/tvConsumer1Name" />
                 <TextView
+                    android:id="@+id/tvConsumer1Status"
                     style="@style/ConsumerTrend"
-                    android:text="↑ 4%"
-                    android:textColor="#FF8A80"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout style="@style/ConsumerCard">
-                <ImageView
-                    android:id="@+id/ivWater"
-                    style="@style/ConsumerIcon"
-                    android:src="@drawable/ic_kitchen"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-                <TextView
-                    android:id="@+id/tvWaterName"
-                    style="@style/ConsumerName"
-                    android:text="@string/water_heater"
-                    app:layout_constraintStart_toEndOf="@id/ivWater"
-                    app:layout_constraintTop_toTopOf="@id/ivWater" />
-                <TextView
-                    style="@style/ConsumerUsage"
-                    android:text="@string/water_heater_usage"
-                    app:layout_constraintStart_toStartOf="@id/tvWaterName"
-                    app:layout_constraintTop_toBottomOf="@id/tvWaterName" />
-                <TextView
-                    style="@style/ConsumerTrend"
-                    android:text="↓ 2%"
+                    android:text="ACTIVE"
                     android:textColor="@color/vibrant_cyan"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout style="@style/ConsumerCard">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardConsumer2"
+                style="@style/ConsumerCard">
                 <ImageView
-                    android:id="@+id/ivEv"
+                    android:id="@+id/ivConsumer2"
                     style="@style/ConsumerIcon"
-                    android:src="@drawable/ic_power_plug"
+                    android:src="@drawable/ic_ac"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
                 <TextView
-                    android:id="@+id/tvEvName"
+                    android:id="@+id/tvConsumer2Name"
                     style="@style/ConsumerName"
-                    android:text="@string/ev_charger"
-                    app:layout_constraintStart_toEndOf="@id/ivEv"
-                    app:layout_constraintTop_toTopOf="@id/ivEv" />
+                    android:text="Bedroom AC"
+                    app:layout_constraintStart_toEndOf="@id/ivConsumer2"
+                    app:layout_constraintTop_toTopOf="@id/ivConsumer2" />
                 <TextView
+                    android:id="@+id/tvConsumer2Usage"
                     style="@style/ConsumerUsage"
-                    android:text="@string/ev_charger_usage"
-                    app:layout_constraintStart_toStartOf="@id/tvEvName"
-                    app:layout_constraintTop_toBottomOf="@id/tvEvName" />
+                    android:text="1200 W Rating"
+                    app:layout_constraintStart_toStartOf="@id/tvConsumer2Name"
+                    app:layout_constraintTop_toBottomOf="@id/tvConsumer2Name" />
                 <TextView
+                    android:id="@+id/tvConsumer2Status"
                     style="@style/ConsumerTrend"
-                    android:text="— 0%"
+                    android:text="OFF"
                     android:textColor="@color/soft_gray"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View android:layout_width="match_parent" android:layout_height="40dp"/>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardConsumer3"
+                style="@style/ConsumerCard">
+                <ImageView
+                    android:id="@+id/ivConsumer3"
+                    style="@style/ConsumerIcon"
+                    android:src="@drawable/ic_power_plug"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/tvConsumer3Name"
+                    style="@style/ConsumerName"
+                    android:text="Kitchen Smart Plug"
+                    app:layout_constraintStart_toEndOf="@id/ivConsumer3"
+                    app:layout_constraintTop_toTopOf="@id/ivConsumer3" />
+                <TextView
+                    android:id="@+id/tvConsumer3Usage"
+                    style="@style/ConsumerUsage"
+                    android:text="100 W Rating"
+                    app:layout_constraintStart_toStartOf="@id/tvConsumer3Name"
+                    app:layout_constraintTop_toBottomOf="@id/tvConsumer3Name" />
+                <TextView
+                    android:id="@+id/tvConsumer3Status"
+                    style="@style/ConsumerTrend"
+                    android:text="OFF"
+                    android:textColor="@color/soft_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Recent System Activity Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Recent System Activity"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecentActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_activity_log" />
+
+            <TextView
+                android:id="@+id/tvEmptyActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_card_dark"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="No recent system activity recorded yet."
+                android:textColor="@color/soft_gray"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <View android:layout_width="match_parent" android:layout_height="32dp"/>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading Indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/vibrant_cyan"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

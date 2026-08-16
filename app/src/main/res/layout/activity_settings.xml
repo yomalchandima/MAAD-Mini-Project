@@ -433,7 +433,7 @@
                     android:layout_marginHorizontal="16dp"
                     android:background="#1AFFFFFF" />
 
-                <!-- Schedules & Automations -->
+                <!-- Schedules -->
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/itemSchedules"
                     android:layout_width="match_parent"
@@ -475,7 +475,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Timers &amp; automation rules"
+                            android:text="Timers &amp; device schedules"
                             android:textColor="@color/soft_gray"
                             android:textSize="13sp" />
                     </LinearLayout>

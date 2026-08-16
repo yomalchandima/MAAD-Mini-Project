@@ -140,7 +140,7 @@ class ScheduleActivity : AppCompatActivity() {
             scheduleAdapter.updateSchedules(schedules)
 
             val activeCount = schedules.count { it.enabled }
-            binding.tvActiveStats.text = "$activeCount Active Automation${if (activeCount != 1) "s" else ""}"
+            binding.tvActiveStats.text = "$activeCount Active Schedule${if (activeCount != 1) "s" else ""}"
 
             if (schedules.isEmpty()) {
                 binding.layoutEmptySchedules.visibility = View.VISIBLE

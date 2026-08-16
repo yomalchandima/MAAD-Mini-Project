@@ -72,8 +72,34 @@ class AddEditScheduleActivity : AppCompatActivity() {
         parseIntentData()
         setupListeners()
         observeFloorsForDevicePicker()
+        updateToggleStyles()
 
         floorViewModel.observeFloors(homeId)
+    }
+
+    private fun updateToggleStyles() {
+        // Action toggles
+        if (binding.rbActionOn.isChecked) {
+            binding.rbActionOn.setBackgroundResource(R.drawable.bg_option_selected)
+            binding.rbActionOn.setTextColor(getColor(R.color.deep_midnight))
+            binding.rbActionOff.setBackgroundResource(R.drawable.bg_social_button)
+            binding.rbActionOff.setTextColor(getColor(R.color.white))
+        } else {
+            binding.rbActionOn.setBackgroundResource(R.drawable.bg_social_button)
+            binding.rbActionOn.setTextColor(getColor(R.color.white))
+            binding.rbActionOff.setBackgroundResource(R.drawable.bg_option_selected)
+            binding.rbActionOff.setTextColor(getColor(R.color.deep_midnight))
+        }
+
+        // Repeat toggles
+        binding.rbRepeatOnce.setBackgroundResource(if (binding.rbRepeatOnce.isChecked) R.drawable.bg_option_selected else R.drawable.bg_social_button)
+        binding.rbRepeatOnce.setTextColor(if (binding.rbRepeatOnce.isChecked) getColor(R.color.deep_midnight) else getColor(R.color.white))
+
+        binding.rbRepeatDaily.setBackgroundResource(if (binding.rbRepeatDaily.isChecked) R.drawable.bg_option_selected else R.drawable.bg_social_button)
+        binding.rbRepeatDaily.setTextColor(if (binding.rbRepeatDaily.isChecked) getColor(R.color.deep_midnight) else getColor(R.color.white))
+
+        binding.rbRepeatWeekdays.setBackgroundResource(if (binding.rbRepeatWeekdays.isChecked) R.drawable.bg_option_selected else R.drawable.bg_social_button)
+        binding.rbRepeatWeekdays.setTextColor(if (binding.rbRepeatWeekdays.isChecked) getColor(R.color.deep_midnight) else getColor(R.color.white))
     }
 
     private fun initFormDefaults() {
@@ -161,6 +187,7 @@ class AddEditScheduleActivity : AppCompatActivity() {
 
         binding.rgAction.setOnCheckedChangeListener { _, checkedId ->
             selectedAction = if (checkedId == R.id.rbActionOff) "OFF" else "ON"
+            updateToggleStyles()
         }
 
         binding.rgRepeat.setOnCheckedChangeListener { _, checkedId ->
@@ -170,6 +197,7 @@ class AddEditScheduleActivity : AppCompatActivity() {
                 else -> "NONE"
             }
             updateDateVisibility()
+            updateToggleStyles()
         }
 
         binding.btnSaveSchedule.setOnClickListener {

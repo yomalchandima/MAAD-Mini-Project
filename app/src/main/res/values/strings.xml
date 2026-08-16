@@ -255,12 +255,12 @@
     <string name="mode_auto">Auto</string>
     <string name="bedroom_ac">Bedroom AC</string>
 
-    <!-- Phase 7 Scheduling & Automation Strings -->
-    <string name="schedules_title">Automations</string>
+    <!-- Phase 7 Scheduling & Schedules Strings -->
+    <string name="schedules_title">Schedules</string>
     <string name="schedules_subtitle">Automated device timers &amp; schedules</string>
-    <string name="add_schedule">Add Automation</string>
-    <string name="edit_schedule">Edit Automation</string>
-    <string name="no_schedules_title">No Automations Yet</string>
+    <string name="add_schedule">Add Schedule</string>
+    <string name="edit_schedule">Edit Schedule</string>
+    <string name="no_schedules_title">No Schedules Yet</string>
     <string name="no_schedules_desc">Set up one-time or recurring schedules to trigger your smart devices automatically.</string>
     <string name="device_label">Target Device</string>
     <string name="select_device">Select Device</string>

@@ -289,7 +289,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_tune"
-                            android:contentDescription="Automations Icon"
+                            android:contentDescription="Schedules Icon"
                             app:tint="@color/vibrant_cyan" />
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -304,10 +304,10 @@
                                 android:textSize="12sp"
                                 android:textStyle="bold" />
                             <TextView
-                                android:id="@+id/tvAutomationsStatus"
+                                android:id="@+id/tvSchedulesStatus"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Active timers"
+                                android:text="Active schedules"
                                 android:textColor="@color/soft_gray"
                                 android:textSize="11sp" />
                         </LinearLayout>

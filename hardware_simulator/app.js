@@ -554,7 +554,7 @@ document.getElementById("uplinkChaos").onclick = () => {
   DataLayer.setDeviceStatus(randomId, "ERROR", "safety-worker");
 };
 
-/* AUTOMATIONS & SCHEDULES UI */
+/* SCHEDULES UI */
 function renderSchedulesList(schedules) {
   const container = document.getElementById("schedulesList");
   if (!container) return;
@@ -563,7 +563,7 @@ function renderSchedulesList(schedules) {
   const list = Object.values(schedMap);
 
   if (list.length === 0) {
-    container.innerHTML = '<div class="schedules-empty">No automations configured</div>';
+    container.innerHTML = '<div class="schedules-empty">No schedules configured</div>';
     return;
   }
 

@@ -68,7 +68,10 @@ class DeviceRepository {
         onSuccess: (() -> Unit)? = null,
         onFailure: ((Exception) -> Unit)? = null,
     ) {
-        val updates = mapOf("state" to newState)
+        val updates = mapOf(
+            "state" to newState,
+            "lastUpdated" to System.currentTimeMillis()
+        )
         dataSource.updateDevice(
             homeId,
             floorId,

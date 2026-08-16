@@ -56,6 +56,7 @@ const DataLayer = (() => {
   const localCache = {};           // deviceId -> normalized device object
   const deviceIndex = {};          // deviceId -> { floorId, zoneId, path, data }
   const recentActions = {};        // deviceId -> { actor, timestamp }
+  const safetyStartTimes = {};     // deviceId -> timestamp (Session start time)
   const executedOccurrences = new Set(); // Set of "scheduleId_YYYY-MM-DD_HH:mm"
   let floorsData = {};             // floorId -> clean floor object
   let schedulesData = {};          // scheduleId -> clean schedule object
@@ -111,13 +112,39 @@ const DataLayer = (() => {
         const device = localCache[deviceId];
         if (!device) return;
 
-        const maxDurationMinutes = device.maxActiveDuration;
+        const maxDurationMinutes = Number(device.maxActiveDuration);
         if (!maxDurationMinutes || maxDurationMinutes <= 0) return;
 
         if (device.state === true) {
-          const startTime = device.lastUpdated || device.updatedAt || now;
+          // Priority: 1. Internal Session Start, 2. Firebase lastUpdated, 3. Discovery updatedAt
+          const lastUpdated = Number(device.lastUpdated);
+          const startTime = safetyStartTimes[deviceId] || ((lastUpdated && lastUpdated > 0) ? lastUpdated : device.updatedAt);
+
           const elapsedMs = now - startTime;
           const limitMs = getMaxDurationMs(maxDurationMinutes);
+
+          // DIAGNOSTIC LOGGING
+          if (deviceId === 'iron01') {
+             console.log(`[Diagnostic] deviceId: ${deviceId}`);
+             console.log(`[Diagnostic] state: ${device.state} (${typeof device.state})`);
+             console.log(`[Diagnostic] maxActiveDuration: ${device.maxActiveDuration} (${typeof device.maxActiveDuration})`);
+             console.log(`[Diagnostic] lastUpdated: ${device.lastUpdated} (${typeof device.lastUpdated})`);
+             console.log(`[Diagnostic] currentTime: ${now}`);
+             console.log(`[Diagnostic] elapsedMs: ${elapsedMs}`);
+             console.log(`[Diagnostic] limitMs: ${limitMs}`);
+             console.log(`[Diagnostic] SAFETY_TEST_MODE: ${SAFETY_TEST_MODE}`);
+             console.log(`[Diagnostic] calculated safety duration (limitMs): ${limitMs}ms`);
+             console.log(`[Diagnostic] floorId: ${device.floorId}`);
+             console.log(`[Diagnostic] zoneId: ${device.zoneId}`);
+          }
+
+          // Safety check: if startTime is somehow in the future or extremely old (pre-2026),
+          // reset it to 'now' to prevent immediate shutdown on bad data.
+          if (elapsedMs < 0 || elapsedMs > 86400000) {
+             if (deviceId === 'iron01') console.log(`[Diagnostic] Clock skew detected, resetting updatedAt`);
+             device.updatedAt = now;
+             return;
+          }
 
           if (elapsedMs >= limitMs) {
             console.warn(`[SafetySystem] Safety limit exceeded for ${deviceId} (${device.deviceName}). Elapsed: ${elapsedMs}ms, Limit: ${limitMs}ms. Initiating automatic shutdown.`);
@@ -377,6 +404,18 @@ const DataLayer = (() => {
                 path: realPath,
                 data: normalizedDevice
               };
+
+              // Safety System Session Tracking: Detect OFF -> ON transitions
+              const isTurningOn = (!prevCached || prevCached.state === false) && stateBool === true;
+              const isTurningOff = prevCached && prevCached.state === true && stateBool === false;
+
+              if (isTurningOn && rawDevObj.maxActiveDuration) {
+                  safetyStartTimes[effectiveId] = now;
+                  console.log(`[SafetySystem] Session started for ${effectiveId} at ${new Date(now).toLocaleTimeString()}`);
+              } else if (isTurningOff) {
+                  delete safetyStartTimes[effectiveId];
+                  console.log(`[SafetySystem] Session cleared for ${effectiveId}`);
+              }
 
               if (isChanged && hasReceivedInitialData) {
                 console.log(`[DataLayer] Device update: ${effectiveId} (${effectiveName}) -> state=${stateBool}, actor=${actor}`);

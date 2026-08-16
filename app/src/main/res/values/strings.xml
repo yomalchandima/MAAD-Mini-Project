@@ -254,4 +254,32 @@
     <string name="mode_heat">Heat</string>
     <string name="mode_auto">Auto</string>
     <string name="bedroom_ac">Bedroom AC</string>
+
+    <!-- Phase 7 Scheduling & Automation Strings -->
+    <string name="schedules_title">Automations</string>
+    <string name="schedules_subtitle">Automated device timers &amp; schedules</string>
+    <string name="add_schedule">Add Automation</string>
+    <string name="edit_schedule">Edit Automation</string>
+    <string name="no_schedules_title">No Automations Yet</string>
+    <string name="no_schedules_desc">Set up one-time or recurring schedules to trigger your smart devices automatically.</string>
+    <string name="device_label">Target Device</string>
+    <string name="select_device">Select Device</string>
+    <string name="action_label">Target Action</string>
+    <string name="action_on">Turn ON</string>
+    <string name="action_off">Turn OFF</string>
+    <string name="repeat_label">Repeat Frequency</string>
+    <string name="repeat_once">Once</string>
+    <string name="repeat_daily">Daily</string>
+    <string name="repeat_weekdays">Weekdays</string>
+    <string name="date_label">Date</string>
+    <string name="time_label">Time</string>
+    <string name="schedule_enabled">Enabled</string>
+    <string name="schedule_disabled">Disabled</string>
+    <string name="delete_schedule_title">Delete Schedule</string>
+    <string name="delete_schedule_confirm">Are you sure you want to delete this schedule for \"%1$s\"?</string>
+    <string name="schedule_created">Schedule created successfully</string>
+    <string name="schedule_updated">Schedule updated successfully</string>
+    <string name="schedule_deleted">Schedule deleted</string>
+    <string name="select_date_hint">Select Date (YYYY-MM-DD)</string>
+    <string name="select_time_hint">Select Time (HH:MM)</string>
 </resources>

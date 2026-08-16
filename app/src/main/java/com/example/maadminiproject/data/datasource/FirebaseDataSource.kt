@@ -484,6 +484,7 @@ class FirebaseDataSource {
             "deviceId" to schedule.deviceId,
             "deviceName" to schedule.deviceName,
             "action" to schedule.action,
+            "startDate" to schedule.startDate,
             "startTime" to schedule.startTime,
             "repeat" to schedule.repeat,
             "enabled" to schedule.enabled,

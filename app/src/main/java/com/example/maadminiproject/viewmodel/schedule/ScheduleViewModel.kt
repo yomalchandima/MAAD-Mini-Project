@@ -105,6 +105,10 @@ class ScheduleViewModel : ViewModel() {
             _errorMessage.value = "Failed to create schedule: Start time must not be blank"
             return
         }
+        if ((schedule.repeat.equals("NONE", ignoreCase = true) || schedule.repeat.equals("ONCE", ignoreCase = true)) && schedule.startDate.isBlank()) {
+            _errorMessage.value = "Failed to create schedule: Start date must not be blank for one-time schedules"
+            return
+        }
 
         repository.createSchedule(
             homeId = homeId,

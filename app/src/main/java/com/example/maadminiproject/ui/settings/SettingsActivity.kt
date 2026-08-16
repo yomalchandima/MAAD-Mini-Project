@@ -27,6 +27,10 @@ class SettingsActivity : AppCompatActivity() {
 
         setupBottomNav()
         
+        binding.itemSchedules.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.schedule.ScheduleActivity::class.java))
+        }
+
         binding.btnSignOut.setOnClickListener {
             val intent = Intent(this, com.example.maadminiproject.ui.authentication.LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

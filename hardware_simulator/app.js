@@ -554,11 +554,70 @@ document.getElementById("uplinkChaos").onclick = () => {
   DataLayer.setDeviceStatus(randomId, "ERROR", "safety-worker");
 };
 
+/* AUTOMATIONS & SCHEDULES UI */
+function renderSchedulesList(schedules) {
+  const container = document.getElementById("schedulesList");
+  if (!container) return;
+
+  const schedMap = schedules || DataLayer.getSchedules() || {};
+  const list = Object.values(schedMap);
+
+  if (list.length === 0) {
+    container.innerHTML = '<div class="schedules-empty">No automations configured</div>';
+    return;
+  }
+
+  // Sort by startTime
+  list.sort((a, b) => (a.startTime || "").localeCompare(b.startTime || ""));
+
+  container.innerHTML = "";
+  list.forEach((s) => {
+    const isActionOn = (s.action || "ON").toUpperCase() === "ON";
+    const item = document.createElement("div");
+    item.className = `schedule-item ${s.enabled ? "" : "disabled"}`;
+
+    let repeatLabel = s.repeat || "Once";
+    if (repeatLabel === "NONE" || repeatLabel === "ONCE") {
+      repeatLabel = s.startDate ? `Once (${s.startDate})` : "Once";
+    } else if (repeatLabel === "WEEKDAYS") {
+      repeatLabel = "Weekdays (Mon-Fri)";
+    } else if (repeatLabel === "DAILY") {
+      repeatLabel = "Every Day";
+    }
+
+    item.innerHTML = `
+      <div class="schedule-item__main">
+        <div class="schedule-item__time">
+          ${s.startTime || "--:--"}
+          <span class="schedule-badge ${isActionOn ? 'schedule-badge--on' : 'schedule-badge--off'}">${isActionOn ? 'ON' : 'OFF'}</span>
+        </div>
+        <div class="schedule-item__device">${s.deviceName || s.deviceId}</div>
+        <div class="schedule-item__freq">${repeatLabel}</div>
+      </div>
+      <button class="schedule-item__toggle ${s.enabled ? 'active' : ''}" title="Toggle enabled">
+        ${s.enabled ? 'ACTIVE' : 'PAUSED'}
+      </button>
+    `;
+
+    const toggleBtn = item.querySelector(".schedule-item__toggle");
+    toggleBtn.onclick = () => {
+      DataLayer.setScheduleEnabled(s.scheduleId, !s.enabled);
+    };
+
+    container.appendChild(item);
+  });
+}
+
+DataLayer.onScheduleChange((schedules) => {
+  renderSchedulesList(schedules);
+});
+
 /* BOOTSTRAP */
 DataLayer.init(() => {
   renderFloorTabs();
   renderRooms();
   populateUplinkDeviceList();
+  renderSchedulesList();
   updateLightingStates();
 
   const connIndicator = document.getElementById("connIndicator");

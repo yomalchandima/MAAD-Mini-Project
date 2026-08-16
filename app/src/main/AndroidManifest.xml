@@ -84,6 +84,12 @@
         <activity
             android:name=".ui.report.ReportsActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.schedule.ScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.schedule.AddEditScheduleActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

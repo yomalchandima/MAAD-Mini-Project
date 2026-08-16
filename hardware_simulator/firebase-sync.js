@@ -21,6 +21,8 @@ const FIREBASE_CONFIG = {
 };
 
 const DB_FLOORS_PATH = "homes/home001/floors";
+const DB_SCHEDULES_PATH = "homes/home001/schedules";
+const SCHEDULE_POLL_INTERVAL_MS = 1000;
 
 /* =====================================================================
    SAFETY SYSTEM CONFIGURATION
@@ -47,12 +49,16 @@ const DataLayer = (() => {
   let isInitialized = false;
   let hasReceivedInitialData = false;
   let safetyIntervalId = null;
+  let schedulerIntervalId = null;
   const deviceChangeListeners = new Set();
   const structureChangeListeners = new Set();
-  const localCache = {};      // deviceId -> normalized device object
-  const deviceIndex = {};     // deviceId -> { floorId, zoneId, path, data }
-  const recentActions = {};   // deviceId -> { actor, timestamp }
-  let floorsData = {};        // floorId -> clean floor object
+  const scheduleChangeListeners = new Set();
+  const localCache = {};           // deviceId -> normalized device object
+  const deviceIndex = {};          // deviceId -> { floorId, zoneId, path, data }
+  const recentActions = {};        // deviceId -> { actor, timestamp }
+  const executedOccurrences = new Set(); // Set of "scheduleId_YYYY-MM-DD_HH:mm"
+  let floorsData = {};             // floorId -> clean floor object
+  let schedulesData = {};          // scheduleId -> clean schedule object
 
   function notifyDeviceChange(deviceId, stateObj, prevStatus, extraMeta = {}) {
     const snapshot = { deviceId, ...stateObj, prevStatus, ...extraMeta };
@@ -71,6 +77,16 @@ const DataLayer = (() => {
         fn(floorsData);
       } catch (err) {
         console.error("[DataLayer] Structure listener callback error:", err);
+      }
+    });
+  }
+
+  function notifyScheduleChange() {
+    scheduleChangeListeners.forEach((fn) => {
+      try {
+        fn(schedulesData);
+      } catch (err) {
+        console.error("[DataLayer] Schedule listener callback error:", err);
       }
     });
   }
@@ -119,6 +135,117 @@ const DataLayer = (() => {
     }, SAFETY_POLL_INTERVAL_MS);
 
     console.log(`[SafetySystem] Safety monitor armed (Test Mode: ${SAFETY_TEST_MODE ? "ENABLED (1m = 1s)" : "DISABLED (Realtime)"}).`);
+  }
+
+  /* Centralized Schedule Executor (Phase 7) */
+  function startScheduleExecutor() {
+    if (schedulerIntervalId) return;
+
+    schedulerIntervalId = setInterval(() => {
+      if (!hasReceivedInitialData || !db) return;
+
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const todayStr = `${year}-${month}-${day}`; // "YYYY-MM-DD"
+
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const currentTimeStr = `${hours}:${minutes}`; // "HH:mm"
+
+      const dayOfWeek = now.getDay(); // 0 = Sun, 1 = Mon, ..., 5 = Fri, 6 = Sat
+      const isWeekday = dayOfWeek >= 1 && dayOfWeek <= 5;
+
+      Object.values(schedulesData).forEach((schedule) => {
+        if (!schedule.enabled) return;
+        if (!schedule.deviceId || !schedule.startTime) return;
+
+        let isApplicableToday = false;
+        const rep = (schedule.repeat || "NONE").toUpperCase();
+
+        if (rep === "DAILY") {
+          // Daily applies every day
+          if (!schedule.startDate || todayStr >= schedule.startDate) {
+            isApplicableToday = true;
+          }
+        } else if (rep === "WEEKDAYS") {
+          // Weekdays applies Monday to Friday
+          if (isWeekday && (!schedule.startDate || todayStr >= schedule.startDate)) {
+            isApplicableToday = true;
+          }
+        } else if (rep === "NONE" || rep === "ONCE" || rep === "") {
+          // One-time schedule applies strictly on matching startDate
+          if (schedule.startDate === todayStr) {
+            isApplicableToday = true;
+          }
+        }
+
+        if (!isApplicableToday) return;
+
+        // Check if start time matches current HH:mm
+        if (schedule.startTime !== currentTimeStr) return;
+
+        // Deduplication key: scheduleId + scheduledDate + scheduledTime
+        const occurrenceKey = `${schedule.scheduleId}_${todayStr}_${currentTimeStr}`;
+        if (executedOccurrences.has(occurrenceKey)) return;
+
+        // Mark occurrence as executed
+        executedOccurrences.add(occurrenceKey);
+
+        const targetState = schedule.action === "ON";
+        console.log(`[ScheduleExecutor] Executing schedule ${schedule.scheduleId} (${schedule.deviceName || schedule.deviceId}) -> ${schedule.action} at ${currentTimeStr} on ${todayStr}`);
+
+        // Set device status via existing DataLayer
+        DataLayer.setDeviceStatus(schedule.deviceId, targetState, "schedule-executor");
+
+        // Handle one-time vs recurring
+        if (rep === "NONE" || rep === "ONCE" || rep === "") {
+          console.log(`[ScheduleExecutor] One-time schedule ${schedule.scheduleId} completed. Auto-disabling in Firebase.`);
+          db.ref(`${DB_SCHEDULES_PATH}/${schedule.scheduleId}`)
+            .update({ enabled: false })
+            .then(() => {
+              console.log(`[ScheduleExecutor] Schedule ${schedule.scheduleId} successfully disabled in Firebase.`);
+            })
+            .catch((err) => {
+              console.error(`[ScheduleExecutor] Failed to auto-disable schedule ${schedule.scheduleId}:`, err);
+            });
+        }
+      });
+    }, SCHEDULE_POLL_INTERVAL_MS);
+
+    console.log("[ScheduleExecutor] Centralized schedule executor armed and running.");
+  }
+
+  function processSchedulesSnapshot(rawSchedules) {
+    if (!rawSchedules || typeof rawSchedules !== "object") {
+      schedulesData = {};
+      notifyScheduleChange();
+      return;
+    }
+
+    const clean = {};
+    Object.entries(rawSchedules).forEach(([sId, sObj]) => {
+      if (sObj && typeof sObj === "object") {
+        clean[sId] = {
+          scheduleId: sObj.scheduleId || sId,
+          deviceId: sObj.deviceId || "",
+          deviceName: sObj.deviceName || sObj.deviceId || "",
+          action: (sObj.action || "ON").toUpperCase(),
+          startDate: sObj.startDate || "",
+          startTime: sObj.startTime || "",
+          endTime: sObj.endTime || null,
+          repeat: (sObj.repeat || "NONE").toUpperCase(),
+          enabled: sObj.enabled === true || sObj.enabled === "true",
+          switchId: sObj.switchId || null,
+          createdAt: sObj.createdAt || Date.now()
+        };
+      }
+    });
+
+    schedulesData = clean;
+    console.log(`[DataLayer] Schedules updated: ${Object.keys(clean).length} schedule(s) loaded.`);
+    notifyScheduleChange();
   }
 
   function processFloorsSnapshot(rawFloors) {
@@ -286,6 +413,7 @@ const DataLayer = (() => {
       console.log(`[DataLayer] Initial discovery completed: ${discoveredCount.floors} floors, ${discoveredCount.zones} zones, ${discoveredCount.devices} devices.`);
       hasReceivedInitialData = true;
       startSafetyMonitor();
+      startScheduleExecutor();
     } else if (structureChanged) {
       console.log(`[DataLayer] Structure changed. Re-notifying UI.`);
       notifyStructureChange();
@@ -308,7 +436,7 @@ const DataLayer = (() => {
         }
         db = firebase.database();
         isInitialized = true;
-        console.log("[DataLayer] Firebase initialized for Phase 5.5.");
+        console.log("[DataLayer] Firebase initialized for Phase 7.");
 
         db.ref(".info/connected").on("value", (snap) => {
           const connected = snap.val() === true;
@@ -322,6 +450,7 @@ const DataLayer = (() => {
         });
 
         const floorsRef = db.ref(DB_FLOORS_PATH);
+        const schedulesRef = db.ref(DB_SCHEDULES_PATH);
 
         floorsRef.on(
           "value",
@@ -340,6 +469,17 @@ const DataLayer = (() => {
             if (!hasReceivedInitialData && onReady) onReady();
           }
         );
+
+        schedulesRef.on(
+          "value",
+          (snap) => {
+            const rawSchedules = snap.val();
+            processSchedulesSnapshot(rawSchedules);
+          },
+          (error) => {
+            console.error(`[DataLayer] Firebase read error at ${DB_SCHEDULES_PATH}:`, error);
+          }
+        );
       } catch (err) {
         console.error("[DataLayer] Failed to initialize Firebase:", err);
         updateConnectionBadge(false, "FIREBASE INIT FAILED");
@@ -353,6 +493,14 @@ const DataLayer = (() => {
 
     onStructureChange(callback) {
       structureChangeListeners.add(callback);
+    },
+
+    onScheduleChange(callback) {
+      scheduleChangeListeners.add(callback);
+    },
+
+    getSchedules() {
+      return schedulesData;
     },
 
     getState(deviceId) {
@@ -513,6 +661,30 @@ const DataLayer = (() => {
         })
         .catch((err) => {
           console.error(`[DataLayer] Error writing switch update to Firebase (${realPath}):`, err);
+        });
+    },
+
+    setScheduleEnabled(scheduleId, enabled) {
+      if (!db || !scheduleId) return;
+      db.ref(`${DB_SCHEDULES_PATH}/${scheduleId}`)
+        .update({ enabled: Boolean(enabled) })
+        .then(() => {
+          console.log(`[DataLayer] Schedule ${scheduleId} enabled set to ${enabled}`);
+        })
+        .catch((err) => {
+          console.error(`[DataLayer] Error updating schedule ${scheduleId}:`, err);
+        });
+    },
+
+    deleteSchedule(scheduleId) {
+      if (!db || !scheduleId) return;
+      db.ref(`${DB_SCHEDULES_PATH}/${scheduleId}`)
+        .remove()
+        .then(() => {
+          console.log(`[DataLayer] Schedule ${scheduleId} deleted`);
+        })
+        .catch((err) => {
+          console.error(`[DataLayer] Error deleting schedule ${scheduleId}:`, err);
         });
     }
   };

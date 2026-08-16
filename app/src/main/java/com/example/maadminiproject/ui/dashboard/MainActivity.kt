@@ -58,6 +58,10 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        binding.cardAutomations.setOnClickListener {
+            startActivity(Intent(this, com.example.maadminiproject.ui.schedule.ScheduleActivity::class.java))
+        }
+
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> true

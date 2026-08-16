@@ -80,6 +80,10 @@ class ScheduleRepository {
             onFailure?.invoke(IllegalArgumentException("Start time must not be blank"))
             return
         }
+        if ((schedule.repeat.equals("NONE", ignoreCase = true) || schedule.repeat.equals("ONCE", ignoreCase = true)) && schedule.startDate.isBlank()) {
+            onFailure?.invoke(IllegalArgumentException("Start date must not be blank for one-time schedules"))
+            return
+        }
         dataSource.createSchedule(homeId, schedule, onSuccess, onFailure)
     }
 

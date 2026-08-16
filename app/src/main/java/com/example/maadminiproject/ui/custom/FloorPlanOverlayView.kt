@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.graphics.Paint
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -30,7 +31,7 @@ class FloorPlanOverlayView @JvmOverloads constructor(
 
     private val backgroundImageView = ShapeableImageView(context).apply {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        scaleType = ImageView.ScaleType.CENTER_CROP
+        scaleType = ImageView.ScaleType.FIT_CENTER
         shapeAppearanceModel = ShapeAppearanceModel.builder()
             .setAllCorners(CornerFamily.ROUNDED, dpToPx(16f))
             .build()
@@ -38,7 +39,8 @@ class FloorPlanOverlayView @JvmOverloads constructor(
 
     private val dimOverlayView = View(context).apply {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        setBackgroundColor(Color.parseColor("#77051424"))
+        // Background color logic will be handled in onDraw or via bounds to avoid dimming the empty space
+        visibility = View.GONE 
     }
 
     private val gridOverlayView = object : View(context) {
@@ -55,34 +57,46 @@ class FloorPlanOverlayView @JvmOverloads constructor(
             textAlign = Paint.Align.CENTER
         }
 
+        private val dimPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.parseColor("#77051424")
+        }
+
         override fun onDraw(canvas: Canvas) {
             super.onDraw(canvas)
+            
+            val bounds = getImageBounds()
+            if (bounds.width() <= 0 || bounds.height() <= 0) return
+
+            // 1. Draw the dim overlay only over the image area
+            canvas.drawRect(bounds, dimPaint)
+
             if (!isGridVisible) return
 
-            val w = width.toFloat()
-            val h = height.toFloat()
-            if (w <= 0 || h <= 0) return
+            val w = bounds.width()
+            val h = bounds.height()
+            val offsetLeft = bounds.left
+            val offsetTop = bounds.top
 
             val cols = 10
             val rows = 8
 
             // Draw vertical grid lines & column labels
             for (i in 0..cols) {
-                val x = (w / cols) * i
-                canvas.drawLine(x, 0f, x, h, gridPaint)
+                val x = offsetLeft + (w / cols) * i
+                canvas.drawLine(x, offsetTop, x, offsetTop + h, gridPaint)
                 if (i < cols) {
                     val label = ('A' + i).toString()
-                    canvas.drawText(label, x + (w / cols) / 2f, dpToPx(12f), textPaint)
+                    canvas.drawText(label, x + (w / cols) / 2f, offsetTop + dpToPx(12f), textPaint)
                 }
             }
 
             // Draw horizontal grid lines & row labels
             for (j in 0..rows) {
-                val y = (h / rows) * j
-                canvas.drawLine(0f, y, w, y, gridPaint)
+                val y = offsetTop + (h / rows) * j
+                canvas.drawLine(offsetLeft, y, offsetLeft + w, y, gridPaint)
                 if (j < rows) {
                     val label = (j + 1).toString()
-                    canvas.drawText(label, dpToPx(10f), y + (h / rows) / 2f + dpToPx(3f), textPaint)
+                    canvas.drawText(label, offsetLeft + dpToPx(10f), y + (h / rows) / 2f + dpToPx(3f), textPaint)
                 }
             }
         }
@@ -154,32 +168,64 @@ class FloorPlanOverlayView @JvmOverloads constructor(
 
     private fun renderDeviceMarkers() {
         markersContainer.removeAllViews()
-        val containerWidth = width
-        val containerHeight = height
+        val bounds = getImageBounds()
+        
+        val imageWidth = bounds.width()
+        val imageHeight = bounds.height()
 
-        if (containerWidth <= 0 || containerHeight <= 0) return
+        if (imageWidth <= 0 || imageHeight <= 0) return
 
         for (device in devices) {
-            val clampedX = device.x.coerceIn(0.05, 0.95)
-            val clampedY = device.y.coerceIn(0.05, 0.95)
-
-            val pxX = (clampedX * containerWidth).toInt()
-            val pxY = (clampedY * containerHeight).toInt()
-
-            val markerSize = dpToPx(36f).toInt()
-            val markerView = createMarkerView(device)
-
-            val params = LayoutParams(markerSize, markerSize).apply {
-                leftMargin = pxX - (markerSize / 2)
-                topMargin = pxY - (markerSize / 2)
-            }
-
-            markerView.setOnClickListener {
-                onDeviceClickListener?.invoke(device)
-            }
-
-            markersContainer.addView(markerView, params)
+            addMarkerAt(device.x, device.y, device, bounds)
         }
+    }
+
+    private fun addMarkerAt(x: Double, y: Double, device: Device, bounds: RectF) {
+        val imageWidth = bounds.width()
+        val imageHeight = bounds.height()
+
+        val clampedX = x.coerceIn(0.0, 1.0)
+        val clampedY = y.coerceIn(0.0, 1.0)
+
+        val pxX = bounds.left + (clampedX * imageWidth).toInt()
+        val pxY = bounds.top + (clampedY * imageHeight).toInt()
+
+        val markerSize = dpToPx(36f).toInt()
+        val markerView = createMarkerView(device)
+
+        val params = LayoutParams(markerSize, markerSize).apply {
+            leftMargin = (pxX - (markerSize / 2)).toInt()
+            topMargin = (pxY - (markerSize / 2)).toInt()
+        }
+
+        markerView.setOnClickListener {
+            onDeviceClickListener?.invoke(device)
+        }
+
+        markersContainer.addView(markerView, params)
+    }
+
+    /**
+     * Calculates the actual bounds of the centered floor plan image within the view.
+     */
+    private fun getImageBounds(): RectF {
+        val drawable = backgroundImageView.drawable ?: return RectF(0f, 0f, width.toFloat(), height.toFloat())
+        val imageWidth = drawable.intrinsicWidth.toFloat()
+        val imageHeight = drawable.intrinsicHeight.toFloat()
+        val viewWidth = width.toFloat()
+        val viewHeight = height.toFloat()
+
+        if (imageWidth <= 0 || imageHeight <= 0 || viewWidth <= 0 || viewHeight <= 0) {
+            return RectF(0f, 0f, viewWidth, viewHeight)
+        }
+
+        val scale = Math.min(viewWidth / imageWidth, viewHeight / imageHeight)
+        val finalWidth = imageWidth * scale
+        val finalHeight = imageHeight * scale
+        val left = (viewWidth - finalWidth) / 2f
+        val top = (viewHeight - finalHeight) / 2f
+
+        return RectF(left, top, left + finalWidth, top + finalHeight)
     }
 
     private fun createMarkerView(device: Device): View {

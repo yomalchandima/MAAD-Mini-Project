@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/bg_card_dark"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvFloorTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:text="Ground Floor"
+        android:textColor="@color/vibrant_cyan"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/btnFloorOptions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btnFloorOptions"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_social_button"
+        android:contentDescription="Floor Options"
+        android:padding="8dp"
+        android:src="@drawable/ic_tune"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/soft_gray" />
+
+    <LinearLayout
+        android:id="@+id/layoutBadges"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvFloorTitle">
+
+        <TextView
+            android:id="@+id/tvRoomCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_social_button"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="6 Rooms"
+            android:textColor="@color/vibrant_cyan"
+            android:textSize="12sp" />
+
+        <TextView
+            android:id="@+id/tvDeviceCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_social_button"
+            android:drawablePadding="6dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="11 Devices"
+            android:textColor="@color/soft_gray"
+            android:textSize="12sp"
+            app:drawableStartCompat="@drawable/ic_bolt"
+            app:drawableTint="@color/soft_gray" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutRoomIcons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/layoutBadges">
+
+        <TextView
+            android:id="@+id/tvFloorPlanTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_social_circle"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:text="Layout: Ground Floor Plan"
+            android:textColor="@color/soft_gray"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnEnterFloor"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/vibrant_cyan"
+        android:text="@string/enter_floor"
+        android:textAllCaps="false"
+        android:textColor="@color/deep_midnight"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:cornerRadius="12dp"
+        app:icon="@drawable/ic_arrow_right"
+        app:iconGravity="textEnd"
+        app:iconTint="@color/deep_midnight"
+        app:layout_constraintTop_toBottomOf="@id/layoutRoomIcons" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

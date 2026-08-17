@@ -1,0 +1,556 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/deep_midnight"
+    tools:context=".ui.report.ReportsActivity">
+
+    <!-- Top Header Bar -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/headerBar"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:paddingHorizontal="20dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/my_logo"
+            android:background="@drawable/bg_social_circle"
+            android:padding="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/ivLogo"
+            app:layout_constraintStart_toEndOf="@id/ivLogo"
+            app:layout_constraintTop_toTopOf="@id/ivLogo">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/homesync"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="System Analytics"
+                android:textColor="@color/vibrant_cyan"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_person"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/bottomNav"
+        app:layout_constraintTop_toBottomOf="@id/headerBar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/energy_analytics"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvLiveBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_social_button"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="6dp"
+                    android:text="LIVE DATA"
+                    android:textColor="@color/vibrant_cyan"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_bolt"
+                    app:drawableTint="@color/vibrant_cyan"
+                    app:layout_constraintBottom_toBottomOf="@id/tvTitle"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/tvTitle" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Efficiency / Summary Card -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardEfficiency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/bg_card_dark"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvReportLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_social_button"
+                    android:backgroundTint="#2000E5FF"
+                    android:drawablePadding="8dp"
+                    android:paddingHorizontal="12dp"
+                    android:paddingVertical="4dp"
+                    android:text="DEVICE STATUS REPORT"
+                    android:textColor="@color/vibrant_cyan"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_bolt"
+                    app:drawableTint="@color/vibrant_cyan"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvMainMsg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="0 of 0 Devices Active"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvReportLabel" />
+
+                <TextView
+                    android:id="@+id/tvEfficiencySub"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Current active load: 0 W • 0 devices online"
+                    android:textColor="@color/soft_gray"
+                    android:textSize="13sp"
+                    app:layout_constraintTop_toBottomOf="@id/tvMainMsg" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Stats Row: Live Active Load & Connectivity -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_card_dark"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvActiveLoadLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ACTIVE LOAD"
+                        android:textColor="@color/soft_gray"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_bolt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/vibrant_cyan"
+                        tools:ignore="ContentDescription" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="bottom"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvActiveLoadLabel">
+
+                        <TextView
+                            android:id="@+id/tvActiveLoadVal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvActiveLoadUnit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:text="W"
+                            android:textColor="@color/soft_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_card_dark"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvConnectivityLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DEVICE HEALTH"
+                        android:textColor="@color/soft_gray"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:src="@drawable/ic_wifi"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/vibrant_cyan"
+                        tools:ignore="ContentDescription" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="bottom"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tvConnectivityLabel">
+
+                        <TextView
+                            android:id="@+id/tvConnectedCountVal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 / 0"
+                            android:textColor="@color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_marginBottom="2dp"
+                            android:text="Online"
+                            android:textColor="@color/soft_gray"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </LinearLayout>
+
+            <!-- Load Breakdown Section -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_card_dark"
+                android:padding="20dp">
+
+                <TextView
+                    android:id="@+id/tvLoadTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Active Load Distribution"
+                    android:textColor="@color/white"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintTop_toBottomOf="@id/tvLoadTitle">
+
+                    <FrameLayout
+                        android:id="@+id/donutContainer"
+                        android:layout_width="96dp"
+                        android:layout_height="96dp"
+                        android:background="@drawable/bg_social_circle"
+                        android:backgroundTint="#2500F0FF"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/tvLoadCenterText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="0 W\nActive"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </FrameLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/donutContainer"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <LinearLayout
+                            style="@style/LoadItem"
+                            android:layout_marginBottom="6dp">
+                            <View style="@style/LoadIndicator" android:backgroundTint="@color/vibrant_cyan" />
+                            <TextView style="@style/LoadLabel" android:text="@string/climate" />
+                            <TextView
+                                android:id="@+id/tvClimateLoadPercent"
+                                style="@style/LoadPercent"
+                                android:text="0 W (0%)" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/LoadItem"
+                            android:layout_marginBottom="6dp">
+                            <View style="@style/LoadIndicator" android:backgroundTint="#FF8A80" />
+                            <TextView style="@style/LoadLabel" android:text="@string/kitchen" />
+                            <TextView
+                                android:id="@+id/tvKitchenLoadPercent"
+                                style="@style/LoadPercent"
+                                android:text="0 W (0%)" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/LoadItem"
+                            android:layout_marginBottom="6dp">
+                            <View style="@style/LoadIndicator" android:backgroundTint="#A58AFF" />
+                            <TextView style="@style/LoadLabel" android:text="@string/smart_lights" />
+                            <TextView
+                                android:id="@+id/tvLightsLoadPercent"
+                                style="@style/LoadPercent"
+                                android:text="0 W (0%)" />
+                        </LinearLayout>
+
+                        <LinearLayout style="@style/LoadItem">
+                            <View style="@style/LoadIndicator" android:backgroundTint="@color/soft_gray" />
+                            <TextView style="@style/LoadLabel" android:text="Other" />
+                            <TextView
+                                android:id="@+id/tvOtherLoadPercent"
+                                style="@style/LoadPercent"
+                                android:text="0 W (0%)" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Top Consumers Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Top Power Devices"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardConsumer1"
+                style="@style/ConsumerCard"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:id="@+id/ivConsumer1"
+                    style="@style/ConsumerIcon"
+                    android:src="@drawable/ic_ac"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/tvConsumer1Name"
+                    style="@style/ConsumerName"
+                    android:text="Smart Clothing Iron"
+                    app:layout_constraintStart_toEndOf="@id/ivConsumer1"
+                    app:layout_constraintTop_toTopOf="@id/ivConsumer1" />
+                <TextView
+                    android:id="@+id/tvConsumer1Usage"
+                    style="@style/ConsumerUsage"
+                    android:text="1500 W Rating"
+                    app:layout_constraintStart_toStartOf="@id/tvConsumer1Name"
+                    app:layout_constraintTop_toBottomOf="@id/tvConsumer1Name" />
+                <TextView
+                    android:id="@+id/tvConsumer1Status"
+                    style="@style/ConsumerTrend"
+                    android:text="ACTIVE"
+                    android:textColor="@color/vibrant_cyan"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardConsumer2"
+                style="@style/ConsumerCard">
+                <ImageView
+                    android:id="@+id/ivConsumer2"
+                    style="@style/ConsumerIcon"
+                    android:src="@drawable/ic_ac"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/tvConsumer2Name"
+                    style="@style/ConsumerName"
+                    android:text="Bedroom AC"
+                    app:layout_constraintStart_toEndOf="@id/ivConsumer2"
+                    app:layout_constraintTop_toTopOf="@id/ivConsumer2" />
+                <TextView
+                    android:id="@+id/tvConsumer2Usage"
+                    style="@style/ConsumerUsage"
+                    android:text="1200 W Rating"
+                    app:layout_constraintStart_toStartOf="@id/tvConsumer2Name"
+                    app:layout_constraintTop_toBottomOf="@id/tvConsumer2Name" />
+                <TextView
+                    android:id="@+id/tvConsumer2Status"
+                    style="@style/ConsumerTrend"
+                    android:text="OFF"
+                    android:textColor="@color/soft_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cardConsumer3"
+                style="@style/ConsumerCard">
+                <ImageView
+                    android:id="@+id/ivConsumer3"
+                    style="@style/ConsumerIcon"
+                    android:src="@drawable/ic_power_plug"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="ContentDescription" />
+                <TextView
+                    android:id="@+id/tvConsumer3Name"
+                    style="@style/ConsumerName"
+                    android:text="Kitchen Smart Plug"
+                    app:layout_constraintStart_toEndOf="@id/ivConsumer3"
+                    app:layout_constraintTop_toTopOf="@id/ivConsumer3" />
+                <TextView
+                    android:id="@+id/tvConsumer3Usage"
+                    style="@style/ConsumerUsage"
+                    android:text="100 W Rating"
+                    app:layout_constraintStart_toStartOf="@id/tvConsumer3Name"
+                    app:layout_constraintTop_toBottomOf="@id/tvConsumer3Name" />
+                <TextView
+                    android:id="@+id/tvConsumer3Status"
+                    style="@style/ConsumerTrend"
+                    android:text="OFF"
+                    android:textColor="@color/soft_gray"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Recent System Activity Section -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Recent System Activity"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRecentActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:nestedScrollingEnabled="false"
+                tools:listitem="@layout/item_activity_log" />
+
+            <TextView
+                android:id="@+id/tvEmptyActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_card_dark"
+                android:gravity="center"
+                android:padding="20dp"
+                android:text="No recent system activity recorded yet."
+                android:textColor="@color/soft_gray"
+                android:textSize="13sp"
+                android:visibility="gone" />
+
+            <View android:layout_width="match_parent" android:layout_height="32dp"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Loading Indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/vibrant_cyan"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/surface_container"
+        app:elevation="0dp"
+        app:itemActiveIndicatorStyle="@null"
+        app:itemIconSize="24dp"
+        app:itemIconTint="@color/nav_item_color"
+        app:itemTextColor="@color/nav_item_color"
+        app:labelVisibilityMode="labeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

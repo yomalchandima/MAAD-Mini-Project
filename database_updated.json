@@ -1,0 +1,604 @@
+{
+  "homes": {
+    "home001": {
+      "metadata": {
+        "homeId": "home001",
+        "homeName": "Demo Smart Home",
+        "owner": "Admin",
+        "address": "Colombo",
+        "createdAt": "2026-07-29",
+        "status": "ACTIVE"
+      },
+      "floors": {
+        "floor1": {
+          "floorId": "floor1",
+          "floorName": "Ground Floor",
+          "floorPlanImage": "ground_floor_map",
+          "zones": {
+            "livingRoom": {
+              "zoneId": "livingRoom",
+              "zoneName": "Living Room",
+              "devices": {
+                "light01": {
+                  "deviceId": "light01",
+                  "deviceName": "Living Light",
+                  "type": "LIGHT",
+                  "state": true,
+                  "status": "Normal",
+                  "power": 12.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 80,
+                  "online": true,
+                  "x": 0.25,
+                  "y": 0.55,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "livingRoom"
+                },
+                "fan01": {
+                  "deviceId": "fan01",
+                  "deviceName": "Ceiling Fan",
+                  "type": "FAN",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 45.0,
+                  "unit": "Watts",
+                  "icon": "fan",
+                  "speed": 2,
+                  "online": true,
+                  "x": 0.35,
+                  "y": 0.5,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "livingRoom"
+                },
+                "camera01": {
+                  "deviceId": "camera01",
+                  "deviceName": "Entrance Camera",
+                  "type": "CAMERA",
+                  "state": true,
+                  "status": "Recording",
+                  "power": 8.0,
+                  "unit": "Watts",
+                  "icon": "camera",
+                  "recording": true,
+                  "online": true,
+                  "x": 0.15,
+                  "y": 0.5,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "livingRoom"
+                }
+              },
+              "floorId": "floor1"
+            },
+            "kitchen": {
+              "zoneId": "kitchen",
+              "zoneName": "Kitchen",
+              "devices": {
+                "light02": {
+                  "deviceId": "light02",
+                  "deviceName": "Kitchen Light",
+                  "type": "LIGHT",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 10.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 100,
+                  "online": true,
+                  "x": 0.5,
+                  "y": 0.2,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "kitchen"
+                },
+                "plug01": {
+                  "deviceId": "plug01",
+                  "deviceName": "Kitchen Smart Plug",
+                  "type": "SMART_PLUG",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 0.0,
+                  "unit": "Watts",
+                  "icon": "power",
+                  "online": true,
+                  "x": 0.55,
+                  "y": 0.25,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "kitchen"
+                },
+                "switchUnit01": {
+                  "deviceId": "switchUnit01",
+                  "deviceName": "Kitchen Multi-Switch",
+                  "type": "MULTI_SWITCH",
+                  "state": true,
+                  "status": "Normal",
+                  "power": 18.0,
+                  "unit": "Watts",
+                  "icon": "switch_left",
+                  "switchCount": 3,
+                  "switches": {
+                    "switch_1": true,
+                    "switch_2": false,
+                    "switch_3": true
+                  },
+                  "online": true,
+                  "x": 0.45,
+                  "y": 0.25,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "kitchen"
+                }
+              },
+              "floorId": "floor1"
+            },
+            "diningRoom": {
+              "zoneId": "diningRoom",
+              "zoneName": "Dining Room",
+              "devices": {
+                "light03": {
+                  "deviceId": "light03",
+                  "deviceName": "Dining Light",
+                  "type": "LIGHT",
+                  "state": true,
+                  "status": "Normal",
+                  "power": 12.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 90,
+                  "online": true,
+                  "x": 0.85,
+                  "y": 0.2,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "diningRoom"
+                },
+                "plug02": {
+                  "deviceId": "plug02",
+                  "deviceName": "Dining Smart Plug",
+                  "type": "SMART_PLUG",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 0.0,
+                  "unit": "Watts",
+                  "icon": "power",
+                  "online": true,
+                  "x": 0.8,
+                  "y": 0.25,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "diningRoom"
+                }
+              },
+              "floorId": "floor1"
+            },
+            "garage": {
+              "zoneId": "garage",
+              "zoneName": "Garage",
+              "devices": {
+                "light04": {
+                  "deviceId": "light04",
+                  "deviceName": "Garage Light",
+                  "type": "LIGHT",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 18.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 100,
+                  "online": true,
+                  "x": 0.7,
+                  "y": 0.75,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "garage"
+                },
+                "camera02": {
+                  "deviceId": "camera02",
+                  "deviceName": "Garage Camera",
+                  "type": "CAMERA",
+                  "state": true,
+                  "status": "Recording",
+                  "power": 8.0,
+                  "unit": "Watts",
+                  "icon": "camera",
+                  "recording": true,
+                  "online": true,
+                  "x": 0.8,
+                  "y": 0.8,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "garage"
+                }
+              },
+              "floorId": "floor1"
+            },
+            "bathroomGF": {
+              "zoneId": "bathroomGF",
+              "zoneName": "Bathroom",
+              "devices": {
+                "light05": {
+                  "deviceId": "light05",
+                  "deviceName": "Bathroom Light",
+                  "type": "LIGHT",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 8.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 100,
+                  "online": true,
+                  "x": 0.15,
+                  "y": 0.15,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "bathroomGF"
+                }
+              },
+              "floorId": "floor1"
+            },
+            "staircase": {
+              "zoneId": "staircase",
+              "zoneName": "Staircase",
+              "devices": {
+                "light06": {
+                  "deviceId": "light06",
+                  "deviceName": "Stairway Light",
+                  "type": "LIGHT",
+                  "state": true,
+                  "status": "Normal",
+                  "power": 8.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 100,
+                  "online": true,
+                  "x": 0.5,
+                  "y": 0.8,
+                  "lastUpdated": 0,
+                  "floorId": "floor1",
+                  "zoneId": "staircase"
+                }
+              },
+              "floorId": "floor1"
+            }
+          }
+        },
+        "floor2": {
+          "floorId": "floor2",
+          "floorName": "First Floor",
+          "floorPlanImage": "first_floor_map",
+          "zones": {
+            "masterBedroom": {
+              "zoneId": "masterBedroom",
+              "zoneName": "Master Bedroom",
+              "devices": {
+                "light07": {
+                  "deviceId": "light07",
+                  "deviceName": "Master Bedroom Light",
+                  "type": "LIGHT",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 10.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 100,
+                  "online": true,
+                  "x": 0.2,
+                  "y": 0.25,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "masterBedroom"
+                },
+                "ac01": {
+                  "deviceId": "ac01",
+                  "deviceName": "Master Bedroom AC",
+                  "type": "AIR_CONDITIONER",
+                  "state": false,
+                  "status": "Normal",
+                  "temperature": 24,
+                  "mode": "COOL",
+                  "power": 0.0,
+                  "unit": "Watts",
+                  "icon": "ac_unit",
+                  "online": true,
+                  "x": 0.3,
+                  "y": 0.2,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "masterBedroom"
+                },
+                "plug03": {
+                  "deviceId": "plug03",
+                  "deviceName": "Bedroom Smart Plug",
+                  "type": "SMART_PLUG",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 0.0,
+                  "unit": "Watts",
+                  "icon": "power",
+                  "online": true,
+                  "x": 0.25,
+                  "y": 0.35,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "masterBedroom"
+                },
+                "iron01": {
+                  "deviceId": "iron01",
+                  "deviceName": "Smart Clothing Iron",
+                  "type": "IRON",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 1200.0,
+                  "unit": "Watts",
+                  "icon": "iron",
+                  "online": true,
+                  "maxActiveDuration": 15,
+                  "x": 0.15,
+                  "y": 0.35,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "masterBedroom"
+                }
+              },
+              "floorId": "floor2"
+            },
+            "bedroom2": {
+              "zoneId": "bedroom2",
+              "zoneName": "Bedroom 2",
+              "devices": {
+                "light08": {
+                  "deviceId": "light08",
+                  "deviceName": "Bedroom 2 Light",
+                  "type": "LIGHT",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 10.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 100,
+                  "online": true,
+                  "x": 0.5,
+                  "y": 0.25,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "bedroom2"
+                },
+                "ac02": {
+                  "deviceId": "ac02",
+                  "deviceName": "Bedroom 2 AC",
+                  "type": "AIR_CONDITIONER",
+                  "state": false,
+                  "status": "Normal",
+                  "temperature": 24,
+                  "mode": "COOL",
+                  "power": 0.0,
+                  "unit": "Watts",
+                  "icon": "ac_unit",
+                  "online": true,
+                  "x": 0.6,
+                  "y": 0.2,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "bedroom2"
+                }
+              },
+              "floorId": "floor2"
+            },
+            "workRoom": {
+              "zoneId": "workRoom",
+              "zoneName": "Home Office",
+              "devices": {
+                "light09": {
+                  "deviceId": "light09",
+                  "deviceName": "Office Light",
+                  "type": "LIGHT",
+                  "state": true,
+                  "status": "Normal",
+                  "power": 12.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 90,
+                  "online": true,
+                  "x": 0.85,
+                  "y": 0.25,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "workRoom"
+                },
+                "plug04": {
+                  "deviceId": "plug04",
+                  "deviceName": "Office Smart Plug",
+                  "type": "SMART_PLUG",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 0.0,
+                  "unit": "Watts",
+                  "icon": "power",
+                  "online": true,
+                  "x": 0.8,
+                  "y": 0.35,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "workRoom"
+                },
+                "ac03": {
+                  "deviceId": "ac03",
+                  "deviceName": "Office AC",
+                  "type": "AIR_CONDITIONER",
+                  "state": false,
+                  "status": "Normal",
+                  "temperature": 23,
+                  "mode": "COOL",
+                  "power": 0.0,
+                  "unit": "Watts",
+                  "icon": "ac_unit",
+                  "online": true,
+                  "x": 0.9,
+                  "y": 0.2,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "workRoom"
+                }
+              },
+              "floorId": "floor2"
+            },
+            "bathroomFF": {
+              "zoneId": "bathroomFF",
+              "zoneName": "Bathroom",
+              "devices": {
+                "light10": {
+                  "deviceId": "light10",
+                  "deviceName": "Bathroom Light",
+                  "type": "LIGHT",
+                  "state": false,
+                  "status": "Normal",
+                  "power": 8.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 100,
+                  "online": true,
+                  "x": 0.2,
+                  "y": 0.8,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "bathroomFF"
+                }
+              },
+              "floorId": "floor2"
+            },
+            "hallway": {
+              "zoneId": "hallway",
+              "zoneName": "Hallway",
+              "devices": {
+                "light11": {
+                  "deviceId": "light11",
+                  "deviceName": "Hallway Light",
+                  "type": "LIGHT",
+                  "state": true,
+                  "status": "Normal",
+                  "power": 8.0,
+                  "unit": "Watts",
+                  "icon": "light",
+                  "brightness": 100,
+                  "online": true,
+                  "x": 0.5,
+                  "y": 0.7,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "hallway"
+                },
+                "camera03": {
+                  "deviceId": "camera03",
+                  "deviceName": "Indoor Camera",
+                  "type": "CAMERA",
+                  "state": true,
+                  "status": "Recording",
+                  "power": 8.0,
+                  "unit": "Watts",
+                  "icon": "camera",
+                  "recording": true,
+                  "online": true,
+                  "x": 0.6,
+                  "y": 0.75,
+                  "lastUpdated": 0,
+                  "floorId": "floor2",
+                  "zoneId": "hallway"
+                }
+              },
+              "floorId": "floor2"
+            }
+          }
+        }
+      },
+      "schedules": {
+        "schedule01": {
+          "scheduleId": "schedule01",
+          "deviceId": "light01",
+          "deviceName": "Living Light",
+          "action": "ON",
+          "startDate": "2026-08-16",
+          "startTime": "18:00",
+          "endTime": "23:00",
+          "repeat": "DAILY",
+          "enabled": true,
+          "createdAt": 1786406400000
+        },
+        "schedule02": {
+          "scheduleId": "schedule02",
+          "deviceId": "iron01",
+          "deviceName": "Smart Clothing Iron",
+          "action": "ON",
+          "startDate": "2026-08-16",
+          "startTime": "08:00",
+          "endTime": null,
+          "repeat": "WEEKDAYS",
+          "enabled": true,
+          "createdAt": 1786406400000
+        },
+        "schedule03": {
+          "scheduleId": "schedule03",
+          "deviceId": "switchUnit01",
+          "deviceName": "Kitchen Multi-Switch",
+          "action": "ON",
+          "startDate": "2026-08-16",
+          "startTime": "19:00",
+          "endTime": "22:00",
+          "repeat": "DAILY",
+          "enabled": false,
+          "switchId": "switch_1",
+          "createdAt": 1786406400000
+        }
+      },
+      "notifications": {},
+      "reports": {
+        "today": {
+          "energyUsage": 0.0,
+          "activeDevices": 0,
+          "onlineDevices": 19,
+          "offlineDevices": 0
+        }
+      },
+      "activityLogs": {},
+      "settings": {
+        "darkMode": true,
+        "notificationsEnabled": true,
+        "language": "en",
+        "temperatureUnit": "C"
+      }
+    }
+  },
+  "users": {
+    "admin001": {
+      "userId": "admin001",
+      "name": "Administrator",
+      "email": "admin@demo.com",
+      "role": "OWNER"
+    }
+  },
+  "deviceTemplates": {
+    "LIGHT": {
+      "icon": "light",
+      "defaultPower": 10
+    },
+    "FAN": {
+      "icon": "fan",
+      "defaultPower": 45
+    },
+    "CAMERA": {
+      "icon": "camera",
+      "defaultPower": 8
+    },
+    "SMART_PLUG": {
+      "icon": "power",
+      "defaultPower": 0
+    },
+    "AIR_CONDITIONER": {
+      "icon": "ac_unit",
+      "defaultPower": 1200
+    }
+  }
+}

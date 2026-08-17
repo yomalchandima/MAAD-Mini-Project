@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardNotification"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_card_dark"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="16dp">
+
+    <!-- Type Icon Container -->
+    <ImageView
+        android:id="@+id/ivTypeIcon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_social_button"
+        android:padding="8dp"
+        android:src="@drawable/ic_bell"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/vibrant_cyan"
+        tools:ignore="ContentDescription" />
+
+    <!-- Type Badge -->
+    <TextView
+        android:id="@+id/tvTypeBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/bg_social_button"
+        android:backgroundTint="#2000E5FF"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="2dp"
+        android:text="SAFETY"
+        android:textColor="@color/vibrant_cyan"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/ivTypeIcon"
+        app:layout_constraintTop_toTopOf="@id/ivTypeIcon" />
+
+    <!-- Timestamp -->
+    <TextView
+        android:id="@+id/tvTimestamp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="10m ago"
+        android:textColor="@color/soft_gray"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/tvTypeBadge"
+        app:layout_constraintEnd_toStartOf="@id/viewUnreadDot"
+        app:layout_constraintTop_toTopOf="@id/tvTypeBadge"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Unread Indicator Dot -->
+    <View
+        android:id="@+id/viewUnreadDot"
+        android:layout_width="8dp"
+        android:layout_height="8dp"
+        android:background="@drawable/bg_social_circle"
+        android:backgroundTint="@color/vibrant_cyan"
+        app:layout_constraintBottom_toBottomOf="@id/tvTimestamp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvTimestamp" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Safety Alert"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvTypeBadge"
+        app:layout_constraintTop_toBottomOf="@id/tvTypeBadge" />
+
+    <!-- Message -->
+    <TextView
+        android:id="@+id/tvMessage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Smart Clothing Iron was automatically turned OFF after reaching its maximum active duration."
+        android:textColor="@color/soft_gray"
+        android:textSize="13sp"
+        android:lineSpacingExtra="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

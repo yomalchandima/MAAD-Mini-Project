@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,15 +15,84 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MAADMiniProject">
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashActivity"
             android:exported="true"
-            android:windowSoftInputMode="adjustResize">
+            android:theme="@style/Theme.App.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.authentication.LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.authentication.SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.dashboard.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ui.settings.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.floor.FloorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.floor.FloorDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.floor.FirstFloorDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.floor.GroundFloorDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.LivingRoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.KitchenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.BathroomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.StaircaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.DiningActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.GarageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.WorkRoomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.MasterBedroomActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.Bedroom2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.GroundFloorBathActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.room.HallwayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.report.ReportsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.schedule.ScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.schedule.AddEditScheduleActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.notification.NotificationsActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

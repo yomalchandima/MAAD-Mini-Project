@@ -68,6 +68,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, NotificationsActivity::class.java))
         }
 
+        binding.btnNotifications.setOnClickListener {
+            startActivity(Intent(this, NotificationsActivity::class.java))
+        }
+
         binding.bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> true
@@ -114,6 +118,8 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.notifications.observe(this) { notifications ->
             val unreadCount = notifications.count { !it.isRead }
+            binding.viewUnreadBadge.visibility = if (unreadCount > 0) android.view.View.VISIBLE else android.view.View.GONE
+
             if (unreadCount > 0) {
                 binding.tvAlertsCount.text = getString(R.string.unread_count_format, unreadCount)
                 binding.tvAlertsCount.setTextColor(ContextCompat.getColor(this, R.color.vibrant_cyan))

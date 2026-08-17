@@ -119,8 +119,6 @@ class ReportViewModel : ViewModel() {
             }
         }
 
-        _devices.value = allDevices
-
         val total = allDevices.size
         val active = allDevices.count { it.state }
         val online = allDevices.count { it.online || !it.status.equals("Offline", ignoreCase = true) }
@@ -148,6 +146,8 @@ class ReportViewModel : ViewModel() {
             catMap[category] = (catMap[category] ?: 0.0) + dev.power
         }
         _categoryLoads.value = catMap
+
+        _devices.value = allDevices
 
         // Update synthetic report model if base report wasn't provided or to keep counts live
         val currentReport = _report.value

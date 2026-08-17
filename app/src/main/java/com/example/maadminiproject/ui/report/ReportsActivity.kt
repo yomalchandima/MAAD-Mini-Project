@@ -61,26 +61,23 @@ class ReportsActivity : AppCompatActivity() {
         }
 
         // Live Device Summary & Efficiency Cards
-        viewModel.devices.observe(this) { _ ->
-            val total = viewModel.totalDevicesCount.value ?: 0
-            val active = viewModel.activeDevicesCount.value ?: 0
-            val online = viewModel.onlineDevicesCount.value ?: 0
-            val watts = viewModel.totalActivePowerWatts.value ?: 0.0
+        viewModel.devices.observe(this) { deviceList ->
+            val total = deviceList.size
+            val active = deviceList.count { it.state }
+            val online = deviceList.count { it.online || !it.status.equals("Offline", ignoreCase = true) }
+            val watts = deviceList.filter { it.state }.sumOf { it.power }
 
             binding.tvMainMsg.text = "$active of $total Devices Active"
             binding.tvEfficiencySub.text = "Current active load: ${watts.toInt()} W • $online devices online"
             binding.tvConnectedCountVal.text = "$online / $total"
+            binding.tvActiveLoadVal.text = "${watts.toInt()}"
+            binding.tvLoadCenterText.text = "${watts.toInt()} W\nActive"
         }
 
         // Live Active Power
         viewModel.totalActivePowerWatts.observe(this) { watts ->
             binding.tvActiveLoadVal.text = "${watts.toInt()}"
             binding.tvLoadCenterText.text = "${watts.toInt()} W\nActive"
-
-            val total = viewModel.totalDevicesCount.value ?: 0
-            val active = viewModel.activeDevicesCount.value ?: 0
-            val online = viewModel.onlineDevicesCount.value ?: 0
-            binding.tvEfficiencySub.text = "Current active load: ${watts.toInt()} W • $online devices online"
         }
 
         // Load Distribution Breakdown

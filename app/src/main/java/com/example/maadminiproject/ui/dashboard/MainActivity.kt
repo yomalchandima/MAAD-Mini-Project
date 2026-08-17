@@ -2,6 +2,7 @@ package com.example.maadminiproject.ui.dashboard
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -118,7 +119,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.notifications.observe(this) { notifications ->
             val unreadCount = notifications.count { !it.isRead }
-            binding.viewUnreadBadge.visibility = if (unreadCount > 0) android.view.View.VISIBLE else android.view.View.GONE
+            binding.viewUnreadBadge.visibility = if (unreadCount > 0) View.VISIBLE else View.GONE
 
             if (unreadCount > 0) {
                 binding.tvAlertsCount.text = getString(R.string.unread_count_format, unreadCount)

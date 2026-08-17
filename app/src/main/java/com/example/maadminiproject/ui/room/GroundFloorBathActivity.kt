@@ -55,6 +55,7 @@ class GroundFloorBathActivity : AppCompatActivity() {
             val light = deviceList.find { it.deviceId == "light05" }
             if (light != null) {
                 isProgrammaticUpdate = true
+                binding.tvLightTitle.text = light.deviceName.ifBlank { "Bathroom Light" }
                 binding.swMainLight.isChecked = light.state
                 if (light.state) {
                     binding.tvLightStatus.text = getString(R.string.status_on)

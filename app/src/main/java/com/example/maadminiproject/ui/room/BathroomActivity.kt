@@ -56,6 +56,7 @@ class BathroomActivity : AppCompatActivity() {
             val light = deviceList.find { it.deviceId == "light10" }
             if (light != null) {
                 isProgrammaticUpdate = true
+                binding.tvLightTitle.text = light.deviceName.ifBlank { "Bathroom Light" }
                 binding.swMainLighting.isChecked = light.state
                 updateUI(light.state)
                 isProgrammaticUpdate = false

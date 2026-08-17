@@ -56,6 +56,7 @@ class Bedroom2Activity : AppCompatActivity() {
             val light = deviceList.find { it.deviceId == "light08" }
             if (light != null) {
                 isProgrammaticUpdate = true
+                binding.tvLightTitle.text = light.deviceName.ifBlank { "Bedroom 2 Light" }
                 binding.swLight.isChecked = light.state
                 if (light.state) {
                     binding.tvLightStatus.text = getString(R.string.online)

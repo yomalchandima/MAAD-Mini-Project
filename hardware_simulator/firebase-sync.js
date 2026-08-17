@@ -20,8 +20,11 @@ const FIREBASE_CONFIG = {
   appId: "1:1063487593316:android:daea92788cfda89fccb871"
 };
 
-const DB_FLOORS_PATH = "homes/home001/floors";
-const DB_SCHEDULES_PATH = "homes/home001/schedules";
+const DB_HOME_PATH = "homes/home001";
+const DB_FLOORS_PATH = `${DB_HOME_PATH}/floors`;
+const DB_SCHEDULES_PATH = `${DB_HOME_PATH}/schedules`;
+const DB_NOTIFICATIONS_PATH = `${DB_HOME_PATH}/notifications`;
+const DB_ACTIVITY_LOGS_PATH = `${DB_HOME_PATH}/activityLogs`;
 const SCHEDULE_POLL_INTERVAL_MS = 1000;
 
 /* =====================================================================
@@ -103,7 +106,7 @@ const DataLayer = (() => {
   function logActivityToFirebase(deviceId, deviceName, action, description, performedBy) {
     if (!db) return;
     try {
-      const logsRef = db.ref(`${DB_HOME_PATH}/activityLogs`);
+      const logsRef = db.ref(DB_ACTIVITY_LOGS_PATH);
       const newLogRef = logsRef.push();
       const logEntry = {
         logId: newLogRef.key || `log_${Date.now()}`,
@@ -128,7 +131,7 @@ const DataLayer = (() => {
   function createNotificationInFirebase(title, message, type = "SYSTEM", deviceId = "") {
     if (!db) return;
     try {
-      const notifsRef = db.ref(`${DB_HOME_PATH}/notifications`);
+      const notifsRef = db.ref(DB_NOTIFICATIONS_PATH);
       const newNotifRef = notifsRef.push();
       const notifEntry = {
         notificationId: newNotifRef.key || `notif_${Date.now()}`,

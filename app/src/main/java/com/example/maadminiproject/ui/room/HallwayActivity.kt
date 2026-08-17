@@ -80,13 +80,22 @@ class HallwayActivity : AppCompatActivity() {
                 val isActive = camera.state || (camera.recording == true)
                 binding.swCam.isChecked = isActive
                 if (isActive) {
-                    binding.tvCamStatus.text = getString(R.string.detecting_motion)
-                    binding.tvCamStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                    binding.camFrame.alpha = 1.0f
+
+                    binding.tvCamStatus.text = getString(R.string.status_disconnected)
+                    binding.tvCamStatus.setTextColor(getColor(R.color.error_red))
+                    binding.camFrame.alpha = 0.4f
+                    
+                    // Red switch for disconnected
+                    binding.swCam.thumbTintList = ColorStateList.valueOf(getColor(R.color.error_red))
+                    binding.swCam.trackTintList = ColorStateList.valueOf(getColor(R.color.error_red)).withAlpha(0x66)
                 } else {
                     binding.tvCamStatus.text = getString(R.string.status_off)
                     binding.tvCamStatus.setTextColor(getColor(R.color.soft_gray))
                     binding.camFrame.alpha = 0.5f
+                    
+                    // Gray switch for OFF
+                    binding.swCam.thumbTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                    binding.swCam.trackTintList = ColorStateList.valueOf(getColor(R.color.soft_gray)).withAlpha(0x44)
                 }
                 isProgrammaticUpdate = false
             }
@@ -101,8 +110,24 @@ class HallwayActivity : AppCompatActivity() {
 
         binding.swCam.setOnCheckedChangeListener { _, isChecked ->
             if (isProgrammaticUpdate) return@setOnCheckedChangeListener
-            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "camera03", isChecked)
-            deviceViewModel.setRecording(homeId, floorId, zoneId, "camera03", isChecked)
+            if (isChecked) {
+                // Demo requirement: Set status to DISCONNECTED and online to false in Firebase when turned ON
+                val updates = mapOf(
+                    "state" to true,
+                    "recording" to true,
+                    "status" to "DISCONNECTED",
+                    "online" to false
+                )
+                deviceViewModel.updateDeviceFields(homeId, floorId, zoneId, "camera03", updates)
+            } else {
+                val updates = mapOf(
+                    "state" to false,
+                    "recording" to false,
+                    "status" to "OFF",
+                    "online" to true
+                )
+                deviceViewModel.updateDeviceFields(homeId, floorId, zoneId, "camera03", updates)
+            }
         }
     }
 

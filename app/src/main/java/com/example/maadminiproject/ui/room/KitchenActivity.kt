@@ -80,17 +80,26 @@ class KitchenActivity : AppCompatActivity() {
                 isProgrammaticUpdate = true
                 binding.swEspresso.isChecked = plug.state
                 if (plug.state) {
-                    binding.tvEspressoStatus.text = getString(R.string.status_on)
-                    binding.tvEspressoStatus.setTextColor(getColor(R.color.vibrant_cyan))
-                    binding.tvEspressoStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
-                    binding.ivPlugIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.vibrant_cyan))
-                    binding.ivPlugIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.deep_midnight))
+                    // Demo requirement: Show Error when turned ON
+                    binding.tvEspressoStatus.text = getString(R.string.status_error)
+                    binding.tvEspressoStatus.setTextColor(getColor(R.color.error_red))
+                    binding.tvEspressoStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.error_red))
+                    binding.ivPlugIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.error_red))
+                    binding.ivPlugIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.white))
+                    
+                    // Red switch for error
+                    binding.swEspresso.thumbTintList = ColorStateList.valueOf(getColor(R.color.error_red))
+                    binding.swEspresso.trackTintList = ColorStateList.valueOf(getColor(R.color.error_red)).withAlpha(0x66)
                 } else {
                     binding.tvEspressoStatus.text = getString(R.string.status_off)
                     binding.tvEspressoStatus.setTextColor(getColor(R.color.soft_gray))
                     binding.tvEspressoStatus.compoundDrawableTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
                     binding.ivPlugIcon.backgroundTintList = ColorStateList.valueOf(getColor(R.color.surface_container))
                     binding.ivPlugIcon.imageTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                    
+                    // Gray switch for OFF to match user requirement
+                    binding.swEspresso.thumbTintList = ColorStateList.valueOf(getColor(R.color.soft_gray))
+                    binding.swEspresso.trackTintList = ColorStateList.valueOf(getColor(R.color.soft_gray)).withAlpha(0x44)
                 }
                 isProgrammaticUpdate = false
             }
@@ -118,7 +127,20 @@ class KitchenActivity : AppCompatActivity() {
 
         binding.swEspresso.setOnCheckedChangeListener { _, isChecked ->
             if (isProgrammaticUpdate) return@setOnCheckedChangeListener
-            deviceViewModel.toggleDevice(homeId, floorId, zoneId, "plug01", isChecked)
+            if (isChecked) {
+                // Demo requirement: Set status to ERROR in Firebase when turned ON
+                val updates = mapOf(
+                    "state" to true,
+                    "status" to "ERROR"
+                )
+                deviceViewModel.updateDeviceFields(homeId, floorId, zoneId, "plug01", updates)
+            } else {
+                val updates = mapOf(
+                    "state" to false,
+                    "status" to "OFF"
+                )
+                deviceViewModel.updateDeviceFields(homeId, floorId, zoneId, "plug01", updates)
+            }
         }
 
         binding.swMulti1.setOnCheckedChangeListener { _, isChecked ->

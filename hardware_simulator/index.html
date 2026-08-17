@@ -47,26 +47,6 @@
       </div>
 
       <div class="rail__card">
-        <h2 class="rail__title">Cloud Uplink Simulator</h2>
-        <p class="rail__hint">
-          Use this before Firebase is wired up. It mimics an external
-          state push (e.g. from the backend safety worker) so the UI's
-          reactive behaviour can be tested end-to-end.
-        </p>
-        <div class="uplink">
-          <select id="uplinkDevice"></select>
-          <select id="uplinkStatus">
-            <option value="ON">ON</option>
-            <option value="OFF">OFF</option>
-            <option value="ERROR">ERROR</option>
-            <option value="DISCONNECTED">DISCONNECTED</option>
-          </select>
-          <button id="uplinkPush">Push update</button>
-        </div>
-        <button id="uplinkChaos" class="chaos-btn">Simulate random fault</button>
-      </div>
-
-      <div class="rail__card">
         <h2 class="rail__title">Schedules</h2>
         <div id="schedulesList" class="schedules-list">
           <div class="schedules-empty">Loading schedules...</div>

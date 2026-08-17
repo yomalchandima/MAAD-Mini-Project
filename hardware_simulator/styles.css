@@ -520,38 +520,6 @@ body{
 .led--error{ background: var(--error); box-shadow: 0 0 6px 1px var(--error-glow); }
 .led--disc{ background: var(--disc); }
 
-.uplink{ display:flex; flex-direction:column; gap:8px; }
-.uplink select, .uplink button{
-  font-family: var(--font-mono);
-  font-size: 12px;
-  padding: 8px 10px;
-  border-radius: 6px;
-  border: 1px solid var(--line);
-  background: var(--bg-0);
-  color: var(--text-hi);
-}
-.uplink button{
-  background: var(--copper-dim);
-  border-color: var(--copper);
-  color: #14161a;
-  font-weight: 600;
-  cursor: pointer;
-}
-.uplink button:hover{ background: var(--copper); }
-.chaos-btn{
-  width:100%;
-  margin-top: 10px;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px dashed var(--error);
-  background: transparent;
-  color: var(--error);
-  cursor: pointer;
-}
-.chaos-btn:hover{ background: var(--error-glow); }
-
 .log{
   flex:1;
   overflow-y:auto;

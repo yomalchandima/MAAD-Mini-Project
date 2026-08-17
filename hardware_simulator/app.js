@@ -371,7 +371,6 @@ DataLayer.onDeviceChange((snapshot) => {
 DataLayer.onStructureChange(() => {
   renderFloorTabs();
   renderRooms();
-  populateUplinkDeviceList();
   updateLightingStates();
 });
 
@@ -526,34 +525,6 @@ function drawFakeFrame(canvas, label) {
   document.getElementById("cameraModalTime").textContent = "Frame captured " + new Date().toLocaleTimeString("en-GB", { hour12: false });
 }
 
-/* UPLINK SIMULATOR */
-function populateUplinkDeviceList() {
-  const select = document.getElementById("uplinkDevice");
-  if (!select) return;
-  select.innerHTML = "";
-  const deviceIds = DataLayer.getDiscoveredDevices();
-  deviceIds.forEach((id) => {
-    const st = DataLayer.getState(id);
-    const opt = document.createElement("option");
-    opt.value = id;
-    opt.textContent = `${st.deviceName || id} (${id})`;
-    select.appendChild(opt);
-  });
-}
-
-document.getElementById("uplinkPush").onclick = () => {
-  const deviceId = document.getElementById("uplinkDevice").value;
-  const status = document.getElementById("uplinkStatus").value;
-  DataLayer.setDeviceStatus(deviceId, status, "cloud-uplink");
-};
-
-document.getElementById("uplinkChaos").onclick = () => {
-  const ids = DataLayer.getDiscoveredDevices();
-  if (ids.length === 0) return;
-  const randomId = ids[Math.floor(Math.random() * ids.length)];
-  DataLayer.setDeviceStatus(randomId, "ERROR", "safety-worker");
-};
-
 /* SCHEDULES UI */
 function renderSchedulesList(schedules) {
   const container = document.getElementById("schedulesList");
@@ -616,7 +587,6 @@ DataLayer.onScheduleChange((schedules) => {
 DataLayer.init(() => {
   renderFloorTabs();
   renderRooms();
-  populateUplinkDeviceList();
   renderSchedulesList();
   updateLightingStates();
 
